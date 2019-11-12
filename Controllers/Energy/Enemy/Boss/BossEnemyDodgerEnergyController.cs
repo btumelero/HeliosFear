@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EnemyDodgerEnergyController : EnemyEnergyController {
+public class BossEnemyDodgerEnergyController : EnemyEnergyController {
 
   #region Métodos da Unity
 

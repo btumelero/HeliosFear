@@ -1,4 +1,4 @@
-﻿public class EnemyAttackerLifeController : EnemyLifeController {
+﻿public class CommonEnemyDefenderLifeController : EnemyLifeController {
 
   /*
    * Start is called before the first frame update
@@ -6,8 +6,8 @@
    */
   protected override void Start () {
     base.Start();
-    _hp = 3;
-    baseShield = 6;
+    _hp = 6;
+    baseShield = 12;
     _shield = baseShield;
     maxShield = baseShield;
     regenerationTimer.baseTime = 5;

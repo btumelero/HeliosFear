@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 
-public class EnemyNormalMovementController : EnemyMovementController {
+public class CommonEnemyDodgerMovementController : EnemyMovementController {
 
   #region Meus métodos
 
   /*
-   * Esse tipo de nave normal se move para esquerda, direita e baixo.
-   * Esse método randomiza entre as três.
-   * Move a nave na diagonal para esquerda e direita, mantendo o eixo profundidade como zero
+   * Esse tipo de nave se move para esquerda e direita.
+   * Esse método randomiza entre os dois
+   * Move a nave para baixo e esquerda ou direita e mantém o eixo profundidade como zero
    */
   public override void directionSwitch () {
-    moving = (movementType) Random.Range(0, 3);
+    moving = (movementType) Random.Range(0, 2);
   }
 
   protected override void updateMovementDirection () {
     spaceship.velocity = new Vector3(
-      (Time.fixedDeltaTime * 3) * (moving == movementType.DOWNWARD ? 0 : moving == movementType.RIGHTWARD ? actualSpeed : -actualSpeed),
+      (Time.fixedDeltaTime * 3) * (moving == movementType.RIGHTWARD ? actualSpeed : -actualSpeed),
       -actualSpeed * (Time.fixedDeltaTime * 3),
       0
     );
@@ -31,10 +31,9 @@ public class EnemyNormalMovementController : EnemyMovementController {
    */
   protected override void Start () {
     base.Start();
-    switchTimer.baseTime = Random.Range(2, 5);
-    baseSpeed = 150;
+    switchTimer.baseTime = Random.Range(2, 4);
+    baseSpeed = 200;
   }
 
   #endregion
-
 }

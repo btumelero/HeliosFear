@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class EnemyAttackerEnergyController : EnemyEnergyController {
+public class CommonEnemyAttackerEnergyController : EnemyEnergyController {
 
   #region Métodos da Unity
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EnemyDefenderMovementController : EnemyMovementController {
+public class CommonEnemyDefenderMovementController : EnemyMovementController {
 
   #region Meus métodos
 

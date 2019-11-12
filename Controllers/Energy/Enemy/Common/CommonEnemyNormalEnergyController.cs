@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class EnemyDefenderEnergyController : EnemyEnergyController {
+public class CommonEnemyNormalEnergyController : EnemyEnergyController {
 
   #region Métodos da Unity
 
@@ -10,10 +10,10 @@ public class EnemyDefenderEnergyController : EnemyEnergyController {
    */
   protected override void Start () {
     base.Start();
-    shieldMultiplier = Random.Range(60, 80);
-    totalEnergy -= shieldMultiplier;
     speedMultiplier = Random.Range(40, 60);
     totalEnergy -= speedMultiplier;
+    shieldMultiplier = Random.Range(40, 60);
+    totalEnergy -= shieldMultiplier;
     weaponMultiplier = totalEnergy;
   }
 
