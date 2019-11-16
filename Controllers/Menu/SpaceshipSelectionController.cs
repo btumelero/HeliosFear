@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -8,22 +8,14 @@ public class SpaceshipSelectionController : MonoBehaviour {
 
   public static GameObject spaceship;
   public GameObject[] spaceshipsPrefabs;
-  private Dictionary<string, GameObject> spaceships;
-
-  private void Start () {
-    spaceships = new Dictionary<string, GameObject> {
-       { "PlayerAttacker", spaceshipsPrefabs[0] },
-       { "PlayerDefender", spaceshipsPrefabs[1] },
-       { "PlayerDodger", spaceshipsPrefabs[2] },
-       { "PlayerNormal", spaceshipsPrefabs[3] }
-    };
-  }
+  public enum spaceshipsEnum : byte { ATTACKER, DEFENDER, DODGER, NORMAL }
 
   /*
    * Troca pra fase de sobrevivência quando o usuário escolhe uma das naves
    */
   public void clickedButton () {
-    spaceship = spaceships["Player" + EventSystem.current.currentSelectedGameObject.GetComponentInChildren<Text>().text];
+    spaceshipsEnum prefab = (spaceshipsEnum) Enum.Parse(typeof(spaceshipsEnum), EventSystem.current.currentSelectedGameObject.GetComponentInChildren<Text>().text.ToUpper());
+    spaceship = spaceshipsPrefabs[(byte) prefab];
     SceneManager.LoadScene("Survival");
   }
 
