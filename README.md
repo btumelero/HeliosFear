@@ -1,5 +1,5 @@
 # HeliosFear
 
-Desisto de usar essa merda, o git simplesmente ignora o .gitignore e sem ele não tem como dar push, já que a build tem mais de 100 mb.
+Peguei e desinstalei o git, já que eu estava upando manualmente por causa daquele problema do .gitignore. Eu upo só a pasta src e agora eu uso o gitpod quando preciso manipular o que já está no github (modificar a estrutura das pastas, deletar classes), já que é uma merda fazer isso por aqui. Vou continuar fazendo assim mesmo, já que assim não preciso nem ter o git no pc e como bônus não preciso usar linha de comando que eu odeio.
 
-Tive que upar manualmente aqui pelo github e foi um pé no saco, não vou fazer isso novamente.
+Ah, usar o code pra unity é uma merda porque as extensões dão um suporte horrívelmente precário pra desenvolver, então vou continuar usando mesma IDE que usava antes (VS Community). Além disso, a unity não tem integração com o gitpod, então mesmo que eu usasse git ia ser uma merda ter que ficar sincronizando cada vez que fizesse alguma modificação no código.
