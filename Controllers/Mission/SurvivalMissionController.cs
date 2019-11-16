@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GameController : MonoBehaviour {
+public class SurvivalMissionController : MonoBehaviour {
 
   public ScreenLimits respawnZone;
   public GameObject[] enemies;
