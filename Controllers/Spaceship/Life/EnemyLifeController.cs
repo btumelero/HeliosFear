@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-
-public abstract class EnemyLifeController : LifeController {
+﻿public class EnemyLifeController : LifeController {
 
   #region Variáveis
 
-  private EnemyController enemyController;
+  public EnemyConstructor enemyConstructor { get; set; }
 
   #endregion
 
@@ -14,11 +12,9 @@ public abstract class EnemyLifeController : LifeController {
     get => _hp;
     set {
       _hp = value;
-      //Debug.Log("HP " + hp);
-      //Debug.Log("SHIELD " + shield);
       if (_hp <= 0) {
         dead = true;
-        enemyController.spawnPower();
+        enemyConstructor.giveScore();
       }
     }
   }
@@ -27,13 +23,4 @@ public abstract class EnemyLifeController : LifeController {
 
   #endregion
 
-  #region Métodos da Unity
-
-  protected override void Start () {
-    base.Start();
-    enemyController = GetComponent<EnemyController>();
-    regenerationTimer = gameObject.AddComponent<Timer>();
-  }
-
-  #endregion
 }

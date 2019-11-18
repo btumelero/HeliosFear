@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class PlayerLifeController : LifeController {
+public class PlayerLifeController : LifeController {
 
   #region Variáveis
 
-  private Slider hpSlider, shieldSlider;
+  public Slider hpSlider { get; set; }
+  public Slider shieldSlider { get; set; }
 
   #endregion
 
@@ -16,9 +17,7 @@ public abstract class PlayerLifeController : LifeController {
     set {
       _hp = value;
       hpSlider.value = hp;
-      if (_hp <= 0) {
-        dead = true;
-      }
+      onHpValueChange();
     }
   }
 
@@ -37,23 +36,30 @@ public abstract class PlayerLifeController : LifeController {
 
   #region Métodos da Unity
 
+
   /*
-   * Start is called before the first frame update
-   * Inicializações apenas
+   * Acaba o jogo caso o player tenha morrido
    */
-  protected override void Start () {
-    base.Start();
-    hpSlider = GameObject.FindGameObjectWithTag("RemainingHpSlider").GetComponent<Slider>();
-    shieldSlider = GameObject.FindGameObjectWithTag("RemainingShieldSlider").GetComponent<Slider>();
-    regenerationTimer = gameObject.AddComponent<DynamicTimer>();
-    hpSlider.maxValue = hp;
-    maxShield = baseShield;
-    shield = baseShield;
+  private void OnDestroy () {
+    GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
+    if (canvas != null) {
+      MissionController missionController = canvas.GetComponent<MissionController>();
+      if (missionController != null) {
+        missionController.enabled = false;
+      }
+    }
   }
 
   #endregion
 
   #region Meus Métodos
+
+  protected override void onHpValueChange () {
+    if (hp <=0) {
+      
+      dead = true;
+    }
+  }
 
   protected override void onShieldValueChange () {
     base.onShieldValueChange();

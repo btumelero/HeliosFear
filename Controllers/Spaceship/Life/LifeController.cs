@@ -8,10 +8,11 @@ public abstract class LifeController : MonoBehaviour {
   #region Variáveis
 
   public GameObject shieldSphere;
-  protected float _hp, _shield, _maxShield;
-  public AbstractTimer regenerationTimer { get; set; }
-  public float baseShield { get; protected set; }
-  public bool dead { get; protected set; }
+  public float _hp, _shield, _maxShield;
+  public float baseRegenerationSpeed;
+  public float actualRegenerationSpeed;
+  public float baseShield;
+  public bool dead;
 
   #endregion
 
@@ -37,20 +38,10 @@ public abstract class LifeController : MonoBehaviour {
    * Regenera o escudo quando o timer esgota e destrói o objeto caso ele tenha morrido
    */
   protected virtual void Update () {
-    if (regenerationTimer.timeIsUp()) {
-      shield++;
-      regenerationTimer.restart();
-    }
+    shield += Time.deltaTime * baseRegenerationSpeed;
     if (dead) {
       Destroy(gameObject);
     }
-  }
-
-  /*
-   * Pegando referência e inicializando
-   */
-  protected virtual void Start () {
-    dead = false;
   }
 
   #endregion
