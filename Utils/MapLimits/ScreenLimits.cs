@@ -3,10 +3,10 @@ public class ScreenLimits {
 
   #region Variáveis
 
-  public int minimumX { get; set; }
-  public int maximumX { get; set; }
-  public int minimumY { get; set; }
-  public int maximumY { get; set; }
+  public int minimumX;
+  public int maximumX;
+  public int minimumY;
+  public int maximumY;
 
   #endregion
 
