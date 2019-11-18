@@ -1,17 +1,36 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerConstructor : SpaceshipController {
+public abstract class PlayerConstructor : SpaceshipConstructor {
 
-  #region Variï¿½veis
+  #region Variáveis
 
   private int _score, _highscore;
-
   private Text scoreText, highscoreText;
 
   #endregion
 
   #region Getters e Setters
+
+  protected PlayerAttackController attackController {
+    get => (PlayerAttackController) _attackController;
+    set => _attackController = value;
+  }
+
+  protected PlayerEnergyController energyController {
+    get => (PlayerEnergyController) _energyController;
+    set => _energyController = value;  
+  }
+
+  protected PlayerLifeController lifeController {
+    get => (PlayerLifeController) _lifeController;
+    set => _lifeController = value;
+  }
+
+  protected PlayerMovementController movementController {
+    get => (PlayerMovementController) _movementController;
+    set => _movementController = value;
+  }
 
   public int score {
     get => _score;
@@ -34,43 +53,51 @@ public class PlayerConstructor : SpaceshipController {
 
   #endregion
 
-  #region Mï¿½todos da Unity
+  #region Métodos da Unity
 
-  /* 
-   * Start is called before the first frame update
-   * Inicializa o highscore do jogador
-   */
-  protected override void Start () {
-    scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();
-    highscoreText = GameObject.FindGameObjectWithTag("Highscore").GetComponent<Text>();
-    setUpHighScore();
-  }
-
-  /*
-   * Acaba o jogo caso o player tenha morrido:
-   */
-  private void OnDestroy () {
-    GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
-    if (canvas != null) {
-      GameController gameController = canvas.GetComponent<GameController>();
-      if (gameController != null) {
-        gameController.enabled = false;
-      }
-    }
-  }
 
   #endregion
 
-  #region Meus mï¿½todos
+  #region Meus métodos
 
   /*
-   * Provisï¿½rio: salva nas preferï¿½ncias do jogador o highscore dele e depois atualiza o texto na tela
+   * Provisório: salva nas preferências do jogador o highscore dele e depois atualiza o texto na tela
    */
-  private void setUpHighScore () {
+  protected override void setUpScore () {
+    scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();
+    highscoreText = GameObject.FindGameObjectWithTag("Highscore").GetComponent<Text>();
     if (PlayerPrefs.HasKey("HighScore") == false) {
       PlayerPrefs.SetInt("HighScore", 0);
     }
     highscoreText.text = PlayerPrefs.GetInt("HighScore").ToString();
+  }
+
+  protected override void setUpAttack () {
+    base.setUpAttack();
+    attackController.audioSource = GetComponent<AudioSource>();
+    attackController.bulletsPerFire = 1;
+    attackController.shootVelocity = 75;
+  }
+
+  protected override void setUpEnergy () {
+    base.setUpEnergy();
+    energyController.shieldSlider = GameObject.FindGameObjectWithTag("ShieldSlider").GetComponent<Slider>();
+    energyController.speedSlider = GameObject.FindGameObjectWithTag("SpeedSlider").GetComponent<Slider>();
+    energyController.weaponSlider = GameObject.FindGameObjectWithTag("WeaponSlider").GetComponent<Slider>();
+    energyController._shieldMultiplier = energyController.shieldSlider.value;
+    energyController._speedMultiplier = energyController.speedSlider.value;
+    energyController._weaponMultiplier = energyController.weaponSlider.value;
+    energyController.step = 6;
+    energyController.updateSpaceshipStatus();
+  }
+
+  protected override void setUpLife () {
+    base.setUpLife();
+    lifeController.hpSlider = GameObject.FindGameObjectWithTag("RemainingHpSlider").GetComponent<Slider>();
+    lifeController.shieldSlider = GameObject.FindGameObjectWithTag("RemainingShieldSlider").GetComponent<Slider>();
+    lifeController.hpSlider.maxValue = lifeController.hp;
+    lifeController.maxShield = lifeController.baseShield;
+    lifeController.shield = lifeController.baseShield;
   }
 
   #endregion

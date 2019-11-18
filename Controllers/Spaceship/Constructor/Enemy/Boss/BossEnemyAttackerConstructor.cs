@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
-public class CommonEnemyAttackerConstructor : EnemyConstructor {
+public class BossEnemyAttackerConstructor : EnemyConstructor {
 
   #region Meus Métodos
 
   protected override void setUpAttack () {
     base.setUpAttack();
-    attackController.shootTimer.baseTime = Random.Range(1, 4);
-    attackController.shootVelocity = 20;
-    attackController.baseShootPower = 8;
+    attackController.shootTimer.baseTime = Random.Range(1, 3);
+    attackController.shootVelocity = 40;
+    attackController.baseShootPower = 16;
   }
 
   protected override void setUpEnergy () {
@@ -18,15 +18,16 @@ public class CommonEnemyAttackerConstructor : EnemyConstructor {
     energyController.speedMultiplier = Random.Range(40, 60);
     energyController.totalEnergy -= energyController.speedMultiplier;
     energyController.shieldMultiplier = energyController.totalEnergy;
+
   }
 
   protected override void setUpLife () {
     base.setUpLife();
-    lifeController.hp = 3;
-    lifeController.baseShield = 6;
+    lifeController.hp = 30;
+    lifeController.baseShield = 60;
     lifeController.shield = lifeController.baseShield;
     lifeController.maxShield = lifeController.baseShield;
-    lifeController.baseRegenerationSpeed = 0.75f;
+    lifeController.baseRegenerationSpeed = 1.5f;
     lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
   }
 
@@ -37,9 +38,8 @@ public class CommonEnemyAttackerConstructor : EnemyConstructor {
   }
 
   protected override void setUpScore () {
-    scoreReward = 4;
+    //scoreReward = 2;
   }
 
   #endregion
-
 }

@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
-public class CommonEnemyDodgerConstructor : EnemyConstructor {
-
+public class BossEnemyDodgerConstructor : EnemyConstructor {
   #region Meus Métodos
 
   protected override void setUpAttack () {
     base.setUpAttack();
-    attackController.shootTimer.baseTime = Random.Range(2, 4);
-    attackController.shootVelocity = 40;
-    attackController.baseShootPower = 2;
+    attackController.shootTimer.baseTime = Random.Range(1, 3);
+    attackController.shootVelocity = 80;
+    attackController.baseShootPower = 4;
+
   }
 
   protected override void setUpEnergy () {
@@ -21,11 +21,11 @@ public class CommonEnemyDodgerConstructor : EnemyConstructor {
 
   protected override void setUpLife () {
     base.setUpLife();
-    lifeController.hp = 2;
-    lifeController.baseShield = 4;
+    lifeController.hp = 20;
+    lifeController.baseShield = 40;
     lifeController.shield = lifeController.baseShield;
     lifeController.maxShield = lifeController.baseShield;
-    lifeController.baseRegenerationSpeed = 0.5f;
+    lifeController.baseRegenerationSpeed = 1;
     lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
   }
 
@@ -36,7 +36,7 @@ public class CommonEnemyDodgerConstructor : EnemyConstructor {
   }
 
   protected override void setUpScore () {
-    scoreReward = 1;
+    //scoreReward = 2;
   }
 
   #endregion

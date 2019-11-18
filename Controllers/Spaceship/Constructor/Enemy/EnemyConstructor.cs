@@ -1,18 +1,42 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class EnemyConstructor : SpaceshipController {
+public abstract class EnemyConstructor : SpaceshipConstructor {
 
   #region Variáveis
 
-  public GameObject powerDown, powerUp;
   protected int scoreReward { get; set; }
+
+  #endregion
+
+  #region Getters e Setters
+
+  protected EnemyAttackController attackController { 
+    get => (EnemyAttackController) _attackController; 
+    set => _attackController = value; 
+  }
+
+  protected EnemyEnergyController energyController { 
+    get => (EnemyEnergyController) _energyController; 
+    set => _energyController = value;
+  }
+
+  protected EnemyLifeController lifeController {
+    get => (EnemyLifeController) _lifeController;
+    set => _lifeController = value;
+  }
+
+  protected EnemyMovementController movementController {
+    get => (EnemyMovementController) _movementController;
+    set => _movementController = value;
+  }
 
   #endregion
 
   #region Métodos da Unity
 
   protected override void Start () {
-    GetComponent<EnemyMovementController>().directionSwitch();
+    base.Start();
+    movementController.directionSwitch();
   }
 
   #endregion
@@ -20,41 +44,31 @@ public abstract class EnemyConstructor : SpaceshipController {
   #region Meus Métodos
 
   /*
-   * Aumenta o score do player e tem uma chance de criar um power up/down quando destruído
+   * Provisório: aumenta e salva nas preferências do jogador o highscore dele
    */
-  public void spawnPower () {
+  public void giveScore () {
     GameObject player = GameObject.FindGameObjectWithTag("Player");
     if (player != null) {
-      PlayerController playerController = player.GetComponentInParent<PlayerController>();
-      giveScore(playerController);
-      int random = Random.Range(0, 100);
-      if (random < 15) {
-        instantiateAndMovePower(powerDown);
-      } else if (random >= 90) {
-        instantiateAndMovePower(powerUp);
+      PlayerConstructor playerController = player.GetComponentInParent<PlayerConstructor>();
+      if (player != null) {
+        playerController.score += scoreReward;
       }
     }
   }
 
-  /*
-   * Cria e faz um power up/down se mover para baixo
-   */
-  private void instantiateAndMovePower (GameObject power) {
-    GameObject newPower = Instantiate(
-      power, 
-      new Vector3(transform.position.x, transform.position.y, 0), 
-      power.transform.rotation
-    );
-    newPower.GetComponent<Rigidbody>().velocity = Vector3.down * 150 * Time.deltaTime;
+  protected override void setUpEnergy () {
+    base.setUpEnergy();
+    energyController.totalEnergy = 150;
   }
 
-  /*
-   * Provisório: aumenta e salva nas preferências do jogador o highscore dele
-   */
-  private void giveScore (PlayerController player) {
-    if (player != null) {
-      player.score += scoreReward;
-    }
+  protected override void setUpLife () {
+    base.setUpLife();
+    lifeController.enemyConstructor = GetComponent<EnemyConstructor>();
+  }
+
+  protected override void setUpMovement () {
+    movementController.spaceship = GetComponentInChildren<Rigidbody>();
+    movementController.switchTimer = gameObject.AddComponent<FixedTimer>();
   }
 
   #endregion
