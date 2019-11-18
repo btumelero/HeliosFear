@@ -29,7 +29,6 @@ public abstract class CollisionController : MonoBehaviour {
     } else
     if (isCollision()) {
       onCollision(this.gameObject);
-      onCollision(other.gameObject);
     }
   }
 
@@ -53,7 +52,7 @@ public abstract class CollisionController : MonoBehaviour {
    * Diminui a vida da nave sempre que houver uma colisão
    */
   protected virtual void onCollision (GameObject gameObject) {
-    lifeController.hp--;
+    lifeController.shield--;
   }
 
   /*

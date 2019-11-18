@@ -12,14 +12,6 @@ public class ShieldCollisionController : CollisionController {
   }
 
   /*
-   * Zera o escudo da nave quando ela colide contra escudos ou naves inimigas
-   */
-  protected override void onCollision (GameObject spaceship) {
-    base.onCollision(spaceship);
-    lifeController.shield = 0;
-  }
-
-  /*
    * Retorna verdadeiro se um tiro inimigo acertou o escudo do jogador ou
    * se o jogador acertou um tiro no escudo do inimigo
    */
