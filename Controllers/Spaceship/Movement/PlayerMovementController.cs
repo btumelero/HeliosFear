@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class PlayerMovementController : MovementController {
+public class PlayerMovementController : MovementController {
 
   #region Variáveis
 

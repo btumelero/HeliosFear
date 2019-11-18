@@ -4,8 +4,8 @@ public abstract class EnemyMovementController : MovementController {
 
   #region Variáveis
 
-  protected Rigidbody spaceship;
-  protected FixedTimer switchTimer;
+  public Rigidbody spaceship { get; set; }
+  public FixedTimer switchTimer { get; set; }
   protected movementType _moving;
   public enum movementType : byte { LEFTWARD = 0, RIGHTWARD = 1, DOWNWARD = 2, HALTED = 3 };
 
@@ -33,14 +33,6 @@ public abstract class EnemyMovementController : MovementController {
       directionSwitch();
       switchTimer.restart();
     }
-  }
-
-  /*
-   * Pega a referência da nave e inicializa o timer
-   */
-  protected override void Start () {
-    spaceship = GetComponent<Rigidbody>();
-    switchTimer = gameObject.AddComponent<FixedTimer>();
   }
 
   #endregion
