@@ -5,8 +5,10 @@ public class PlayerEnergyController : EnergyController {
 
   #region Váriaveis
 
-  private Slider shieldSlider, speedSlider, weaponSlider;
-  private int step;
+  public Slider shieldSlider { get; set; }
+  public Slider speedSlider { get; set; }
+  public Slider weaponSlider { get; set; }
+  public int step;
 
   #endregion
 
@@ -108,11 +110,10 @@ public class PlayerEnergyController : EnergyController {
 
   protected override void updateSpaceshipShieldStatus () {
     base.updateSpaceshipShieldStatus();
-    DynamicTimer dynamicRegenerationTimer = lifeController.regenerationTimer as DynamicTimer;
-    dynamicRegenerationTimer.actualTime = dynamicRegenerationTimer.baseTime * (_shieldMultiplier / 50);
+    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed * (_shieldMultiplier / 50);
   }
 
-  private void updateSpaceshipStatus () {
+  public void updateSpaceshipStatus () {
     updateSpaceshipShieldStatus();
     updateSpaceshipSpeedStatus();
     updateSpaceshipWeaponStatus();
@@ -130,22 +131,6 @@ public class PlayerEnergyController : EnergyController {
     if (shieldMultiplierModified() || speedMultiplierModified() || weaponMultiplierModified()) {
       updateSpaceshipStatus();
     }
-  }
-
-  /*
-   * Start is called before the first frame update
-   * Pega a referência dos sliders na tela, dos controllers do player e inicializa os multiplicadores
-   */
-  protected override void Start () {
-    base.Start();
-    shieldSlider = GameObject.FindGameObjectWithTag("ShieldSlider").GetComponent<Slider>();
-    speedSlider = GameObject.FindGameObjectWithTag("SpeedSlider").GetComponent<Slider>();
-    weaponSlider = GameObject.FindGameObjectWithTag("WeaponSlider").GetComponent<Slider>();
-    _shieldMultiplier = 50;
-    _speedMultiplier = 50;
-    _weaponMultiplier = 50;
-    step = 6;
-    updateSpaceshipStatus();
   }
 
   #endregion

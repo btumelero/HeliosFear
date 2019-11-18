@@ -4,10 +4,10 @@ public abstract class EnergyController : MonoBehaviour {
 
   #region Variáveis
 
-  protected float _shieldMultiplier, _speedMultiplier, _weaponMultiplier;
-  protected AttackController attackController;
+  public float _shieldMultiplier, _speedMultiplier, _weaponMultiplier;
+  public AttackController attackController { get; set; }
   public LifeController lifeController { get; set; }
-  protected MovementController movementController;
+  public MovementController movementController { get; set; }
 
   #endregion
 
@@ -16,16 +16,6 @@ public abstract class EnergyController : MonoBehaviour {
   public abstract float shieldMultiplier { get; set; }
   public abstract float speedMultiplier { get; set; }
   public abstract float weaponMultiplier { get; set; }
-
-  #endregion
-
-  #region Métodos da Unity
-
-  protected virtual void Start () {
-    attackController = GetComponent<AttackController>();
-    lifeController = GetComponent<LifeController>();
-    movementController = GetComponent<MovementController>();
-  }
 
   #endregion
 
