@@ -4,7 +4,7 @@ public abstract class MissionController : MonoBehaviour {
 
   public ScreenLimits respawnZone;
   public GameObject[] enemies;
-  public Timer timer;
+  public Timer timer { get; set; }
   protected byte[] spawnChance;
   protected enum enemyType : byte { ATTACKER, DEFENDER, DODGER, NORMAL };
 
@@ -14,12 +14,12 @@ public abstract class MissionController : MonoBehaviour {
    * setta os limites da área onde os inimigos vão ser criados
    */
   protected virtual void Start () {
-    Instantiate(SpaceshipSelectionController.spaceship, new Vector3(0, -12, 0), Quaternion.Euler(0, 0, 0));
+    //Instantiate(SpaceshipSelectionController.spaceship, new Vector3(0, -20, 0), Quaternion.Euler(0, 0, 0));
     timer = gameObject.AddComponent<Timer>();
-    respawnZone.minimumX = -21;
-    respawnZone.maximumX = 20;
-    respawnZone.minimumY = 25;
-    respawnZone.maximumY = 29;
+    respawnZone.minimumX = -27;
+    respawnZone.maximumX = 27;
+    respawnZone.minimumY = 44;
+    respawnZone.maximumY = 46;
     spawnChance = new byte[4];
   }
 

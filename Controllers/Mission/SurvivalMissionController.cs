@@ -8,7 +8,7 @@
    */
   protected override void Start () {
     base.Start();
-    timer.baseTime = 1.25f;
+    timer.baseTime = 1.125f;
     spawnChance[(byte) enemyType.ATTACKER] = 15;
     spawnChance[(byte) enemyType.DEFENDER] = 15;
     spawnChance[(byte) enemyType.DODGER] = 30;
