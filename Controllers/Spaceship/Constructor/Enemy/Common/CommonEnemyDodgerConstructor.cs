@@ -1,4 +1,4 @@
-﻿public class EnemyNormalController : EnemyController {
+public class CommonEnemyDodgerConstructor : EnemyController {
 
   #region Métodos da Unity
 
@@ -8,7 +8,7 @@
    */
   protected override void Start () {
     base.Start();
-    scoreReward = 2;
+    scoreReward = 1;
   }
 
   #endregion

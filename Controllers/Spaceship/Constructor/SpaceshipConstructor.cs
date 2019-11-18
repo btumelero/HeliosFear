@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public abstract class SpaceshipController : MonoBehaviour {
+public abstract class SpaceshipConstructor : MonoBehaviour {
 
   #region Métodos da Unity
 

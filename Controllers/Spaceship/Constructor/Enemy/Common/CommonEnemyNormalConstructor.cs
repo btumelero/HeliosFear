@@ -1,15 +1,16 @@
-﻿public class PlayerDodgerAttackController : PlayerAttackController {
+public class CommonEnemyNormalConstructor : EnemyController {
 
   #region Métodos da Unity
 
   /*
    * Start is called before the first frame update
+   * Inicializa o score que vai ser dado pro jogador caso ele destrua essa nave
    */
   protected override void Start () {
     base.Start();
-    shootTimer.baseTime = 0.25f;
-    baseShootPower = 1.5f;
+    scoreReward = 2;
   }
 
   #endregion
+
 }

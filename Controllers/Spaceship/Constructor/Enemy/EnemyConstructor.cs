@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public abstract class EnemyController : SpaceshipController {
+public abstract class EnemyConstructor : SpaceshipController {
 
   #region Variáveis
 

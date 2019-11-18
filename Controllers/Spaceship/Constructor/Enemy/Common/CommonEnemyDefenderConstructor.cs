@@ -1,4 +1,4 @@
-﻿public class EnemyDodgerController : EnemyController {
+public class CommonEnemyDefenderConstructor : EnemyController {
 
   #region Métodos da Unity
 
@@ -7,8 +7,8 @@
    * Inicializa o score que vai ser dado pro jogador caso ele destrua essa nave
    */
   protected override void Start () {
-    base.Start();
-    scoreReward = 1;
+    GetComponent<EnemyDefenderMovementController>().moving = EnemyMovementController.movementType.DOWNWARD;
+    scoreReward = 4;
   }
 
   #endregion

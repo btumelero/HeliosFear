@@ -1,15 +1,16 @@
-﻿public class PlayerDefenderAttackController : PlayerAttackController {
+public class CommonEnemyAttackerConstructor : EnemyController {
 
   #region Métodos da Unity
 
   /*
    * Start is called before the first frame update
+   * Inicializa o score que vai ser dado pro jogador caso ele destrua essa nave
    */
   protected override void Start () {
     base.Start();
-    shootTimer.baseTime = 0.3f;
-    baseShootPower = 1f;
+    scoreReward = 4;
   }
 
   #endregion
+
 }

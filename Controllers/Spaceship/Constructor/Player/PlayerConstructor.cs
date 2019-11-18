@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : SpaceshipController {
+public class PlayerConstructor : SpaceshipController {
 
-  #region Variáveis
+  #region Variï¿½veis
 
   private int _score, _highscore;
 
@@ -34,7 +34,7 @@ public class PlayerController : SpaceshipController {
 
   #endregion
 
-  #region Métodos da Unity
+  #region Mï¿½todos da Unity
 
   /* 
    * Start is called before the first frame update
@@ -61,10 +61,10 @@ public class PlayerController : SpaceshipController {
 
   #endregion
 
-  #region Meus métodos
+  #region Meus mï¿½todos
 
   /*
-   * Provisório: salva nas preferências do jogador o highscore dele e depois atualiza o texto na tela
+   * Provisï¿½rio: salva nas preferï¿½ncias do jogador o highscore dele e depois atualiza o texto na tela
    */
   private void setUpHighScore () {
     if (PlayerPrefs.HasKey("HighScore") == false) {
