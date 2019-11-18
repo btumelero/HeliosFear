@@ -1,21 +1,6 @@
 ﻿using UnityEngine;
 
-public class EnemyDodgerAttackController : EnemyAttackController {
-
-  #region Métodos da Unity
-
-  /*
-   * Start is called before the first frame update
-   * Inicializa a velocidade e a potência base do tiro e randomiza o tempo entre disparos
-   */
-  protected override void Start () {
-    base.Start();
-    shootTimer.baseTime = Random.Range(2, 4);
-    shootVelocity = 40;
-    baseShootPower = 2;
-  }
-
-  #endregion
+public class CommonEnemyDodgerAttackController : EnemyAttackController {
 
   #region
 
@@ -27,4 +12,5 @@ public class EnemyDodgerAttackController : EnemyAttackController {
   }
 
   #endregion
+
 }

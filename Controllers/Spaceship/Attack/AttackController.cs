@@ -6,15 +6,15 @@ public abstract class AttackController : MonoBehaviour {
 
   public GameObject bullet;
   public Transform[] shootPositions;
-  protected Timer shootTimer;
+  public Timer shootTimer { get; set; }
 
   #endregion
 
   #region Getters e Setters
 
   public float actualShootPower { get; set; }
-  public float baseShootPower { get; protected set; }
-  public float shootVelocity { get; protected set; }
+  public float baseShootPower { get; set; }
+  public float shootVelocity { get; set; }
 
 
   #endregion
@@ -22,10 +22,6 @@ public abstract class AttackController : MonoBehaviour {
   #region Métodos da Unity
 
   protected abstract void Update ();
-
-  protected virtual void Start () {
-    shootTimer = gameObject.AddComponent<Timer>();
-  }
 
   #endregion
 

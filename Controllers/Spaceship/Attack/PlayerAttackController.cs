@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public abstract class PlayerAttackController : AttackController {
+public class PlayerAttackController : AttackController {
 
   #region Variáveis
 
   public AudioClip shootSound;
-  private AudioSource audioSource;
-  public int bulletsPerFire { get; set; }
+  public AudioSource audioSource { get; set; }
+  public int bulletsPerFire;
 
   #endregion
 
@@ -26,17 +26,6 @@ public abstract class PlayerAttackController : AttackController {
     } else if (Input.GetButtonUp("Fire1")) {
       shootTimer.restart();
     }
-  }
-
-  /*
-   * Start is called before the first frame update
-   * Inicializa o número e o tempo entre disparos, além da potência e da velocidade
-   */
-  protected override void Start () {
-    base.Start();
-    audioSource = GetComponent<AudioSource>();
-    bulletsPerFire = 1;
-    shootVelocity = 75;
   }
 
   #endregion

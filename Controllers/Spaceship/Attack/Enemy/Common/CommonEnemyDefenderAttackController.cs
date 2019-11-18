@@ -1,22 +1,7 @@
 ﻿using UnityEngine;
 
-public class EnemyDefenderAttackController : EnemyAttackController {
-
-  #region Métodos da Unity
-
-  /*
-   * Start is called before the first frame update
-   * Inicializa a velocidade e a potência base do tiro e randomiza o tempo entre disparos
-   */
-  protected override void Start () {
-    base.Start();
-    shootTimer.baseTime = Random.Range(3, 6);
-    shootVelocity = 20;
-    baseShootPower = 4;
-  }
-
-  #endregion
-
+public class CommonEnemyDefenderAttackController : EnemyAttackController {
+  
   #region Meus Métodos
 
   /*
