@@ -1,3 +1,4 @@
+image: gitpod/workspace-dotnet
 vscode:
   extensions:
     - Tobiah.unity-tools@1.1.1:BxAZIio1njang4v291eq1w==
