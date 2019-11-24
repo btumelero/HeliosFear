@@ -1,28 +1,37 @@
-using System;
+﻿using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class SpaceshipCustomizationController : MonoBehaviour {
+public class SpaceshipCustomizationController : SpaceshipMenuController {
+
+  #region Variáveis
 
   public static byte weaponCount, shieldStrength, engineStrength;
-  public enum type : byte { BASIC = 1, ADVANCED = 2, SPECIAL = 3}
+  public enum type : byte { BASIC = 1, ADVANCED = 2, SPECIAL = 3 }
+
+  #endregion
+
+  #region Meus Métodos
 
   public void weaponButton () {
-    weaponCount = chosenType();
+    weaponCount = chosenType(typeof(type));
   }
 
   public void engineButton () {
-    shieldStrength = chosenType();
+    shieldStrength = chosenType(typeof(type));
   }
 
   public void shieldButton () {
-    engineStrength = chosenType();
+    engineStrength = chosenType(typeof(type));
   }
 
-  public byte chosenType () {
-    return (byte) Enum.Parse(typeof(type), EventSystem.current.currentSelectedGameObject.GetComponentInChildren<Text>().text.ToUpper());
+  public void cheatButton () {
+    PlayerPrefs.SetInt("AdvancedEngineUnlocked", Convert.ToInt32(!Convert.ToBoolean(PlayerPrefs.GetInt("AdvancedEngineUnlocked"))));
+    PlayerPrefs.SetInt("SpecialEngineUnlocked", Convert.ToInt32(!Convert.ToBoolean(PlayerPrefs.GetInt("SpecialEngineUnlocked"))));
+    PlayerPrefs.SetInt("AdvancedShieldUnlocked", Convert.ToInt32(!Convert.ToBoolean(PlayerPrefs.GetInt("AdvancedShieldUnlocked"))));
+    PlayerPrefs.SetInt("SpecialShieldUnlocked", Convert.ToInt32(!Convert.ToBoolean(PlayerPrefs.GetInt("SpecialShieldUnlocked"))));
+    PlayerPrefs.SetInt("AdvancedWeaponUnlocked", Convert.ToInt32(!Convert.ToBoolean(PlayerPrefs.GetInt("AdvancedWeaponUnlocked"))));
+    PlayerPrefs.SetInt("SpecialWeaponUnlocked", Convert.ToInt32(!Convert.ToBoolean(PlayerPrefs.GetInt("SpecialWeaponUnlocked"))));
   }
 
   /*
@@ -32,7 +41,10 @@ public class SpaceshipCustomizationController : MonoBehaviour {
     SceneManager.LoadScene("Survival");
   }
 
-  public void loadMenu () {
-    SceneManager.LoadScene("Menu");
+  public override void loadLastScene () {
+    SceneManager.LoadScene("SpaceshipSelection");
   }
+
+  #endregion
+
 }
