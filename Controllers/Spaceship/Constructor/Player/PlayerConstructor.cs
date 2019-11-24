@@ -19,7 +19,7 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
 
   protected PlayerEnergyController energyController {
     get => (PlayerEnergyController) _energyController;
-    set => _energyController = value;  
+    set => _energyController = value;
   }
 
   protected PlayerLifeController lifeController {
@@ -75,7 +75,7 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
   protected override void setUpAttack () {
     base.setUpAttack();
     attackController.audioSource = GetComponent<AudioSource>();
-    attackController.bulletsPerFire = 1;
+    attackController.bulletsPerFire = SpaceshipCustomizationController.weaponCount;
     attackController.shootVelocity = 75;
   }
 
@@ -96,8 +96,12 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
     lifeController.hpSlider = GameObject.FindGameObjectWithTag("RemainingHpSlider").GetComponent<Slider>();
     lifeController.shieldSlider = GameObject.FindGameObjectWithTag("RemainingShieldSlider").GetComponent<Slider>();
     lifeController.hpSlider.maxValue = lifeController.hp;
-    lifeController.maxShield = lifeController.baseShield;
+    lifeController.maxShield = lifeController.baseShield * (0.5f + SpaceshipCustomizationController.engineStrength / 2);
     lifeController.shield = lifeController.baseShield;
+  }
+
+  protected override void setUpMovement () {
+    movementController.baseSpeed = 0.5f + (SpaceshipCustomizationController.engineStrength / 2);
   }
 
   #endregion
