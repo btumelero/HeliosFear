@@ -9,13 +9,14 @@
   }
 
   protected override void setUpLife () {
-    lifeController._hp = 4;//_
+    lifeController._hp = 4;
     lifeController.baseShield = 8;
     lifeController.baseRegenerationSpeed = 0.5f;
     base.setUpLife();
   }
 
   protected override void setUpMovement () {
+    base.setUpMovement();
     movementController.baseSpeed = 40;
     movementController.screenLimits.minimumX = -28;
     movementController.screenLimits.maximumX = 28;
