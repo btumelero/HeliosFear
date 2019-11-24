@@ -14,7 +14,7 @@ public abstract class MissionController : MonoBehaviour {
    * setta os limites da área onde os inimigos vão ser criados
    */
   protected virtual void Start () {
-    //Instantiate(SpaceshipSelectionController.spaceship, new Vector3(0, -20, 0), Quaternion.Euler(0, 0, 0));
+    Instantiate(SpaceshipSelectionController.spaceship, new Vector3(0, -20, 0), Quaternion.Euler(0, 0, 0));
     timer = gameObject.AddComponent<Timer>();
     respawnZone.minimumX = -27;
     respawnZone.maximumX = 27;
