@@ -18,7 +18,7 @@ public class PlayerEnergyController : EnergyController {
     get => _shieldMultiplier;
     set {
       _shieldMultiplier = value;
-      onValueChange(ref _speedMultiplier, ref _weaponMultiplier, Input.GetAxis("Shield"));
+      onValueChange(ref _speedMultiplier, ref _weaponMultiplier, Input.GetAxis(Enums.Input.Shield.ToString()));
     }
   }
 
@@ -26,7 +26,7 @@ public class PlayerEnergyController : EnergyController {
     get => _speedMultiplier;
     set {
       _speedMultiplier = value;
-      onValueChange(ref _shieldMultiplier, ref _weaponMultiplier, Input.GetAxis("Speed"));
+      onValueChange(ref _shieldMultiplier, ref _weaponMultiplier, Input.GetAxis(Enums.Input.Speed.ToString()));
     }
   }
 
@@ -34,7 +34,7 @@ public class PlayerEnergyController : EnergyController {
     get => _weaponMultiplier;
     set {
       _weaponMultiplier = value;
-      onValueChange(ref _shieldMultiplier, ref _speedMultiplier, Input.GetAxis("Weapon"));
+      onValueChange(ref _shieldMultiplier, ref _speedMultiplier, Input.GetAxis(Enums.Input.Weapon.ToString()));
     }
   }
 
@@ -71,8 +71,8 @@ public class PlayerEnergyController : EnergyController {
    * então atualiza os multiplicadores da nave e retorna verdadeiro
    */
   private bool shieldMultiplierModified () {
-    if (multiplierModified("Shield", shieldMultiplier)) {
-      shieldMultiplier += Input.GetAxis("Shield") * step;
+    if (multiplierModified(Enums.Input.Shield.ToString(), shieldMultiplier)) {
+      shieldMultiplier += Input.GetAxis(Enums.Input.Shield.ToString()) * step;
       return true;
     }
     return false;
@@ -83,8 +83,8 @@ public class PlayerEnergyController : EnergyController {
    * então atualiza os multiplicadores da nave e retorna verdadeiro
    */
   private bool speedMultiplierModified () {
-    if (multiplierModified("Speed", speedMultiplier)) {
-      speedMultiplier += Input.GetAxis("Speed") * step;
+    if (multiplierModified(Enums.Input.Speed.ToString(), speedMultiplier)) {
+      speedMultiplier += Input.GetAxis(Enums.Input.Speed.ToString()) * step;
       return true;
     }
     return false;
@@ -95,8 +95,8 @@ public class PlayerEnergyController : EnergyController {
    * então atualiza os multiplicadores da nave e retorna verdadeiro
    */
   private bool weaponMultiplierModified () {
-    if (multiplierModified("Weapon", weaponMultiplier)) {
-      weaponMultiplier += Input.GetAxis("Weapon") * step;
+    if (multiplierModified(Enums.Input.Weapon.ToString(), weaponMultiplier)) {
+      weaponMultiplier += Input.GetAxis(Enums.Input.Weapon.ToString()) * step;
       return true;
     }
     return false;
