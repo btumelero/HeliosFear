@@ -2,7 +2,7 @@
 
 public class CommonEnemyDodgerAttackController : EnemyAttackController {
 
-  #region
+  #region Meus Métodos
 
   /*
    * Esse tipo de nave atira um tiro para baixo

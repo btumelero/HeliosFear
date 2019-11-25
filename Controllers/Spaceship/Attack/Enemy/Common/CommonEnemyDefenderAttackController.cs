@@ -16,7 +16,7 @@ public class CommonEnemyDefenderAttackController : EnemyAttackController {
    * Esse tipo de nave atira um tiro na direção do jogador
    */
   protected override void shootAppropriateNumberOfShoots () {
-    GameObject player = GameObject.FindGameObjectWithTag("Player");
+    GameObject player = GameObject.FindGameObjectWithTag(Enums.Tags.Player.ToString()); ;
     if (player != null) {
       instantiateAndMoveBullet(shootPositions[0], shotAt(player));
     }
