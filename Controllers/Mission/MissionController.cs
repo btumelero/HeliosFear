@@ -1,12 +1,20 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class MissionController : MonoBehaviour {
 
+  #region Variáveis
+
+  public Timer timer { get; set; }
   public ScreenLimits respawnZone;
   public GameObject[] enemies;
-  public Timer timer { get; set; }
-  protected byte[] spawnChance;
-  protected enum enemyType : byte { ATTACKER, DEFENDER, DODGER, NORMAL };
+
+  public byte[] spawnChance;
+  public bool gameOver;
+
+  #endregion
+
+  #region Métodos da Unity
 
   /**
    * Start is called before the first frame update
@@ -14,8 +22,9 @@ public abstract class MissionController : MonoBehaviour {
    * setta os limites da área onde os inimigos vão ser criados
    */
   protected virtual void Start () {
-    Instantiate(SpaceshipSelectionController.spaceship, new Vector3(0, -20, 0), Quaternion.Euler(0, 0, 0));
+    Instantiate(SpaceshipSelectionController.spaceship);
     timer = gameObject.AddComponent<Timer>();
+    gameOver = false;
     respawnZone.minimumX = -27;
     respawnZone.maximumX = 27;
     respawnZone.minimumY = 44;
@@ -30,10 +39,18 @@ public abstract class MissionController : MonoBehaviour {
    */
   protected virtual void Update () {
     if (timer.timeIsUp()) {
-      spawnEnemy();
-      timer.restart();
+      if (gameOver) {
+        SceneManager.LoadScene(Enums.Scenes.MainMenu.ToString());
+      } else {
+        spawnEnemy();
+        timer.restart();
+      }
     }
   }
+
+  #endregion
+
+  #region Meus Métodos
 
   /**
    * Cria um inimigo em um local aleatório dentro da zona de reaparecimento com X% de chance pra cada tipo
@@ -42,16 +59,16 @@ public abstract class MissionController : MonoBehaviour {
   protected virtual void spawnEnemy () {
     int random = Random.Range(0, 100);
     GameObject enemy =
-      random < spawnChance[(byte) enemyType.NORMAL] ? //0-x
-        enemies[(byte) enemyType.NORMAL]
+      random < spawnChance[(byte) Enums.Spaceships.Normal] ? //0-x
+        enemies[(byte) Enums.Spaceships.Normal]
         :
-      random >= 100 - spawnChance[(byte) enemyType.DODGER] ? //z-100
-        enemies[(byte) enemyType.DODGER]
+      random >= 100 - spawnChance[(byte) Enums.Spaceships.Dodger] ? //z-100
+        enemies[(byte) Enums.Spaceships.Dodger]
         :
-      random <= spawnChance[(byte) enemyType.NORMAL] + spawnChance[(byte) enemyType.DEFENDER] ? //x-y
-        enemies[(byte) enemyType.DEFENDER]
+      random <= spawnChance[(byte) Enums.Spaceships.Normal] + spawnChance[(byte) Enums.Spaceships.Defender] ? //x-y
+        enemies[(byte) Enums.Spaceships.Defender]
         :
-        enemies[(byte) enemyType.ATTACKER] //y-z
+        enemies[(byte) Enums.Spaceships.Attacker] //y-z
     ;
     Instantiate(
       enemy,
@@ -63,5 +80,7 @@ public abstract class MissionController : MonoBehaviour {
       enemy.transform.rotation
     );
   }
+
+  #endregion
 
 }

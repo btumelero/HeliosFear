@@ -9,10 +9,10 @@
   protected override void Start () {
     base.Start();
     timer.baseTime = 1.125f;
-    spawnChance[(byte) enemyType.ATTACKER] = 15;
-    spawnChance[(byte) enemyType.DEFENDER] = 15;
-    spawnChance[(byte) enemyType.DODGER] = 30;
-    spawnChance[(byte) enemyType.NORMAL] = 40;
+    spawnChance[(byte) Enums.Spaceships.Attacker] = 15;
+    spawnChance[(byte) Enums.Spaceships.Defender] = 15;
+    spawnChance[(byte) Enums.Spaceships.Dodger] = 30;
+    spawnChance[(byte) Enums.Spaceships.Normal] = 40;
   }
 
   #endregion
