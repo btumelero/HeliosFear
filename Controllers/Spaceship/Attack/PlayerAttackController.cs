@@ -16,14 +16,14 @@ public class PlayerAttackController : AttackController {
   * Atira sempre que o jogador apertar o botão apropriado e continua atirando a cada X segundos se ele segurar apertado
   */
   protected override void Update () {
-    if (Input.GetButtonDown("Fire1")) {
+    if (Input.GetButtonDown(Enums.Input.Fire1.ToString())) {
       shootAppropriateNumberOfShoots();
-    } else if (Input.GetButton("Fire1")) {
+    } else if (Input.GetButton(Enums.Input.Fire1.ToString())) {
       if (shootTimer.timeIsUp()) {
         shootAppropriateNumberOfShoots();
         shootTimer.restart();
       }
-    } else if (Input.GetButtonUp("Fire1")) {
+    } else if (Input.GetButtonUp(Enums.Input.Fire1.ToString())) {
       shootTimer.restart();
     }
   }

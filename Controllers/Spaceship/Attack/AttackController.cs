@@ -8,14 +8,9 @@ public abstract class AttackController : MonoBehaviour {
   public Transform[] shootPositions;
   public Timer shootTimer { get; set; }
 
-  #endregion
-
-  #region Getters e Setters
-
-  public float actualShootPower { get; set; }
-  public float baseShootPower { get; set; }
-  public float shootVelocity { get; set; }
-
+  public float actualShootPower;
+  public float baseShootPower;
+  public float shootVelocity;
 
   #endregion
 
