@@ -15,8 +15,8 @@ public class PlayerMovementController : MovementController {
    */
   protected override void FixedUpdate () {
     transform.Translate(
-      Input.GetAxis("Horizontal") * actualSpeed * (Time.fixedDeltaTime),
-      Input.GetAxis("Vertical") * actualSpeed * (Time.fixedDeltaTime),
+      Input.GetAxis(Enums.Input.Horizontal.ToString()) * actualSpeed * (Time.fixedDeltaTime),
+      Input.GetAxis(Enums.Input.Vertical.ToString()) * actualSpeed * (Time.fixedDeltaTime),
       0
     );
     if (screenLimits.yEdgeReached(transform.position.y) || screenLimits.xEdgeReached(transform.position.x)) {
