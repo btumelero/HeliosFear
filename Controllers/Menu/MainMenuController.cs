@@ -1,34 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuController : MonoBehaviour {
+public class MainMenuController : MenuController {
 
   /*
    * Troca pro menu de escolha da nave quando o usuário clicar no respectivo botão do menu
    */
-  public void loadSpaceshipSelection () {
-    SceneManager.LoadScene("SpaceshipSelection");
+  public override void nextScene () {
+    SceneManager.LoadScene(Enums.Scenes.SpaceshipSelection.ToString());
   }
 
   /*
    * Sai do jogo quando o usuário clicar no respectivo botão do menu
    */
-  public void exitGame () {
+  public override void exitScene () {
     Application.Quit();
   }
 
-  private void setLocked (string key) {
-    if (PlayerPrefs.HasKey(key) == false) {
-      PlayerPrefs.SetInt(key, 0);
-    }
-  }
-
-  private void Start () {
-    setLocked("AdvancedEngineUnlocked");
-    setLocked("SpecialEngineUnlocked");
-    setLocked("AdvancedShieldUnlocked");
-    setLocked("SpecialShieldUnlocked");
-    setLocked("AdvancedWeaponUnlocked");
-    setLocked("SpecialWeaponUnlocked");
-  }
 }
