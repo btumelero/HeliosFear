@@ -41,11 +41,11 @@ public class PlayerLifeController : LifeController {
    * Acaba o jogo caso o player tenha morrido
    */
   private void OnDestroy () {
-    GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
+    GameObject canvas = GameObject.FindGameObjectWithTag(Enums.Tags.Canvas.ToString());
     if (canvas != null) {
       MissionController missionController = canvas.GetComponent<MissionController>();
       if (missionController != null) {
-        missionController.enabled = false;
+        missionController.gameOver = true;
       }
     }
   }
