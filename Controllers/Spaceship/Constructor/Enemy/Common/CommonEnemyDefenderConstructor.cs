@@ -10,7 +10,7 @@ public class CommonEnemyDefenderConstructor : EnemyConstructor {
    */
   protected override void Start () {
     base.Start();
-    movementController.moving = EnemyMovementController.movementType.DOWNWARD;
+    movementController.moving = Enums.Movement.Downward;
   }
 
   #endregion
