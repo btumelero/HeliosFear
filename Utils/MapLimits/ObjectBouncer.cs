@@ -8,7 +8,7 @@ public class ObjectBouncer : MonoBehaviour {
    * Muda a direção das naves inimigas caso atinjam as laterais da tela
    */
   public void OnTriggerEnter (Collider other) {
-    if (other.gameObject.tag.Equals("Enemy")) {
+    if (other.gameObject.tag.Equals(Enums.Tags.Enemy.ToString())) {
       bounce(other.GetComponentInParent<EnemyMovementController>());
     }
   }
@@ -21,10 +21,10 @@ public class ObjectBouncer : MonoBehaviour {
    * Inverte a direção em que a nave está indo
    */
   private void bounce (EnemyMovementController spaceship) {
-    if (spaceship.moving == EnemyMovementController.movementType.RIGHTWARD) {
-      spaceship.moving = EnemyMovementController.movementType.LEFTWARD;
-    } else if (spaceship.moving == EnemyMovementController.movementType.LEFTWARD) {
-      spaceship.moving = EnemyMovementController.movementType.RIGHTWARD;
+    if (spaceship.moving == Enums.Movement.Rightward) {
+      spaceship.moving = Enums.Movement.Leftward;
+    } else if (spaceship.moving == Enums.Movement.Leftward) {
+      spaceship.moving = Enums.Movement.Rightward;
     }
   }
 
