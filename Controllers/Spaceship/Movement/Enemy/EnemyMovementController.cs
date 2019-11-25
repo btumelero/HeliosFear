@@ -6,14 +6,14 @@ public abstract class EnemyMovementController : MovementController {
 
   public Rigidbody spaceship { get; set; }
   public FixedTimer switchTimer { get; set; }
-  protected movementType _moving;
-  public enum movementType : byte { LEFTWARD = 0, RIGHTWARD = 1, DOWNWARD = 2, HALTED = 3 };
+  protected Enums.Movement _moving;
+  
 
   #endregion
 
   #region Getters e Setters
 
-  public movementType moving {
+  public Enums.Movement moving {
     get => _moving;
     set {
       _moving = value;
