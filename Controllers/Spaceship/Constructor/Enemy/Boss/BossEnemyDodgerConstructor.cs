@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 public class BossEnemyDodgerConstructor : EnemyConstructor {
+
   #region Meus Métodos
 
   protected override void setUpAttack () {
