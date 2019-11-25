@@ -5,8 +5,8 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
 
   #region Variáveis
 
-  private int _score, _highscore;
-  private Text scoreText, highscoreText;
+  private int _score, _highScore;
+  private Text scoreText, highScoreText;
 
   #endregion
 
@@ -37,24 +37,19 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
     set {
       _score = value;
       scoreText.text = score.ToString();
-      if (_score > _highscore) {
-        highscore = _score;
+      if (_score > _highScore) {
+        highScore = _score;
       }
     }
   }
 
-  public int highscore {
-    get => _highscore;
+  public int highScore {
+    get => _highScore;
     set {
-      _highscore = value;
-      PlayerPrefs.SetInt("HighScore", highscore);
+      _highScore = value;
+      PlayerPrefs.SetInt(Enums.Player.HighScore.ToString(), highScore);
     }
   }
-
-  #endregion
-
-  #region Métodos da Unity
-
 
   #endregion
 
@@ -64,12 +59,12 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
    * Provisório: salva nas preferências do jogador o highscore dele e depois atualiza o texto na tela
    */
   protected override void setUpScore () {
-    scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();
-    highscoreText = GameObject.FindGameObjectWithTag("Highscore").GetComponent<Text>();
-    if (PlayerPrefs.HasKey("HighScore") == false) {
-      PlayerPrefs.SetInt("HighScore", 0);
+    scoreText = GameObject.FindGameObjectWithTag(Enums.Player.Score.ToString()).GetComponent<Text>();
+    highScoreText = GameObject.FindGameObjectWithTag(Enums.Player.HighScore.ToString()).GetComponent<Text>();
+    if (PlayerPrefs.HasKey(Enums.Player.HighScore.ToString()) == false) {
+      PlayerPrefs.SetInt(Enums.Player.HighScore.ToString(), 0);
     }
-    highscoreText.text = PlayerPrefs.GetInt("HighScore").ToString();
+    highScoreText.text = PlayerPrefs.GetInt(Enums.Player.HighScore.ToString()).ToString();
   }
 
   protected override void setUpAttack () {
@@ -81,9 +76,9 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
 
   protected override void setUpEnergy () {
     base.setUpEnergy();
-    energyController.shieldSlider = GameObject.FindGameObjectWithTag("ShieldSlider").GetComponent<Slider>();
-    energyController.speedSlider = GameObject.FindGameObjectWithTag("SpeedSlider").GetComponent<Slider>();
-    energyController.weaponSlider = GameObject.FindGameObjectWithTag("WeaponSlider").GetComponent<Slider>();
+    energyController.shieldSlider = GameObject.FindGameObjectWithTag(Enums.Tags.ShieldSlider.ToString()).GetComponent<Slider>();
+    energyController.speedSlider = GameObject.FindGameObjectWithTag(Enums.Tags.SpeedSlider.ToString()).GetComponent<Slider>();
+    energyController.weaponSlider = GameObject.FindGameObjectWithTag(Enums.Tags.WeaponSlider.ToString()).GetComponent<Slider>();
     energyController._shieldMultiplier = energyController.shieldSlider.value;
     energyController._speedMultiplier = energyController.speedSlider.value;
     energyController._weaponMultiplier = energyController.weaponSlider.value;
@@ -93,14 +88,15 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
 
   protected override void setUpLife () {
     base.setUpLife();
-    lifeController.hpSlider = GameObject.FindGameObjectWithTag("RemainingHpSlider").GetComponent<Slider>();
-    lifeController.shieldSlider = GameObject.FindGameObjectWithTag("RemainingShieldSlider").GetComponent<Slider>();
+    lifeController.hpSlider = GameObject.FindGameObjectWithTag(Enums.Tags.RemainingHpSlider.ToString()).GetComponent<Slider>();
+    lifeController.shieldSlider = GameObject.FindGameObjectWithTag(Enums.Tags.RemainingShieldSlider.ToString()).GetComponent<Slider>();
     lifeController.hpSlider.maxValue = lifeController.hp;
     lifeController.maxShield = lifeController.baseShield * (0.5f + SpaceshipCustomizationController.engineStrength / 2);
     lifeController.shield = lifeController.baseShield;
   }
 
   protected override void setUpMovement () {
+    transform.position = new Vector3(0, -30, 0);
     movementController.baseSpeed = 0.5f + (SpaceshipCustomizationController.engineStrength / 2);
   }
 

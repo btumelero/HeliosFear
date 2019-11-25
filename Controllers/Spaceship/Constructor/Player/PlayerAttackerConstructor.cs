@@ -5,7 +5,7 @@
   protected override void setUpAttack () {
     base.setUpAttack();
     attackController.shootTimer.baseTime = 0.15f;
-    attackController.baseShootPower = 3;
+    attackController.baseShootPower = 2.5f;
   }
 
   protected override void setUpLife () {
