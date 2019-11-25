@@ -10,12 +10,12 @@ public class CommonEnemyDodgerMovementController : EnemyMovementController {
    * Move a nave para baixo e esquerda ou direita e mantém o eixo profundidade como zero
    */
   public override void directionSwitch () {
-    moving = (movementType) Random.Range(0, 2);
+    moving = (Enums.Movement) Random.Range(0, 2);
   }
 
   protected override void updateMovementDirection () {
     spaceship.velocity = new Vector3(
-      (Time.fixedDeltaTime * 3) * (moving == movementType.RIGHTWARD ? actualSpeed : -actualSpeed),
+      (Time.fixedDeltaTime * 3) * (moving == Enums.Movement.Rightward ? actualSpeed : -actualSpeed),
       -actualSpeed * (Time.fixedDeltaTime * 3),
       0
     );

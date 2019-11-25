@@ -8,17 +8,17 @@ public class CommonEnemyAttackerMovementController : EnemyMovementController {
    * Esse tipo de nave se move na direção do jogador
    */
   public override void directionSwitch () {
-    GameObject player = GameObject.FindGameObjectWithTag("Player");
+    GameObject player = GameObject.FindGameObjectWithTag(Enums.Tags.Player.ToString());
     if (player != null) {
       float posicaoHorizontalDoJogador = player.transform.position.x;
       moving =
         posicaoHorizontalDoJogador > transform.position.x ?
-          movementType.RIGHTWARD
+          Enums.Movement.Rightward
           :
         posicaoHorizontalDoJogador < transform.position.x ?
-          movementType.LEFTWARD
+          Enums.Movement.Leftward
           :
-          movementType.DOWNWARD
+          Enums.Movement.Downward
       ;
     }
   }
@@ -28,7 +28,9 @@ public class CommonEnemyAttackerMovementController : EnemyMovementController {
    */
   protected override void updateMovementDirection () {
     spaceship.velocity = new Vector3(
-      (Time.fixedDeltaTime * 3) * (moving == movementType.DOWNWARD ? 0 : moving == movementType.RIGHTWARD ? actualSpeed : -actualSpeed),
+      (Time.fixedDeltaTime * 3) * (
+        moving == Enums.Movement.Downward ? 0 : moving == Enums.Movement.Rightward ? actualSpeed : -actualSpeed
+      ),
       -actualSpeed * (Time.fixedDeltaTime * 3),
       0
     );

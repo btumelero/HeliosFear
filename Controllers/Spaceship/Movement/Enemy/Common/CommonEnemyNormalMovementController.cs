@@ -10,12 +10,14 @@ public class CommonEnemyNormalMovementController : EnemyMovementController {
    * Move a nave na diagonal para esquerda e direita, mantendo o eixo profundidade como zero
    */
   public override void directionSwitch () {
-    moving = (movementType) Random.Range(0, 3);
+    moving = (Enums.Movement) Random.Range(0, 3);
   }
 
   protected override void updateMovementDirection () {
     spaceship.velocity = new Vector3(
-      (Time.fixedDeltaTime * 3) * (moving == movementType.DOWNWARD ? 0 : moving == movementType.RIGHTWARD ? actualSpeed : -actualSpeed),
+      (Time.fixedDeltaTime * 3) * (
+        moving == Enums.Movement.Downward ? 0 : moving == Enums.Movement.Rightward ? actualSpeed : -actualSpeed
+      ),
       -actualSpeed * (Time.fixedDeltaTime * 3),
       0
     );
