@@ -2,11 +2,14 @@
 
 public class SpaceshipCollisionController : CollisionController {
 
+  #region Meus Métods
+
   /*
    * Retorna verdadeiro se é uma colisão entre essa nave e uma nave ou um escudo inimigo
    */
   protected override bool isCollision () {
-    return tagSet.Contains("Player") && (tagSet.Contains("Enemy") || tagSet.Contains("EnemyShield"));
+    return tagSet.Contains(Enums.Tags.Player.ToString()) && 
+      (tagSet.Contains(Enums.Tags.Enemy.ToString()) || tagSet.Contains(Enums.Tags.EnemyShield.ToString()));
   }
 
   /*
@@ -14,9 +17,11 @@ public class SpaceshipCollisionController : CollisionController {
    * se o jogador acertou um tiro na nave do inimigo
    */
   protected override bool isBulletCollision () {
-    return lifeController.shield <= 0 && (
-      (tagSet.Contains("EnemyBullet") && tagSet.Contains("Player")) ||
-      (tagSet.Contains("FriendlyBullet") && tagSet.Contains("Enemy"))
+    return lifeController.shield <= 0 && 
+      (
+        (tagSet.Contains(Enums.Tags.EnemyBullet.ToString()) && tagSet.Contains(Enums.Tags.Player.ToString())) ||
+        (tagSet.Contains(Enums.Tags.FriendlyBullet.ToString()) && tagSet.Contains(Enums.Tags.Enemy.ToString())
+      )
     );
   }
 
@@ -26,4 +31,7 @@ public class SpaceshipCollisionController : CollisionController {
   protected override void onBulletCollision (GameObject bullet) {
     bullet.GetComponent<BulletController>().hitSpaceship(this.gameObject);
   }
+
+  #endregion
+
 }

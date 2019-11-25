@@ -8,7 +8,8 @@ public class ShieldCollisionController : CollisionController {
    * Retorna verdadeiro se é uma colisão entre esse escudo e uma nave ou um escudo inimigo
    */
   protected override bool isCollision () {
-    return tagSet.Contains("PlayerShield") && (tagSet.Contains("EnemyShield") || tagSet.Contains("Enemy"));
+    return tagSet.Contains(Enums.Tags.PlayerShield.ToString()) && 
+      (tagSet.Contains(Enums.Tags.EnemyShield.ToString()) || tagSet.Contains(Enums.Tags.Enemy.ToString()));
   }
 
   /*
@@ -17,8 +18,8 @@ public class ShieldCollisionController : CollisionController {
    */
   protected override bool isBulletCollision () {
     return 
-      (tagSet.Contains("EnemyBullet") && tagSet.Contains("PlayerShield")) ||
-      (tagSet.Contains("FriendlyBullet") && tagSet.Contains("EnemyShield"));
+      (tagSet.Contains(Enums.Tags.EnemyBullet.ToString()) && tagSet.Contains(Enums.Tags.PlayerShield.ToString())) ||
+      (tagSet.Contains(Enums.Tags.FriendlyBullet.ToString()) && tagSet.Contains(Enums.Tags.EnemyShield.ToString()));
   }
 
   /*
