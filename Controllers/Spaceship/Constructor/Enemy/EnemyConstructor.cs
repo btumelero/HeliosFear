@@ -4,7 +4,7 @@ public abstract class EnemyConstructor : SpaceshipConstructor {
 
   #region Variáveis
 
-  protected int scoreReward { get; set; }
+  protected int scoreReward;
 
   #endregion
 
@@ -47,7 +47,7 @@ public abstract class EnemyConstructor : SpaceshipConstructor {
    * Provisório: aumenta e salva nas preferências do jogador o highscore dele
    */
   public void giveScore () {
-    GameObject player = GameObject.FindGameObjectWithTag("Player");
+    GameObject player = GameObject.FindGameObjectWithTag(Enums.Tags.Player.ToString());
     if (player != null) {
       PlayerConstructor playerController = player.GetComponentInParent<PlayerConstructor>();
       if (player != null) {
