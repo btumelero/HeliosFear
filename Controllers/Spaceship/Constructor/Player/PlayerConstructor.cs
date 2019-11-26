@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public abstract class PlayerConstructor : SpaceshipConstructor {
 
-  #region Variáveis
+  #region Variï¿½veis
 
   private int _score, _highScore;
   private Text scoreText, highScoreText;
@@ -53,10 +53,10 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
 
   #endregion
 
-  #region Meus métodos
+  #region Meus mï¿½todos
 
   /*
-   * Provisório: salva nas preferências do jogador o highscore dele e depois atualiza o texto na tela
+   * Provisï¿½rio: salva nas preferï¿½ncias do jogador o highscore dele e depois atualiza o texto na tela
    */
   protected override void setUpScore () {
     scoreText = GameObject.FindGameObjectWithTag(Enums.Player.Score.ToString()).GetComponent<Text>();
@@ -98,6 +98,7 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
   protected override void setUpMovement () {
     transform.position = new Vector3(0, -30, 0);
     movementController.baseSpeed = 0.5f + (SpaceshipCustomizationController.engineStrength / 2);
+    movementController.move = movementController.normalMovement;
   }
 
   #endregion

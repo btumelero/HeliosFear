@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class PlayerMovementController : MovementController {
 
@@ -14,6 +14,16 @@ public class PlayerMovementController : MovementController {
    * Move a nave do jogador conforme os botões que ele está apertando e impede que ele saia da tela
    */
   protected override void FixedUpdate () {
+    move();
+  }
+
+  #endregion
+
+  #region Meus métodos
+
+  public delegate void move();
+
+  public void normalMovement () {
     transform.Translate(
       Input.GetAxis(Enums.Input.Horizontal.ToString()) * actualSpeed * (Time.fixedDeltaTime),
       Input.GetAxis(Enums.Input.Vertical.ToString()) * actualSpeed * (Time.fixedDeltaTime),
@@ -24,9 +34,17 @@ public class PlayerMovementController : MovementController {
     }
   }
 
-  #endregion
+  public void specialMovement () {
+    transform.Rotate(//checar se é x ou y
+      Input.GetAxis(Enums.Input.Horizontal.ToString()) * actualSpeed * Time.fixedDeltaTime,
+      0,
+      0
+    );
+  } 
 
-  #region Meus métodos
+  public void toScreenCenter () {
+    transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, actualSpeed * Time.fixedDeltaTime)
+  }
 
   /*
    * Impede que o jogador saia da tela
