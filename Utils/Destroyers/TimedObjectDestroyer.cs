@@ -10,7 +10,7 @@ public class TimedObjectDestroyer : MonoBehaviour {
 
   #region Métodos da Unity
 
-  /*
+  /**
    *  Start is called before the first frame update
    *  Inicializa o timer com 5 segundos
    */
@@ -19,13 +19,13 @@ public class TimedObjectDestroyer : MonoBehaviour {
     timer.baseTime = 5;
   }
 
-  /*
+  /**
    * Update is called once per frame
    * Destrói o objeto que tem esse script depois que o timer zerar
    */
   private void Update () {
     if (timer.timeIsUp()) {
-      Destroy(gameObject);
+      Destroy(gameObject.transform.root.gameObject);
     }
   }
   
