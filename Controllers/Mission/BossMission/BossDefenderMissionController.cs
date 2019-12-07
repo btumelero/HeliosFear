@@ -1,33 +1,51 @@
+﻿using Extensions;
 using UnityEngine;
 
 public class BossDefenderMissionController : BossMissionController {
 
-  #region
+  #region Variáveis
 
-  private PlayerMovementController playerMovementController;
+  public RespawnZone respawnZone { get; set; }
 
   #endregion
 
-  #region Métodos da Unity
+  #region Getters e Setters
 
-  protected override void Start () {
-    base.Start();
-    playerMovementController = GameObject.FindWithTag(Enums.Tags.Player.ToString());
-    timer.baseTime = 1.25f;
-    spawnChance[(byte) Enums.Spaceships.Attacker] = 10;
-    spawnChance[(byte) Enums.Spaceships.Defender] = 30;
-    spawnChance[(byte) Enums.Spaceships.Dodger] = 25;
-    spawnChance[(byte) Enums.Spaceships.Normal] = 35;
+  public new BossEnemyDefenderMovementController bossMovementController {
+    get => (BossEnemyDefenderMovementController) _bossEnemyMovementController;
+  }
+
+  public new PlayerSpecialMovementController playerMovementController {
+    get => (PlayerSpecialMovementController) _playerMovementController;
   }
 
   #endregion
 
   #region Meus Métodos
 
-  private void switchMovementType () {
-    playerMovementController.move = playerMovementController.toScreenCenter;
-    if (playerMovementController.transform.position == Vector3.zero) {
-      playerMovementController.move = playerMovementController.specialMovement;
+  public override void preBossMission () {
+    base.preBossMission();
+    respawnController.respawnTimer.baseTime = 0.3f;
+  }
+
+  public override void bossMission () {
+    base.bossMission();
+    if (boss.isAt(bossMovementController.specialPosition)) {
+      if (respawnController.respawn == null) {
+        respawnController.respawn = respawnController.specialRespawn;
+      }
+      if (playerMovementController.move == playerMovementController.normalMovement) {
+        playerMovementController.move = playerMovementController.switchToSpecialMovement;
+      }
+    } else {
+      if (respawnController.respawn == respawnController.specialRespawn) {
+        respawnController.respawn = null;
+      }
+      if (playerMovementController.move == playerMovementController.specialMovement) {
+        if (GameObject.FindGameObjectsWithTag(Enums.Tags.Enemy.ToString()).Length == 0) {
+          playerMovementController.move = playerMovementController.switchToNormalMovement;
+        }
+      }
     }
   }
 
