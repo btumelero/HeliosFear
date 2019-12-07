@@ -1,6 +1,24 @@
-﻿using UnityEngine;
+﻿using Enums;
+using UnityEngine;
 
-public class CommonEnemyAttackerMovementController : EnemyMovementController {
+public class CommonEnemyAttackerMovementController : CommonEnemyMovementController {
+
+  #region Getters e Setters
+
+  public GameObject player {
+    get => Mission.spaceship;
+  }
+
+  #endregion
+
+  #region Métodos da Unity
+
+  public override void OnBecameInvisible () {
+    base.OnBecameInvisible();
+    Pool.store((byte) Spaceships.Attacker, gameObject);
+  }
+
+  #endregion
 
   #region Meus métodos
 
@@ -8,30 +26,34 @@ public class CommonEnemyAttackerMovementController : EnemyMovementController {
    * Esse tipo de nave se move na direção do jogador
    */
   public override void directionSwitch () {
-    GameObject player = GameObject.FindGameObjectWithTag(Enums.Tags.Player.ToString());
     if (player != null) {
       float posicaoHorizontalDoJogador = player.transform.position.x;
       moving =
         posicaoHorizontalDoJogador > transform.position.x ?
-          Enums.Movement.Rightward
+          Movement.Rightward
           :
         posicaoHorizontalDoJogador < transform.position.x ?
-          Enums.Movement.Leftward
+          Movement.Leftward
           :
-          Enums.Movement.Downward
+          Movement.Downward
       ;
     }
   }
 
-  /*
+  /**
    * Move a nave na direção horizontal do jogador, para baixo e mantém o eixo profundidade como zero
    */
   protected override void updateMovementDirection () {
-    spaceship.velocity = new Vector3(
-      (Time.fixedDeltaTime * 3) * (
-        moving == Enums.Movement.Downward ? 0 : moving == Enums.Movement.Rightward ? actualSpeed : -actualSpeed
-      ),
-      -actualSpeed * (Time.fixedDeltaTime * 3),
+    spaceshipBody.velocity = new Vector3(
+      (moving == Movement.Downward ?
+         0
+         :
+       moving == Movement.Rightward ?
+         _actualSpeed
+         :
+         -_actualSpeed
+      ) * (Time.fixedDeltaTime * 3),
+      -_actualSpeed * (Time.fixedDeltaTime * 3),
       0
     );
   }

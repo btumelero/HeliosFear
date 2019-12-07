@@ -1,10 +1,28 @@
+﻿using Delegates;
+
+using Interfaces.Movements;
+
 using UnityEngine;
 
-public class PlayerMovementController : MovementController {
+public class PlayerMovementController : MovementController, IMovement {
 
   #region Variáveis
 
   public ScreenLimits screenLimits;
+  public MovementType move;
+  public Vector3 _startingPosition;
+
+  #endregion
+
+  #region Getters e Setters
+
+  public Vector3 startingPosition { 
+    get => _startingPosition;
+  }
+
+  public GameObject spaceship {
+    get => gameObject;
+  }
 
   #endregion
 
@@ -14,36 +32,24 @@ public class PlayerMovementController : MovementController {
    * Move a nave do jogador conforme os botões que ele está apertando e impede que ele saia da tela
    */
   protected override void FixedUpdate () {
-    move();
+    if (move != null) {
+      move();
+    }
   }
 
   #endregion
 
   #region Meus métodos
 
-  public delegate void move();
-
   public void normalMovement () {
     transform.Translate(
-      Input.GetAxis(Enums.Input.Horizontal.ToString()) * actualSpeed * (Time.fixedDeltaTime),
-      Input.GetAxis(Enums.Input.Vertical.ToString()) * actualSpeed * (Time.fixedDeltaTime),
+      Input.GetAxis(Enums.Input.Horizontal.ToString()) * _actualSpeed * (Time.fixedDeltaTime),
+      Input.GetAxis(Enums.Input.Vertical.ToString()) * _actualSpeed * (Time.fixedDeltaTime),
       0
     );
     if (screenLimits.yEdgeReached(transform.position.y) || screenLimits.xEdgeReached(transform.position.x)) {
       limitMovement();
     }
-  }
-
-  public void specialMovement () {
-    transform.Rotate(//checar se é x ou y
-      Input.GetAxis(Enums.Input.Horizontal.ToString()) * actualSpeed * Time.fixedDeltaTime,
-      0,
-      0
-    );
-  } 
-
-  public void toScreenCenter () {
-    transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, actualSpeed * Time.fixedDeltaTime)
   }
 
   /*

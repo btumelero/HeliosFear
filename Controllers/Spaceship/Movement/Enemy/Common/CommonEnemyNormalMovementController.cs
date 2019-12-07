@@ -1,6 +1,16 @@
-﻿using UnityEngine;
+﻿using Enums;
+using UnityEngine;
 
-public class CommonEnemyNormalMovementController : EnemyMovementController {
+public class CommonEnemyNormalMovementController : CommonEnemyMovementController {
+
+  #region Métodos da Unity
+
+  public override void OnBecameInvisible () {
+    base.OnBecameInvisible();
+    Pool.store((byte) Spaceships.Normal, gameObject);
+  }
+
+  #endregion
 
   #region Meus métodos
 
@@ -14,11 +24,11 @@ public class CommonEnemyNormalMovementController : EnemyMovementController {
   }
 
   protected override void updateMovementDirection () {
-    spaceship.velocity = new Vector3(
+    spaceshipBody.velocity = new Vector3(
       (Time.fixedDeltaTime * 3) * (
-        moving == Enums.Movement.Downward ? 0 : moving == Enums.Movement.Rightward ? actualSpeed : -actualSpeed
+        moving == Enums.Movement.Downward ? 0 : moving == Enums.Movement.Rightward ? _actualSpeed : -_actualSpeed
       ),
-      -actualSpeed * (Time.fixedDeltaTime * 3),
+      -_actualSpeed * (Time.fixedDeltaTime * 3),
       0
     );
   }

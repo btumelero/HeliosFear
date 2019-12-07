@@ -1,20 +1,10 @@
-using UnityEngine;
-
-public class BossEnemyDodgerMovementController : EnemyMovementController {
+public class BossEnemyDodgerMovementController : BossEnemyMovementController {
 
   #region Meus métodos
 
-  /*
-   * 
-   */
-  public override void directionSwitch () {
+  public override void normalMovement () {
 
-  }
-
-  protected override void updateMovementDirection () {
-      
   }
 
   #endregion
-
 }
