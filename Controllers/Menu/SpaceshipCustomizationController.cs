@@ -1,27 +1,19 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 
-public class SpaceshipCustomizationController : SpaceshipMenuController {
-
-  #region Variáveis
-
-  public static byte weaponCount, shieldStrength, engineStrength;
-
-  #endregion
+public class SpaceshipCustomizationController : MenuController {
 
   #region Meus Métodos
 
   public void weaponButton () {
-    weaponCount = chosenType(typeof(Enums.Customization));
+    Mission.weaponCount = chosenType(typeof(Enums.Customization), getSelectedButtonText());
   }
 
   public void engineButton () {
-    shieldStrength = chosenType(typeof(Enums.Customization));
+    Mission.shieldStrength = chosenType(typeof(Enums.Customization), getSelectedButtonText());
   }
 
   public void shieldButton () {
-    engineStrength = chosenType(typeof(Enums.Customization));
+    Mission.engineStrength = chosenType(typeof(Enums.Customization), getSelectedButtonText());
   }
 
   public void cheatButton () {
@@ -32,7 +24,7 @@ public class SpaceshipCustomizationController : SpaceshipMenuController {
    * Troca pra fase de sobrevivência quando o usuário clica em começar
    */
   public override void nextScene () {
-    SceneManager.LoadScene(Enums.Scenes.Survival.ToString());
+    SceneManager.LoadScene(Enums.Scenes.Battle.ToString());
   }
 
   public override void exitScene () {
