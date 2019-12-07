@@ -1,69 +1,78 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Controla o comportamento de colisões
+ */
 public abstract class CollisionController : MonoBehaviour {
 
   #region Variáveis
 
-  protected HashSet<string> tagSet;
-  protected LifeController lifeController;
+  /**
+   * O set que vai conter as tags dos dois objetos que colidirem
+   */
+  protected List<string> tagList;
+
+  /**
+   * Referência do controlador de vida do objeto que tem esse script
+   */
+  protected LifeController colliderLifeController;
 
   #endregion
 
   #region Métodos Nativos da Unity
 
-  /*
-   * Esse método executa sempre que um GameObject que tem um Collider marcado como Trigger
-   * se choca com outro GameObject que também tem um Collider (não necessariamente marcado como Trigger).
-   * Além disso, um dos dois precisa ter um RigidBody
+  /**
+   * OnTriggerEnter is called when the GameObject collides with another GameObject.
    * 
-   * Esse método gerencia as colisões do objeto tiver esse Script
+   * Esse método gerencia as colisões do objeto tiver esse Script.
+   * As tags são adicionadas no set e um método específico para cada tipo de colisão é chamado
    */
   protected virtual void OnTriggerEnter (Collider other) {
-    lifeController = gameObject.GetComponentInParent<LifeController>();
-    tagSet.Clear();
-    tagSet.Add(gameObject.tag);
-    tagSet.Add(other.gameObject.tag);
-    if (isBulletCollision()) {
-      onBulletCollision(other.gameObject);
-    } else
+    other.transform.root.TryGetComponent(out LifeController life);
+    colliderLifeController = life;
+    tagList.Clear();
+    tagList.Add(gameObject.tag);
+    tagList.Add(other.gameObject.tag);
     if (isCollision()) {
-      onCollision(this.gameObject);
+      onCollision();
     }
   }
 
-  /*
+  /**
+   * Start is called before the first frame update
+   * 
    * Inicialização apenas
    */
   protected virtual void Start () {
-    tagSet = new HashSet<string>();
+    tagList = new List<string>();
   }
 
   #endregion
 
   #region Meus Métodos
 
-  /*
-   * Deve retornar verdadeiro se o objeto que tem esse script se chocar contra outra nave ou escudo inimigo
+  /**
+   * Deve retornar verdadeiro se o objeto que tem esse script se chocar
    */
   protected abstract bool isCollision ();
 
-  /*
-   * Diminui a vida da nave sempre que houver uma colisão
+  /**
+   * Diminui a/o vida/escudo da nave sempre que houver uma colisão
    */
-  protected virtual void onCollision (GameObject gameObject) {
-    lifeController.shield--;
+  protected abstract void onCollision ();
+
+  protected bool compareCollidersTags (Enums.Tags playerTag, Enums.Tags enemyTag) {
+    if (tagList.Contains(playerTag.ToString())) {
+      tagList.Remove(playerTag.ToString());
+      return tagList[0].Contains("Enemy") && ((tagList[0].EndsWith("Bullet") == false));
+    } else
+    if (tagList.Contains(enemyTag.ToString())) {
+      tagList.Remove(enemyTag.ToString());
+      return tagList[0].Contains("Player");
+    }
+    return false;
   }
-
-  /*
-   * Deve retornar verdadeiro se o objeto que tem esse script se chocar contra um tiro
-   */
-  protected abstract bool isBulletCollision ();
-
-  /*
-   * Deve chamar o método responsável pela colisão entre esse objeto e um tiro
-   */
-  protected abstract void onBulletCollision (GameObject bullet);
 
   #endregion
 }
