@@ -1,25 +1,20 @@
-﻿public class EnemyLifeController : LifeController {
+﻿public abstract class EnemyLifeController : LifeController {
 
   #region Variáveis
 
-  public EnemyConstructor enemyConstructor { get; set; }
+  /**
+   * O score que será dado ao jogador quando ele destruir essa nave
+   */
+  public int scoreReward;
 
   #endregion
 
   #region Getters e Setters
 
-  public override float hp {
-    get => _hp;
-    set {
-      _hp = value;
-      if (_hp <= 0) {
-        dead = true;
-        enemyConstructor.giveScore();
-      }
-    }
+  public override float maxShield { 
+    get => _maxShield;
+    set => _maxShield = value;
   }
-
-  public override float maxShield { get; set; }
 
   #endregion
 

@@ -12,15 +12,6 @@ public class PlayerLifeController : LifeController {
 
   #region Getters e Setters
 
-  public override float hp {
-    get => _hp;
-    set {
-      _hp = value;
-      hpSlider.value = hp;
-      onHpValueChange();
-    }
-  }
-
   public override float maxShield {
     get => _maxShield;
     set {
@@ -36,17 +27,10 @@ public class PlayerLifeController : LifeController {
 
   #region Métodos da Unity
 
-
-  /*
-   * Acaba o jogo caso o player tenha morrido
-   */
-  private void OnDestroy () {
-    GameObject canvas = GameObject.FindGameObjectWithTag(Enums.Tags.Canvas.ToString());
-    if (canvas != null) {
-      MissionController missionController = canvas.GetComponent<MissionController>();
-      if (missionController != null) {
-        missionController.gameOver = true;
-      }
+  protected override void Update () {
+    base.Update();
+    if (dead) {
+      Destroy(gameObject);
     }
   }
 
@@ -55,15 +39,15 @@ public class PlayerLifeController : LifeController {
   #region Meus Métodos
 
   protected override void onHpValueChange () {
-    if (hp <=0) {
-      
-      dead = true;
-    }
+    hpSlider.value = hp;
+    base.onHpValueChange();
   }
 
   protected override void onShieldValueChange () {
     base.onShieldValueChange();
-    shieldSlider.value = shield;
+    if (shieldSlider != null) {
+      shieldSlider.value = shield;
+    }
   }
 
   #endregion
