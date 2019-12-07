@@ -1,15 +1,13 @@
-﻿public abstract class EnemyAttackController : AttackController {
+﻿/**
+ * Controla o comportamento de ataque das naves inimigas
+ */
+public abstract class EnemyAttackController : AttackController {
 
-  /*
-   * Update is called once per frame
-   * 
-   * Atira quando o timer esgota e reinicia o timer
-   */ 
-  protected override void Update () {
-    if (shootTimer.timeIsUp()) {
-      shootAppropriateNumberOfShoots();
-      shootTimer.restart();
-    }
-  }
+  #region Métodos da Unity
+
+  
+
+  #endregion
+
 
 }

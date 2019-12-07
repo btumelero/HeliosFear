@@ -1,17 +1,21 @@
-using UnityEngine;
-
-public class BossEnemyDodgerAttackController : EnemyAttackController {
+/**
+ * Controla o comportamento de ataque do boss focado em velocidade
+ */
+public class BossEnemyDodgerAttackController : BossEnemyAttackController {
 
   #region Meus Métodos
 
-  /*
-   * Esse tipo de nave atira 
+  /**
+   * 
    */
-  protected override void shootAppropriateNumberOfShoots () {
-    //instantiateAndMoveBullet(shootPositions[0], Vector3.down);
-    //instantiateAndMoveBullet(shootPositions[1], Vector3.down);
+  public override void normalAttack () {
+
   }
-  
+
+  public override void specialAttack () {
+
+  }
+
   #endregion
 
 }

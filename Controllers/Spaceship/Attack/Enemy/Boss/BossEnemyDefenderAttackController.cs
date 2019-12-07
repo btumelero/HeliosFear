@@ -1,17 +1,52 @@
+using Extensions;
+
 using UnityEngine;
 
-public class BossEnemyDefenderAttackController : EnemyAttackController {
+/**
+ * Controla o comportamento de ataque do boss focado em defesa
+ */
+public class BossEnemyDefenderAttackController : BossEnemyAttackController {
+
+  #region Variáveis
+
+  public BossEnemyDefenderMovementController movementController { get; set; }
+
+  #endregion
+
+  /**
+   * 
+   */
+  protected override void Update () {
+    if (specialShootTimer == null) {
+      if (gameObject.isAt(movementController.startingPosition)) {
+        specialShootTimer = gameObject.AddComponent<Timer>();
+        specialShootTimer.baseTime = Random.Range(8, 10);
+      }
+    } else {
+      if (gameObject.isAt(movementController.startingPosition)) {
+        base.Update();
+        if (specialShootTimer.timeIsUp()) {
+          specialAttack();
+          specialShootTimer.restart();
+        }
+      }
+    }
+  }
 
   #region Meus Métodos
 
-  /*
-   * Esse tipo de nave atira 
-   */
-  protected override void shootAppropriateNumberOfShoots () {
-    //instantiateAndMoveBullet(shootPositions[0], Vector3.down);
-    //instantiateAndMoveBullet(shootPositions[1], Vector3.down);
+  public override void normalAttack () {
+    for (byte i = 0; i < 2; i++) {
+      instantiateRotateAndMoveBullet(weapons[i], iSpecialAttack.getPlayerDirection(weapons[i]));
+    }
   }
-  
+
+  public override void specialAttack () {
+    for (byte i = 2; i < 4; i++) {
+      instantiateBullet(weapons[i], true);
+    }
+  }
+
   #endregion
 
 }

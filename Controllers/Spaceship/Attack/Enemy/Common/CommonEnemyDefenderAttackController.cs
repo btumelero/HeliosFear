@@ -1,25 +1,25 @@
-﻿using UnityEngine;
+﻿using Extensions;
+using Interfaces;
 
-public class CommonEnemyDefenderAttackController : EnemyAttackController {
-  
-  #region Meus Métodos
+/**
+ * Controla o comportamento de ataque da nave focada em defesa
+ */
+public class CommonEnemyDefenderAttackController : CommonEnemyAttackController, ISpecialAttack {
+  #region Getters e Setters
 
-  /*
-   * Calcula o ângulo em que o tiro deve ser disparado e 
-   * transforma o resultado em um vetor com valores de 0~1 pra unity poder usar o vetor
-   */
-  private Vector3 shotAt (GameObject player) {
-    return (player.transform.position - shootPositions[0].position).normalized;
+  public ISpecialAttack iSpecialAttack {
+    get => this as ISpecialAttack;
   }
 
-  /*
+  #endregion
+
+  #region Meus Métodos
+
+  /**
    * Esse tipo de nave atira um tiro na direção do jogador
    */
-  protected override void shootAppropriateNumberOfShoots () {
-    GameObject player = GameObject.FindGameObjectWithTag(Enums.Tags.Player.ToString()); ;
-    if (player != null) {
-      instantiateAndMoveBullet(shootPositions[0], shotAt(player));
-    }
+  public void specialAttack () {
+    instantiateRotateAndMoveBullet(weapons[0], iSpecialAttack.getPlayerDirection(weapons[0]));
   }
 
   #endregion
