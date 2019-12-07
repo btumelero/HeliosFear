@@ -2,8 +2,8 @@
 
 public abstract class AbstractTimer : MonoBehaviour {
 
-  private float _baseTime;
-  protected float time;
+  public float _baseTime;
+  public float time;
 
   public float baseTime {
     get => _baseTime;
@@ -19,5 +19,9 @@ public abstract class AbstractTimer : MonoBehaviour {
 
   public bool timeIsUp () {
     return time <= 0;
+  }
+
+  public void setTimerEnabled (bool enabled) {
+    this.enabled = enabled;
   }
 }
