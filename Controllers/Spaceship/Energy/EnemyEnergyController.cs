@@ -1,13 +1,22 @@
-﻿public class EnemyEnergyController : EnergyController {
+﻿/**
+ * Controla o comportamento da energia das naves inimigas
+ */
+public class EnemyEnergyController : EnergyController {
 
   #region Váriaveis
 
+  /**
+   * O total de energia que a nave tem
+   */
   public float totalEnergy;
 
   #endregion
 
   #region Getters e Setters
 
+  /**
+   * Guarda o valor na variável e chama o método que atualiza o valor atual do escudo inimigo
+   */
   public override float shieldMultiplier {
     get => _shieldMultiplier;
     set {
@@ -16,6 +25,9 @@
     }
   }
 
+  /**
+   * Guarda o valor na variável e chama o método que atualiza o valor atual da velocidade inimiga
+   */
   public override float speedMultiplier {
     get => _speedMultiplier;
     set {
@@ -23,6 +35,10 @@
       updateSpaceshipSpeedStatus();
     }
   }
+
+  /**
+   * Guarda o valor na variável e chama o método que atualiza o valor atual do dano inimigo
+   */
   public override float weaponMultiplier {
     get => _weaponMultiplier;
     set {
@@ -33,12 +49,4 @@
 
   #endregion
 
-  #region Meus Métodos
-
-  protected override void updateSpaceshipShieldStatus () {
-    base.updateSpaceshipShieldStatus();
-    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed * (_shieldMultiplier / 50);
-  }
-
-  #endregion
 }
