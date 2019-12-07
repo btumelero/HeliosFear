@@ -1,18 +1,34 @@
 ﻿using UnityEngine;
 
-public class CommonEnemyAttackerConstructor : EnemyConstructor {
+/**
+ * Responsável pelas inicializações de variáveis relacionadas à nave inimiga focada em ataque.
+ */
+public class CommonEnemyAttackerConstructor : CommonEnemyConstructor {
+
+  #region Métodos da Unity
+
+  protected override void Start () {
+    base.Start();
+    movementController.directionSwitch();
+  }
+
+  #endregion
 
   #region Meus Métodos
 
-  protected override void setUpAttack () {
-    base.setUpAttack();
+  public override void reconstruct () {
+    base.reconstruct();
+    movementController.directionSwitch();
+  }
+
+  protected override void reconstructableAttackVars () {
     attackController.shootTimer.baseTime = Random.Range(1, 4);
     attackController.shootVelocity = 20;
     attackController.baseShootPower = 8;
   }
 
-  protected override void setUpEnergy () {
-    base.setUpEnergy();
+  protected override void reconstructableEnergyVars () {
+    base.reconstructableEnergyVars();
     energyController.weaponMultiplier = Random.Range(60, 80);
     energyController.totalEnergy -= energyController.weaponMultiplier;
     energyController.speedMultiplier = Random.Range(40, 60);
@@ -20,24 +36,26 @@ public class CommonEnemyAttackerConstructor : EnemyConstructor {
     energyController.shieldMultiplier = energyController.totalEnergy;
   }
 
-  protected override void setUpLife () {
-    base.setUpLife();
+  protected override void reconstructableLifeVars () {
+    base.reconstructableLifeVars();
     lifeController.hp = 3;
     lifeController.baseShield = 6;
-    lifeController.shield = lifeController.baseShield;
     lifeController.maxShield = lifeController.baseShield;
+    lifeController.shield = lifeController.baseShield;
     lifeController.baseRegenerationSpeed = 0.75f;
     lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
   }
 
-  protected override void setUpMovement () {
-    base.setUpMovement();
+  protected override void reconstructableMovementVars () {
     movementController.switchTimer.baseTime = Random.Range(3, 5);
-    movementController.baseSpeed = 125;
+    movementController._baseSpeed = 125;
   }
 
+  /**
+   * Inicializa o score
+   */
   protected override void setUpScore () {
-    scoreReward = 4;
+    lifeController.scoreReward = 4;
   }
 
   #endregion

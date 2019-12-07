@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BossEnemyDodgerConstructor : EnemyConstructor {
+public class BossEnemyDodgerConstructor : BossEnemyConstructor {
 
   #region Meus Métodos
 
@@ -14,7 +14,7 @@ public class BossEnemyDodgerConstructor : EnemyConstructor {
 
   protected override void setUpEnergy () {
     base.setUpEnergy();
-    energyController.speedMultiplier = Random.Range(60, 80);
+    energyController.speedMultiplier = Random.Range(120, 160);
     energyController.totalEnergy -= energyController.speedMultiplier;
     energyController.shieldMultiplier = energyController.totalEnergy / 2;
     energyController.weaponMultiplier = energyController.totalEnergy / 2;
@@ -32,8 +32,7 @@ public class BossEnemyDodgerConstructor : EnemyConstructor {
 
   protected override void setUpMovement () {
     base.setUpMovement();
-    movementController.switchTimer.baseTime = Random.Range(2, 4);
-    movementController.baseSpeed = 200;
+    movementController._baseSpeed = 200;
   }
 
   protected override void setUpScore () {

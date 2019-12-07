@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 
-public class CommonEnemyDefenderConstructor : EnemyConstructor {
+/**
+ * Responsável pelas inicializações de variáveis relacionadas à nave inimiga focada em defesa.
+ */
+public class CommonEnemyDefenderConstructor : CommonEnemyConstructor {
 
   #region Métodos da Unity
 
-  /*
+  /**
    * Start is called before the first frame update
-   * Inicializa o score que vai ser dado pro jogador caso ele destrua essa nave
+   * 
+   * Chamando os métodos que inicializam a nave
    */
   protected override void Start () {
     base.Start();
@@ -17,15 +21,29 @@ public class CommonEnemyDefenderConstructor : EnemyConstructor {
 
   #region Meus Métodos
 
-  protected override void setUpAttack () {
-    base.setUpAttack();
+  public override void reconstruct () {
+    base.reconstruct();
+    movementController.moving = Enums.Movement.Downward;
+  }
+
+  protected override void reconstructableAttackVars () {
     attackController.shootTimer.baseTime = Random.Range(3, 6);
     attackController.shootVelocity = 20;
     attackController.baseShootPower = 4;
   }
 
-  protected override void setUpEnergy () {
-    base.setUpEnergy();
+  protected override void reconstructableLifeVars () {
+    base.reconstructableLifeVars();
+    lifeController.hp = 6;
+    lifeController.baseShield = 12;
+    lifeController.maxShield = lifeController.baseShield;
+    lifeController.shield = lifeController.baseShield;
+    lifeController.baseRegenerationSpeed = 1.5f;
+    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
+  }
+
+  protected override void reconstructableEnergyVars () {
+    base.reconstructableEnergyVars();
     energyController.shieldMultiplier = Random.Range(60, 80);
     energyController.totalEnergy -= energyController.shieldMultiplier;
     energyController.speedMultiplier = Random.Range(40, 60);
@@ -33,24 +51,16 @@ public class CommonEnemyDefenderConstructor : EnemyConstructor {
     energyController.weaponMultiplier = energyController.totalEnergy;
   }
 
-  protected override void setUpLife () {
-    base.setUpLife();
-    lifeController.hp = 6;
-    lifeController.baseShield = 12;
-    lifeController.shield = lifeController.baseShield;
-    lifeController.maxShield = lifeController.baseShield;
-    lifeController.baseRegenerationSpeed = 1.5f;
-    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
-  }
-
-  protected override void setUpMovement () {
-    base.setUpMovement();
+  protected override void reconstructableMovementVars () {
     movementController.switchTimer.baseTime = Random.Range(3, 6);
-    movementController.baseSpeed = 100;
+    movementController._baseSpeed = 100;
   }
 
+  /**
+   * Inicializa o score
+   */
   protected override void setUpScore () {
-    scoreReward = 4;
+    lifeController.scoreReward = 4;
   }
 
   #endregion

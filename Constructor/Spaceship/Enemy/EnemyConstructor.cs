@@ -1,74 +1,46 @@
 ﻿using UnityEngine;
 
+/**
+ * Responsável pelas inicializações de variáveis relacionadas às naves inimigas.
+ */
 public abstract class EnemyConstructor : SpaceshipConstructor {
-
-  #region Variáveis
-
-  protected int scoreReward;
-
-  #endregion
 
   #region Getters e Setters
 
-  protected EnemyAttackController attackController { 
-    get => (EnemyAttackController) _attackController; 
-    set => _attackController = value; 
+  /**
+   * Get que converte o controlador abstrato em um controlador concreto
+   * para evitar ter que fazer conversões pra todo lado
+   */
+  protected EnemyAttackController attackController {
+    get => (EnemyAttackController) _attackController;
   }
 
-  protected EnemyEnergyController energyController { 
-    get => (EnemyEnergyController) _energyController; 
-    set => _energyController = value;
+  /**
+   * Get que converte o controlador abstrato em um controlador concreto
+   * para evitar ter que fazer conversões pra todo lado
+   */
+  protected EnemyEnergyController energyController {
+    get => (EnemyEnergyController) _energyController;
   }
 
+  /**
+   * Get que converte o controlador abstrato em um controlador concreto
+   * para evitar ter que fazer conversões pra todo lado
+   */
   protected EnemyLifeController lifeController {
     get => (EnemyLifeController) _lifeController;
-    set => _lifeController = value;
   }
 
   protected EnemyMovementController movementController {
     get => (EnemyMovementController) _movementController;
-    set => _movementController = value;
-  }
-
-  #endregion
-
-  #region Métodos da Unity
-
-  protected override void Start () {
-    base.Start();
-    movementController.directionSwitch();
   }
 
   #endregion
 
   #region Meus Métodos
 
-  /*
-   * Provisório: aumenta e salva nas preferências do jogador o highscore dele
-   */
-  public void giveScore () {
-    GameObject player = GameObject.FindGameObjectWithTag(Enums.Tags.Player.ToString());
-    if (player != null) {
-      PlayerConstructor playerController = player.GetComponentInParent<PlayerConstructor>();
-      if (player != null) {
-        playerController.score += scoreReward;
-      }
-    }
-  }
-
-  protected override void setUpEnergy () {
-    base.setUpEnergy();
-    energyController.totalEnergy = 150;
-  }
-
-  protected override void setUpLife () {
-    base.setUpLife();
-    lifeController.enemyConstructor = GetComponent<EnemyConstructor>();
-  }
-
   protected override void setUpMovement () {
-    movementController.spaceship = GetComponentInChildren<Rigidbody>();
-    movementController.switchTimer = gameObject.AddComponent<FixedTimer>();
+    movementController._spaceship = gameObject;
   }
 
   #endregion
