@@ -1,4 +1,7 @@
-﻿public class BossAttackerMissionConstructor : BossMissionConstructor {
+﻿/// <summary>
+/// Classe responsável por inicializar a missão do boss focado em ataque.
+/// </summary>
+public class BossAttackerMissionConstructor : BossMissionConstructor {
 
   protected override void setUpMissionController () {
     base.setUpMissionController();

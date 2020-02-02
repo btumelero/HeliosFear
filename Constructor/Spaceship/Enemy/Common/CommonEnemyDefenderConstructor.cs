@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 
-/**
- * Responsável pelas inicializações de variáveis relacionadas à nave inimiga focada em defesa.
- */
+/// <summary>
+/// Responsável pelas inicializações relacionadas à nave inimiga focada em defesa.
+/// </summary>
 public class CommonEnemyDefenderConstructor : CommonEnemyConstructor {
 
   #region Métodos da Unity
 
   /**
    * Start is called before the first frame update
-   * 
-   * Chamando os métodos que inicializam a nave
    */
   protected override void Start () {
     base.Start();
@@ -38,8 +36,8 @@ public class CommonEnemyDefenderConstructor : CommonEnemyConstructor {
     lifeController.baseShield = 12;
     lifeController.maxShield = lifeController.baseShield;
     lifeController.shield = lifeController.baseShield;
-    lifeController.baseRegenerationSpeed = 1.5f;
-    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
+    lifeController.baseRegeneration = 1.5f;
+    lifeController.actualRegeneration = lifeController.baseRegeneration;
   }
 
   protected override void reconstructableEnergyVars () {
@@ -56,12 +54,13 @@ public class CommonEnemyDefenderConstructor : CommonEnemyConstructor {
     movementController._baseSpeed = 100;
   }
 
-  /**
-   * Inicializa o score
-   */
   protected override void setUpScore () {
     lifeController.scoreReward = 4;
   }
 
+  protected override void setUpLife () {
+    base.setUpLife();
+    lifeController.shieldRegenerationDelayTimer.baseTime = 2;
+  }
   #endregion
 }

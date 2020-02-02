@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+
 using UnityEngine;
 
+/// <summary>
+/// Classe responsável por inicializar o boss focado em defesa
+/// </summary>
 public class BossEnemyDefenderConstructor : BossEnemyConstructor {
 
   protected new BossEnemyDefenderAttackController attackController {
@@ -15,7 +19,8 @@ public class BossEnemyDefenderConstructor : BossEnemyConstructor {
 
   protected override void setUpAttack () {
     base.setUpAttack();
-    attackController.movementController = movementController;
+    attackController.specialShootTimer = gameObject.AddComponent<Timer>();
+    attackController.specialShootTimer.enabled = false;
     attackController.shootTimer.baseTime = Random.Range(1, 3);
     attackController.shootVelocity = 40;
     attackController.baseShootPower = 4;
@@ -36,8 +41,9 @@ public class BossEnemyDefenderConstructor : BossEnemyConstructor {
     lifeController.baseShield = 120;
     lifeController.maxShield = lifeController.baseShield;
     lifeController.shield = lifeController.baseShield;
-    lifeController.baseRegenerationSpeed = 3;
-    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
+    lifeController.baseRegeneration = 3;
+    lifeController.actualRegeneration = lifeController.baseRegeneration;
+    lifeController.shieldRegenerationDelayTimer.baseTime = 10;
   }
 
   protected override void setUpMovement () {
@@ -48,9 +54,8 @@ public class BossEnemyDefenderConstructor : BossEnemyConstructor {
     movementController.specialPosition = new Vector3(0, 65, -25);
     movementController.movementList = new List<Vector3>();
     transform.position = movementController.specialPosition;
-    movementController.bossMovementTimer = gameObject.AddComponent<Timer>();
-    movementController.bossMovementTimer.baseTime = 15;
-    movementController.bossMovementTimer.time = 0;
+    movementController.movementTypeTimer.baseTime = 15;
+    movementController.movementTypeTimer.time = 0;
   }
 
   protected override void setUpScore () {

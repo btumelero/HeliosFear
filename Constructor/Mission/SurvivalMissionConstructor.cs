@@ -1,4 +1,7 @@
-﻿public class SurvivalMissionConstructor : MissionConstructor {
+﻿/// <summary>
+/// Classe responsável por inicializar a missão de sobrevivência.
+/// </summary>
+public class SurvivalMissionConstructor : MissionConstructor {
 
   #region Meus Métodos
 

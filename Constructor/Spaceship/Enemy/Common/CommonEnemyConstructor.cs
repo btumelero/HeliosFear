@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Responsável pelas inicializações relacionadas às naves inimigas comuns.
+/// </summary>
 public abstract class CommonEnemyConstructor : EnemyConstructor {
 
   #region Getters e Setters
 
-  /**
-   * Get que converte o controlador abstrato em um controlador concreto
-   * para evitar ter que fazer conversões pra todo lado
-   */
   protected new CommonEnemyMovementController movementController {
     get => (CommonEnemyMovementController) _movementController;
-    set => _movementController = value;
+    //set => _movementController = value;
   }
 
   #endregion
@@ -36,33 +35,22 @@ public abstract class CommonEnemyConstructor : EnemyConstructor {
 
   protected abstract void reconstructableMovementVars ();
 
-  /**
-   * Inicializa o ataque
-   */
   protected override void setUpAttack () {
     base.setUpAttack();
+    attackController.attack = attackController.normalAttack;
     reconstructableAttackVars();
   }
 
-  /**
-   * Inicializa a energia
-   */
   protected override void setUpEnergy () {
     base.setUpEnergy();
     reconstructableEnergyVars();
   }
 
-  /**
-   * Inicializa a vida
-   */
   protected override void setUpLife () {
     base.setUpLife();
     reconstructableLifeVars();
   }
 
-  /**
-   * Inicializa o movimento
-   */
   protected override void setUpMovement () {
     base.setUpMovement();
     movementController.spaceshipBody = GetComponentInChildren<Rigidbody>();

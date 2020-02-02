@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-/**
- * Responsável pelas inicializações de variáveis relacionadas à nave inimiga focada em ataque.
- */
+/// <summary>
+/// Responsável pelas inicializações relacionadas à nave inimiga focada em ataque.
+/// </summary>
 public class CommonEnemyAttackerConstructor : CommonEnemyConstructor {
 
   #region Métodos da Unity
@@ -42,8 +42,8 @@ public class CommonEnemyAttackerConstructor : CommonEnemyConstructor {
     lifeController.baseShield = 6;
     lifeController.maxShield = lifeController.baseShield;
     lifeController.shield = lifeController.baseShield;
-    lifeController.baseRegenerationSpeed = 0.75f;
-    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
+    lifeController.baseRegeneration = 0.75f;
+    lifeController.actualRegeneration = lifeController.baseRegeneration;
   }
 
   protected override void reconstructableMovementVars () {
@@ -51,11 +51,13 @@ public class CommonEnemyAttackerConstructor : CommonEnemyConstructor {
     movementController._baseSpeed = 125;
   }
 
-  /**
-   * Inicializa o score
-   */
   protected override void setUpScore () {
     lifeController.scoreReward = 4;
+  }
+
+  protected override void setUpLife () {
+    base.setUpLife();
+    lifeController.shieldRegenerationDelayTimer.baseTime = 1;
   }
 
   #endregion

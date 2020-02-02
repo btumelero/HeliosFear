@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-/**
- * Responsável pelas inicializações de variáveis relacionadas à nave inimiga normal.
- */
+/// <summary>
+/// Responsável pelas inicializações  relacionadas à nave inimiga normal.
+/// </summary>
 public class CommonEnemyNormalConstructor : CommonEnemyConstructor {
 
   #region Métodos da Unity
@@ -42,8 +42,8 @@ public class CommonEnemyNormalConstructor : CommonEnemyConstructor {
     lifeController.baseShield = 8;
     lifeController.maxShield = lifeController.baseShield;
     lifeController.shield = lifeController.baseShield;
-    lifeController.baseRegenerationSpeed = 1;
-    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
+    lifeController.baseRegeneration = 1;
+    lifeController.actualRegeneration = lifeController.baseRegeneration;
   }
 
   protected override void reconstructableMovementVars () {
@@ -51,11 +51,13 @@ public class CommonEnemyNormalConstructor : CommonEnemyConstructor {
     movementController.switchTimer.baseTime = Random.Range(2, 5);
   }
 
-  /**
-   * Inicializa o score
-   */
   protected override void setUpScore () {
     lifeController.scoreReward = 2;
+  }
+
+  protected override void setUpLife () {
+    base.setUpLife();
+    lifeController.shieldRegenerationDelayTimer.baseTime = 1.33f;
   }
 
   #endregion

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Classe responsável por inicializar a missão do boss focado em velocidade.
+/// </summary>
 public class BossDodgerMissionConstructor : BossMissionConstructor {
 
   public new BossDodgerMissionController missionController {

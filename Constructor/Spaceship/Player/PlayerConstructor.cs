@@ -1,44 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/**
- * Responsável pelas inicializações de variáveis relacionadas à nave do jogador.
- */
+/// <summary>
+/// Responsável pelas inicializações relacionadas à nave do jogador.
+/// </summary>
 public abstract class PlayerConstructor : SpaceshipConstructor {
 
   #region Getters e Setters
 
-  /**
-   * Get que converte o controlador abstrato em um controlador concreto
-   * para evitar ter que fazer conversões pra todo lado
-   */
   protected PlayerAttackController attackController {
     get => (PlayerAttackController) _attackController;
     set => _attackController = value;
   }
 
-  /**
-   * Get que converte o controlador abstrato em um controlador concreto
-   * para evitar ter que fazer conversões pra todo lado
-   */
   protected PlayerEnergyController energyController {
     get => (PlayerEnergyController) _energyController;
     set => _energyController = value;
   }
 
-  /**
-   * Get que converte o controlador abstrato em um controlador concreto
-   * para evitar ter que fazer conversões pra todo lado
-   */
   protected PlayerLifeController lifeController {
     get => (PlayerLifeController) _lifeController;
     set => _lifeController = value;
   }
 
-  /**
-   * Get que converte o controlador abstrato em um controlador concreto
-   * para evitar ter que fazer conversões pra todo lado
-   */
   protected PlayerMovementController movementController {
     get => (PlayerMovementController) _movementController;
     set => _movementController = value;
@@ -48,9 +32,6 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
 
   #region Meus métodos
 
-  /**
-   * Inicializa o ataque
-   */
   protected override void setUpAttack () {
     base.setUpAttack();
     attackController.attack = attackController.normalAttack;
@@ -65,9 +46,6 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
     }
   }
 
-  /**
-   * Inicializa a energia
-   */
   protected override void setUpEnergy () {
     base.setUpEnergy();
     energyController.shieldSlider = GameObject.FindGameObjectWithTag(Enums.Tags.ShieldSlider.ToString()).GetComponent<Slider>();
@@ -80,9 +58,6 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
     energyController.updateSpaceshipStatus();
   }
 
-  /**
-   * Inicializa a vida
-   */
   protected override void setUpLife () {
     base.setUpLife();
     lifeController.hpSlider = GameObject.FindGameObjectWithTag(Enums.Tags.RemainingHpSlider.ToString()).GetComponent<Slider>();
@@ -92,9 +67,6 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
     lifeController.shield = lifeController.baseShield;
   }
 
-  /**
-   * Inicializa o movimento
-   */
   protected override void setUpMovement () {
     movementController._baseSpeed = 0.75f + (Mission.engineStrength / 4);
     movementController._startingPosition = new Vector3(0, -30, 0);
@@ -106,9 +78,6 @@ public abstract class PlayerConstructor : SpaceshipConstructor {
     }
   }
 
-  /**
-   * Inicializa o score
-   */
   protected override void setUpScore () {
     attackController.scoreText = GameObject.FindGameObjectWithTag(Enums.Player.Score.ToString()).GetComponent<Text>();
     attackController.highScoreText = GameObject.FindGameObjectWithTag(Enums.Player.HighScore.ToString()).GetComponent<Text>();

@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-
+﻿/// <summary>
+/// Classe responsável por inicializar as variáveis em comum entre cada boss.
+/// </summary>
 public abstract class BossEnemyConstructor : EnemyConstructor {
 
   #region Getters e Setters
@@ -23,6 +24,7 @@ public abstract class BossEnemyConstructor : EnemyConstructor {
 
   protected override void setUpMovement () {
     movementController._spaceship = gameObject;
+    movementController.movementTypeTimer = gameObject.AddComponent<Timer>();
     movementController.move = movementController.normalMovement;
   }
 

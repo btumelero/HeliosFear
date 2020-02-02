@@ -1,32 +1,24 @@
-﻿/**
- * Responsável pelas inicializações de variáveis relacionadas à nave focada em ataque do jogador.
- */
+﻿/// <summary>
+/// Responsável pelas inicializações relacionadas à nave focada em ataque do jogador.
+/// </summary>
 public class PlayerAttackerConstructor : PlayerConstructor {
 
   #region Meus Métodos
 
-  /**
-   * Inicializa o ataque
-   */
   protected override void setUpAttack () {
     base.setUpAttack();
     attackController.shootTimer.baseTime = 0.15f;
     attackController.baseShootPower = 2.5f;
   }
 
-  /**
-   * Inicializa a vida
-   */
   protected override void setUpLife () {
     lifeController._hp = 6;
     lifeController.baseShield = 12;
-    lifeController.baseRegenerationSpeed = 0.75f;
+    lifeController.baseRegeneration = 0.75f;
     base.setUpLife();
+    lifeController.shieldRegenerationDelayTimer.baseTime = 1;
   }
 
-  /**
-   * Inicializa o movimento
-   */
   protected override void setUpMovement () {
     base.setUpMovement();
     movementController._baseSpeed *= 40;

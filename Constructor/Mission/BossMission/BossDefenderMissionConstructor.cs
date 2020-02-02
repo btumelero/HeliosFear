@@ -1,4 +1,7 @@
-﻿public class BossDefenderMissionConstructor : BossMissionConstructor {
+﻿/// <summary>
+/// Classe responsável por inicializar a missão do boss focado em defesa.
+/// </summary>
+public class BossDefenderMissionConstructor : BossMissionConstructor {
 
   #region Getters e Setters
 
@@ -26,7 +29,7 @@
 
   protected override void setUpRespawnZone () {
     base.setUpRespawnZone();
-    missionController.respawnZone = respawnZone;
+    missionController.respawnZones = respawnZone;
   }
 
   #endregion

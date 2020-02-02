@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Classe responsável por inicializar o boss focado em ataque.
+/// </summary>
 public class BossEnemyAttackerConstructor : BossEnemyConstructor {
 
   #region Meus Métodos
@@ -18,7 +21,6 @@ public class BossEnemyAttackerConstructor : BossEnemyConstructor {
     energyController.speedMultiplier = Random.Range(80, 120);
     energyController.totalEnergy -= energyController.speedMultiplier;
     energyController.shieldMultiplier = energyController.totalEnergy;
-
   }
 
   protected override void setUpLife () {
@@ -27,8 +29,9 @@ public class BossEnemyAttackerConstructor : BossEnemyConstructor {
     lifeController.baseShield = 60;
     lifeController.shield = lifeController.baseShield;
     lifeController.maxShield = lifeController.baseShield;
-    lifeController.baseRegenerationSpeed = 1.5f;
-    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
+    lifeController.baseRegeneration = 1.5f;
+    lifeController.actualRegeneration = lifeController.baseRegeneration;
+    lifeController.shieldRegenerationDelayTimer.baseTime = 5;
   }
 
   protected override void setUpMovement () {

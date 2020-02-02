@@ -1,13 +1,17 @@
 ﻿using System.Linq;
+
 using UnityEngine;
 
+/// <summary>
+/// Classe responsável por inicializar variáveis que todas as missões têm em comum.
+/// </summary>
 public abstract class MissionConstructor : MonoBehaviour {
 
   #region Variáveis
 
   protected MissionController _missionController { get; private set; }
   protected RespawnController _respawnController { get; private set; }
-  protected RespawnZone respawnZone { get; private set; }
+  protected RespawnZones respawnZone { get; private set; }
 
   #endregion
 
@@ -42,7 +46,7 @@ public abstract class MissionConstructor : MonoBehaviour {
   #region Meus Métodos
 
   protected virtual void setUpConstructor () {
-    respawnZone = GetComponentInChildren<RespawnZone>();
+    respawnZone = GetComponentInChildren<RespawnZones>();
     _missionController = GetComponent<MissionController>();
     _respawnController = GetComponentInChildren<RespawnController>();
   }
@@ -56,7 +60,7 @@ public abstract class MissionConstructor : MonoBehaviour {
 
   protected virtual void setUpRespawnController () {
     _respawnController.spawnChance = new byte[4];
-    _respawnController.respawnZone = respawnZone;
+    _respawnController.respawnZones = respawnZone;
     _respawnController.respawnTimer = _respawnController.gameObject.AddComponent<Timer>();
     _respawnController.pool = GetComponentInChildren<Pool>();
     _respawnController.respawn = _respawnController.normalRespawn;

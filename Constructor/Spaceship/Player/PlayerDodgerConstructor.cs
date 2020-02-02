@@ -1,32 +1,24 @@
-﻿/**
- * Responsável pelas inicializações de variáveis relacionadas à nave focada em velocidade do jogador.
- */
- public class PlayerDodgerConstructor : PlayerConstructor {
+﻿/// <summary>
+/// Responsável pelas inicializações relacionadas à nave focada em velocidade do jogador.
+/// </summary>
+public class PlayerDodgerConstructor : PlayerConstructor {
 
   #region Meus Métodos
 
-  /**
-   * Inicializa o ataque
-   */
   protected override void setUpAttack () {
     base.setUpAttack();
     attackController.shootTimer.baseTime = 0.25f;
     attackController.baseShootPower = 1.5f;
   }
 
-  /**
-   * Inicializa a vida
-   */
   protected override void setUpLife () {
     lifeController._hp = 4;
     lifeController.baseShield = 8;
-    lifeController.baseRegenerationSpeed = 0.5f;
+    lifeController.baseRegeneration = 0.5f;
     base.setUpLife();
+    lifeController.shieldRegenerationDelayTimer.baseTime = 0.67f;
   }
 
-  /**
-   * Inicializa o movimento
-   */
   protected override void setUpMovement () {
     base.setUpMovement();
     movementController._baseSpeed *= 60;

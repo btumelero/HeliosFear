@@ -1,4 +1,7 @@
-﻿public class BossMissionConstructor : MissionConstructor {
+﻿/// <summary>
+/// Classe responsável por inicializar variáveis que as missões de boss têm em comum.
+/// </summary>
+public class BossMissionConstructor : MissionConstructor {
 
   #region Getters e Setters
 

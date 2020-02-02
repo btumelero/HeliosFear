@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-/**
- * Responsável pelas inicializações de variáveis relacionadas à nave inimiga focada em velocidade.
- */
+/// <summary>
+/// Responsável pelas inicializações relacionadas à nave inimiga focada em velocidade.
+/// </summary>
 public class CommonEnemyDodgerConstructor : CommonEnemyConstructor {
 
   #region Métodos da Unity
@@ -41,8 +41,8 @@ public class CommonEnemyDodgerConstructor : CommonEnemyConstructor {
     lifeController.baseShield = 4;
     lifeController.maxShield = lifeController.baseShield;
     lifeController.shield = lifeController.baseShield;
-    lifeController.baseRegenerationSpeed = 0.5f;
-    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed;
+    lifeController.baseRegeneration = 0.5f;
+    lifeController.actualRegeneration = lifeController.baseRegeneration;
   }
 
   protected override void reconstructableMovementVars () {
@@ -50,13 +50,13 @@ public class CommonEnemyDodgerConstructor : CommonEnemyConstructor {
     movementController._baseSpeed = 200;
   }
 
-  /**
-   * Inicializa o score
-   */
   protected override void setUpScore () {
     lifeController.scoreReward = 1;
   }
-
+  protected override void setUpLife () {
+    base.setUpLife();
+    lifeController.shieldRegenerationDelayTimer.baseTime = 0.67f;
+  }
   #endregion
 
 }

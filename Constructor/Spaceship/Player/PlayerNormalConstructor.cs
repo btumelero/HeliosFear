@@ -1,32 +1,24 @@
-﻿/**
- * Responsável pelas inicializações de variáveis relacionadas à nave normal do jogador.
- */
- public class PlayerNormalConstructor : PlayerConstructor {
+﻿/// <summary>
+/// Responsável pelas inicializações relacionadas à nave normal do jogador.
+/// </summary>
+public class PlayerNormalConstructor : PlayerConstructor {
 
   #region Meus Métodos
 
-  /**
-   * Inicializa o ataque
-   */
   protected override void setUpAttack () {
     base.setUpAttack();
     attackController.shootTimer.baseTime = 0.2f;
     attackController.baseShootPower = 2;
   }
 
-  /**
-   * Inicializa a vida
-   */
   protected override void setUpLife () {
     lifeController._hp = 8;
     lifeController.baseShield = 16;
-    lifeController.baseRegenerationSpeed = 1;
+    lifeController.baseRegeneration = 1;
     base.setUpLife();
+    lifeController.shieldRegenerationDelayTimer.baseTime = 1.33f;
   }
 
-  /**
-   * Inicializa o movimento
-   */
   protected override void setUpMovement () {
     base.setUpMovement();
     movementController._baseSpeed *= 45;
