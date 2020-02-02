@@ -1,22 +1,22 @@
-﻿/**
- * Controla o comportamento da energia das naves inimigas
- */
+﻿/// <summary>
+/// Controla o comportamento da energia das naves inimigas
+/// </summary>
 public class EnemyEnergyController : EnergyController {
 
   #region Váriaveis
 
-  /**
-   * O total de energia que a nave tem
-   */
+  /// <summary>
+  /// O total de energia que a nave tem
+  /// </summary>
   public float totalEnergy;
 
   #endregion
 
   #region Getters e Setters
 
-  /**
-   * Guarda o valor na variável e chama o método que atualiza o valor atual do escudo inimigo
-   */
+  /// <summary>
+  /// Guarda o valor na variável e chama o método que atualiza o valor atual do escudo inimigo
+  /// </summary>
   public override float shieldMultiplier {
     get => _shieldMultiplier;
     set {
@@ -25,9 +25,9 @@ public class EnemyEnergyController : EnergyController {
     }
   }
 
-  /**
-   * Guarda o valor na variável e chama o método que atualiza o valor atual da velocidade inimiga
-   */
+  /// <summary>
+  /// Guarda o valor na variável e chama o método que atualiza o valor atual da velocidade inimiga
+  /// </summary>
   public override float speedMultiplier {
     get => _speedMultiplier;
     set {
@@ -36,9 +36,9 @@ public class EnemyEnergyController : EnergyController {
     }
   }
 
-  /**
-   * Guarda o valor na variável e chama o método que atualiza o valor atual do dano inimigo
-   */
+  /// <summary>
+  /// Guarda o valor na variável e chama o método que atualiza o valor atual do dano inimigo
+  /// </summary>
   public override float weaponMultiplier {
     get => _weaponMultiplier;
     set {

@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Classe responsável por controlar a vida dos inimigos comuns
+/// </summary>
 public class CommonEnemyLifeController : EnemyLifeController {
 
   #region Meus Métodos
 
-  /**
-     * Aumenta e persiste o highscore do jogador
-     */
+  /// <summary>
+  /// Aumenta e persiste o highscore do jogador
+  /// </summary>
   public void giveScore () {
     GameObject player = Mission.spaceship;
     if (player != null) {
@@ -22,6 +25,10 @@ public class CommonEnemyLifeController : EnemyLifeController {
 
   #region Métodos da Unity
 
+  /// <summary>
+  /// Destrói a nave caso ela esteja morta.
+  /// Dá score pro jogador e chama o método que é responsável pelo pooling
+  /// </summary>
   protected override void Update () {
     base.Update();
     if (dead) {

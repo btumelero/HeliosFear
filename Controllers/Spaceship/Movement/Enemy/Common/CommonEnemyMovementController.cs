@@ -1,17 +1,34 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Classe responsável por gerenciar os movimentos dos inimigos comuns
+/// </summary>
 public abstract class CommonEnemyMovementController : EnemyMovementController {
 
   #region Variáveis
 
+  /// <summary>
+  /// Timer que controla o tempo entre mudanças na movimentação
+  /// </summary>
   public FixedTimer switchTimer { get; set; }
-  public Rigidbody _spaceshipBody;
+
+  /// <summary>
+  /// O corpo da nave
+  /// </summary>
+  public Rigidbody _spaceshipBody { get; set; }
+
+  /// <summary>
+  /// A direção em que a nave está se movendo
+  /// </summary>
   protected Enums.Movement _moving;
 
   #endregion
 
   #region Getters e Setters
 
+  /// <summary>
+  /// Atualiza a direção em que a nave está se movendo ao mudar o valor
+  /// </summary>
   public Enums.Movement moving {
     get => _moving;
     set {
@@ -20,6 +37,9 @@ public abstract class CommonEnemyMovementController : EnemyMovementController {
     }
   }
 
+  /// <summary>
+  /// O corpo da nave
+  /// </summary>
   public Rigidbody spaceshipBody {
     get => _spaceshipBody;
     set => _spaceshipBody = value;
@@ -29,9 +49,9 @@ public abstract class CommonEnemyMovementController : EnemyMovementController {
 
   #region Métodos da Unity
 
-  /**
-   * retorna verdadeiro se a nave mudou de direção
-   */
+  /// <summary>
+  /// Muda a direção em que a nave está indo quando o timer esgota e reinicia o timer
+  /// </summary>
   protected override void FixedUpdate () {
     if (switchTimer.timeIsUp()) {
       directionSwitch();
@@ -39,6 +59,9 @@ public abstract class CommonEnemyMovementController : EnemyMovementController {
     }
   }
 
+  /// <summary>
+  /// Desativa a nave quando ela não está visível na tela
+  /// </summary>
   public virtual void OnBecameInvisible () {
     gameObject.SetActive(false);
   }
@@ -48,14 +71,14 @@ public abstract class CommonEnemyMovementController : EnemyMovementController {
 
   #region Meus métodos
 
-  /**
-   * Muda a direção da nave
-   */
+  /// <summary>
+  /// Deve mudar a direção da nave
+  /// </summary>
   public abstract void directionSwitch ();
 
-  /**
-   * Atualiza a direção em que a nave está indo
-   */
+  /// <summary>
+  /// Deve atualizar a direção em que a nave está indo
+  /// </summary>
   protected abstract void updateMovementDirection ();
 
   #endregion

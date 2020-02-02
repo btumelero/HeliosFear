@@ -1,73 +1,83 @@
 ﻿using UnityEngine;
 
-/**
- * Controla o comportamento da energia da nave
- */
+/// <summary>
+/// Controla o comportamento da energia da nave
+/// </summary>
 public abstract class EnergyController : MonoBehaviour {
 
   #region Variáveis
 
-  /**
-   * Guardam os valores que estão nos sliders controlados pelo jogador que aparecem na tela
-   */
-  public float _shieldMultiplier, _speedMultiplier, _weaponMultiplier;
+  /// <summary>
+  /// Valor pelo qual será multiplicado o valor base de escudo
+  /// </summary>
+  public float _shieldMultiplier;
 
-  /**
-   * Referência do controlador de ataque
-   */
+  /// <summary>
+  /// Valor pelo qual será multiplicado o valor base de velocidade
+  /// </summary>
+  public float _speedMultiplier;
+
+  /// <summary>
+  /// Valor pelo qual será multiplicado o valor base de dano
+  /// </summary>
+  public float _weaponMultiplier;
+
+  /// <summary>
+  /// Referência do controlador de ataque
+  /// </summary>
   public AttackController attackController { get; set; }
-  
-  /**
-   * Referência do controlador de vida
-   */
+
+  /// <summary>
+  /// Referência do controlador de vida
+  /// </summary>
   public LifeController lifeController { get; set; }
 
-  /**
-   * Referência do controlador de movimento
-   */
+  /// <summary>
+  /// Referência do controlador de movimento
+  /// </summary>
   public MovementController movementController { get; set; }
 
   #endregion
 
   #region Getters e Setters
 
-  /**
-   * Valor pelo qual será multiplicado o valor base de escudo
-   */
+  /// <summary>
+  /// Valor pelo qual será multiplicado o valor base de escudo
+  /// </summary>
   public abstract float shieldMultiplier { get; set; }
-  
-  /**
-   * Valor pelo qual será multiplicado o valor base de velocidade
-   */
+
+  /// <summary>
+  /// Valor pelo qual será multiplicado o valor base de velocidade
+  /// </summary>
   public abstract float speedMultiplier { get; set; }
-  
-  /**
-   * Valor pelo qual será multiplicado o valor base de dano
-   */
+
+  /// <summary>
+  /// Valor pelo qual será multiplicado o valor base de dano
+  /// </summary>
   public abstract float weaponMultiplier { get; set; }
 
   #endregion
 
   #region Meus Métodos
 
-  /**
-   * Atualiza o valor atual de escudo
-   */
+  /// <summary>
+  /// Atualiza o valor atual de escudo
+  /// </summary>
   protected virtual void updateSpaceshipShieldStatus () {
     lifeController.maxShield = lifeController.baseShield * (_shieldMultiplier / 50);
-    lifeController.actualRegenerationSpeed = lifeController.baseRegenerationSpeed * (_shieldMultiplier / 50);
+    lifeController.actualRegeneration = lifeController.baseRegeneration * (_shieldMultiplier / 50);
   }
 
-  /**
-   * Atualiza o valor atual de velocidade
-   */
+  /// <summary>
+  /// Atualiza o valor atual de velocidade
+  /// </summary>
   protected void updateSpaceshipSpeedStatus () {
     movementController._actualSpeed = movementController._baseSpeed * (_speedMultiplier / 50);
   }
 
-  /**
-   * Atualiza o valor atual de dano
-   */
+  /// <summary>
+  /// Atualiza o valor atual de dano
+  /// </summary>
   protected void updateSpaceshipWeaponStatus () {
     attackController.actualShootPower = attackController.baseShootPower * (_weaponMultiplier / 50);
   }

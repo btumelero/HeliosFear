@@ -1,33 +1,36 @@
 ﻿using System.Collections.Generic;
+
 using UnityEngine;
 
-/**
- * Controla o comportamento de colisões
- */
+/// <summary>
+/// Controla o comportamento de colisões
+/// </summary>
 public abstract class CollisionController : MonoBehaviour {
 
   #region Variáveis
 
-  /**
-   * O set que vai conter as tags dos dois objetos que colidirem
-   */
+  /// <summary>
+  /// A lista que vai conter as tags dos objetos que colidirem
+  /// </summary>
   protected List<string> tagList;
 
-  /**
-   * Referência do controlador de vida do objeto que tem esse script
-   */
+  /// <summary>
+  /// Referência do controlador de vida do objeto que tem esse script
+  /// </summary>
   protected LifeController colliderLifeController;
 
   #endregion
 
   #region Métodos Nativos da Unity
 
-  /**
-   * OnTriggerEnter is called when the GameObject collides with another GameObject.
-   * 
-   * Esse método gerencia as colisões do objeto tiver esse Script.
-   * As tags são adicionadas no set e um método específico para cada tipo de colisão é chamado
-   */
+  /// <summary>
+  /// Esse método gerencia as colisões do objeto tiver esse Script.
+  /// As tags são adicionadas na lista e um método específico para cada tipo de colisão é chamado
+  /// </summary>
+  /// 
+  /// <param name="other">
+  /// O objeto que colidiu com o objeto que tem esse script
+  /// </param>
   protected virtual void OnTriggerEnter (Collider other) {
     other.transform.root.TryGetComponent(out LifeController life);
     colliderLifeController = life;
@@ -39,11 +42,9 @@ public abstract class CollisionController : MonoBehaviour {
     }
   }
 
-  /**
-   * Start is called before the first frame update
-   * 
-   * Inicialização apenas
-   */
+  /// <summary>
+  /// Inicialização apenas
+  /// </summary>
   protected virtual void Start () {
     tagList = new List<string>();
   }
@@ -52,16 +53,37 @@ public abstract class CollisionController : MonoBehaviour {
 
   #region Meus Métodos
 
-  /**
-   * Deve retornar verdadeiro se o objeto que tem esse script se chocar
-   */
+  /// <summary>
+  /// Deve retornar verdadeiro se o objeto que tem esse script se chocar
+  /// </summary>
+  /// 
+  /// <returns>
+  /// Verdadeiro se o objeto que tem esse script se chocou
+  /// </returns>
   protected abstract bool isCollision ();
 
-  /**
-   * Diminui a/o vida/escudo da nave sempre que houver uma colisão
-   */
+  /// <summary>
+  /// Deve dar dano sempre que houver uma colisão
+  /// </summary>
   protected abstract void onCollision ();
 
+  /// <summary>
+  /// Serve tanto para checar colisões do player quanto dos inimigos.
+  /// A classe que controla colisões com escudos deve passar a tag do escudo do jogador e do inimigo, por exemplo,
+  /// para comparar com as que estão na lista para saber se é uma colisão que aquela classe deve tratar ou não.
+  /// </summary>
+  /// 
+  /// <param name="playerTag">
+  /// A tag da parte da nave do jogador que deve ser checada
+  /// </param>
+  /// 
+  /// <param name="enemyTag">
+  /// A tag da parte da nave do inimigo que deve ser checada
+  /// </param>
+  /// 
+  /// <returns>
+  /// Verdadeiro se é uma colisão válida
+  /// </returns>
   protected bool compareCollidersTags (Enums.Tags playerTag, Enums.Tags enemyTag) {
     if (tagList.Contains(playerTag.ToString())) {
       tagList.Remove(playerTag.ToString());

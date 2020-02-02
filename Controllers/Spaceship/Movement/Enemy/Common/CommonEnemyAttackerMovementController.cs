@@ -1,10 +1,17 @@
 ﻿using Enums;
+
 using UnityEngine;
 
+/// <summary>
+/// Classe responsável por gerenciar a movimentação do inimigo focado em ataque
+/// </summary>
 public class CommonEnemyAttackerMovementController : CommonEnemyMovementController {
 
   #region Getters e Setters
 
+  /// <summary>
+  /// A nave do jogador
+  /// </summary>
   public GameObject player {
     get => Mission.spaceship;
   }
@@ -13,6 +20,9 @@ public class CommonEnemyAttackerMovementController : CommonEnemyMovementControll
 
   #region Métodos da Unity
 
+  /// <summary>
+  /// Armazena o inimigo para reutilização quando ele não está mais visível usando a técnica Pooling
+  /// </summary>
   public override void OnBecameInvisible () {
     base.OnBecameInvisible();
     Pool.store((byte) Spaceships.Attacker, gameObject);
@@ -22,9 +32,9 @@ public class CommonEnemyAttackerMovementController : CommonEnemyMovementControll
 
   #region Meus métodos
 
-  /*
-   * Esse tipo de nave se move na direção do jogador
-   */
+  /// <summary>
+  /// Esse tipo de nave se move para baixo e na direção horizontal do jogador
+  /// </summary>
   public override void directionSwitch () {
     if (player != null) {
       float posicaoHorizontalDoJogador = player.transform.position.x;
@@ -40,9 +50,9 @@ public class CommonEnemyAttackerMovementController : CommonEnemyMovementControll
     }
   }
 
-  /**
-   * Move a nave na direção horizontal do jogador, para baixo e mantém o eixo profundidade como zero
-   */
+  /// <summary>
+  /// Atualiza a direção em que a nave está indo
+  /// </summary>
   protected override void updateMovementDirection () {
     spaceshipBody.velocity = new Vector3(
       (moving == Movement.Downward ?
