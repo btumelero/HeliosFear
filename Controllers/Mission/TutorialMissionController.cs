@@ -1,17 +1,20 @@
 ﻿using Enums;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 using Input = UnityEngine.Input;
 
+/// <summary>
+/// Classe responsável por gerenciar a missão tutorial
+/// </summary>
 public class TutorialMissionController : MonoBehaviour {
-
-  #region Variáveis
-
-
-  #endregion
 
   #region Getters e Setters
 
+  /// <summary>
+  /// A nave do jogador
+  /// </summary>
   public GameObject player {
     get => Mission.spaceship;
     set => Mission.spaceship = value;
@@ -19,12 +22,16 @@ public class TutorialMissionController : MonoBehaviour {
 
   #endregion
 
-  // Start is called before the first frame update
+  /// <summary>
+  /// Inicialização apenas
+  /// </summary>
   private void Start () {
     player = Instantiate(Mission.spaceship);
   }
 
-  // Update is called once per frame
+  /// <summary>
+  /// Sai do tutorial ao apertar ESC
+  /// </summary>
   private void Update () {
     if (Input.GetKeyDown(KeyCode.Escape)) {
       SceneManager.LoadScene(Scenes.MainMenu.ToString());

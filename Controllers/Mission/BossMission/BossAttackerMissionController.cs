@@ -1,16 +1,22 @@
 ﻿public class BossAttackerMissionController : BossMissionController {
 
   #region Meus Métodos
-
-  public override void bossMission () {
+  
+  public override void updateBoss () {
+    
 
   }
 
-  public override void postBossMission () {
+  public override void updateOthers () {
     
+
+  }
+
+  public override void updatePlayer () {
+    
+
   }
 
   #endregion
-
 }
 

@@ -1,16 +1,29 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Classe responsável por gerenciar tiros especias do tipo specialBeam
+/// </summary>
 public class SpecialBeamController : SpecialBulletController {
 
   #region Variáveis
 
+  /// <summary>
+  /// A largura mínima e máxima entre as quais o tiro vai variar
+  /// </summary>
   public float min, max;
+
+  /// <summary>
+  /// Se tiro está aumentando ou diminuindo de largura
+  /// </summary>
   public bool increase;
 
   #endregion
 
   #region Métodos da Unity
 
+  /// <summary>
+  /// Inicializações apenas
+  /// </summary>
   protected override void Start () {
     base.Start();
     autoDestroyTimer.baseTime = 2;
@@ -19,17 +32,15 @@ public class SpecialBeamController : SpecialBulletController {
     max = 1.2f;
   }
 
-  /**
-   * Update is called once per frame
-   * 
-   * 
-   */
+  /// <summary>
+  /// Aumenta e diminui a largura do tiro conforme o passar do tempo
+  /// </summary>
   protected override void Update () {
     base.Update();
     transform.localScale = new Vector3(
       increase ? transform.localScale.x + Time.deltaTime : transform.localScale.x - Time.deltaTime,
-      transform.localScale.y < 1 ? transform.localScale.y + (Time.deltaTime * 3) : 1,
-      transform.localScale.z
+      transform.localScale.y,
+      transform.localScale.z < 1 ? transform.localScale.z + (Time.deltaTime * 3) : 1
     );
     if (transform.localScale.x >= max || transform.localScale.x <= min) {
       increase = !increase;

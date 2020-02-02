@@ -1,6 +1,10 @@
 ﻿using System;
+
 using UnityEngine;
 
+/// <summary>
+/// Classe responsável por armazenar informações da missão (nave escolhida, customizações)
+/// </summary>
 public class Mission : MonoBehaviour {
 
   #region Variáveis
@@ -13,11 +17,21 @@ public class Mission : MonoBehaviour {
 
   #endregion
 
+  /// <summary>
+  /// Retorna o tipo de missão escolhido pelo jogador.
+  /// Usar enum Missions aqui.
+  /// </summary>
+  /// 
+  /// <returns>
+  /// O tipo de missão escolhido
+  /// </returns>
   public byte getMission () {
     return (byte) Enum.Parse(typeof(Enums.Missions), missionName);
   }
 
-
+  /// <summary>
+  /// Inicialização apenas
+  /// </summary>
   private void Start () {
     missionController = missionControllers[getMission()];
     if (missionName.Contains("Defender")) {
