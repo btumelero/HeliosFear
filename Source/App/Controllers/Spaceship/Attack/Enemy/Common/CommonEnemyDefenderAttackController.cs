@@ -1,35 +1,29 @@
-﻿using Extensions;
+﻿using System.Collections;
 
-using Interfaces;
+using Assets.Source.App.Utils.Extensions;
 
-/// <summary>
-/// Controla o comportamento de ataque da nave focada em defesa
-/// </summary>
-public class CommonEnemyDefenderAttackController : CommonEnemyAttackController {
+using UnityEngine;
 
-  #region Getters e Setters
+namespace Assets.Source.App.Controllers.Spaceship.Attack.Enemy.Common {
 
   /// <summary>
-  /// Para acessar os métodos de extensão da interface
+  /// Controla o comportamento de ataque da nave focada em defesa
   /// </summary>
-  public IAttack iAttack {
-    get => this as IAttack;
-  }
+  public class CommonEnemyDefenderAttackController : CommonEnemyAttackController {
 
-  #endregion
+    #region Meus Métodos
 
-  #region Meus Métodos
-
-  /// <summary>
-  /// Esse tipo de nave atira um tiro na direção do jogador
-  /// </summary>
-  public override void normalAttack () {
-    if (shootTimer.timeIsUp()) {
-      instantiateRotateAndMoveBullet(weapons[0], iAttack.getPlayerDirection(weapons[0]));
-      shootTimer.restart();
+    /// <summary>
+    /// Esse tipo de nave atira um tiro na direção do jogador
+    /// </summary>
+    public override IEnumerator normalAttack () {
+      while (true) {
+        shoot(weapons[0], this.getPlayerDirection(weapons[0]));
+        yield return new WaitForSeconds(shootTimer);
+      }
     }
+
+    #endregion
+
   }
-
-  #endregion
-
 }

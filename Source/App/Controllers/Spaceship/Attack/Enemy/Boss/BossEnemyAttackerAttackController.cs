@@ -1,25 +1,30 @@
-/// <summary>
-/// Controla o comportamento de ataque do boss focado em ataque
-/// </summary>
-public class BossEnemyAttackerAttackController : BossEnemyAttackController {
+using System.Collections;
 
-  #region Meus Métodos
+namespace Assets.Source.App.Controllers.Spaceship.Attack.Enemy.Boss {
 
   /// <summary>
-  /// 
+  /// Controla o comportamento de ataque do boss focado em ataque
   /// </summary>
-  public override void normalAttack () {
+  public class BossEnemyAttackerAttackController : BossEnemyAttackController {
+
+    #region Meus Métodos
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public override IEnumerator normalAttack () {
+      return null;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public override IEnumerator specialAttack () {
+      return null;
+    }
+
+
+    #endregion
 
   }
-
-  /// <summary>
-  /// 
-  /// </summary>
-  public override void specialAttack () {
-    
-  }
-
-
-  #endregion
-
 }

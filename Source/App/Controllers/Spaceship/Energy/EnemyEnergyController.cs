@@ -1,52 +1,18 @@
-﻿/// <summary>
-/// Controla o comportamento da energia das naves inimigas
-/// </summary>
-public class EnemyEnergyController : EnergyController {
-
-  #region Váriaveis
+﻿namespace Assets.Source.App.Controllers.Spaceship.Energy {
 
   /// <summary>
-  /// O total de energia que a nave tem
+  /// Controla o comportamento da energia das naves inimigas
   /// </summary>
-  public float totalEnergy;
+  public class EnemyEnergyController : EnergyController {
 
-  #endregion
+    #region Váriaveis
 
-  #region Getters e Setters
+    /// <summary>
+    /// O total de energia que a nave tem
+    /// </summary>
+    public float totalEnergy;
 
-  /// <summary>
-  /// Guarda o valor na variável e chama o método que atualiza o valor atual do escudo inimigo
-  /// </summary>
-  public override float shieldMultiplier {
-    get => _shieldMultiplier;
-    set {
-      _shieldMultiplier = value;
-      updateSpaceshipShieldStatus();
-    }
+    #endregion
+
   }
-
-  /// <summary>
-  /// Guarda o valor na variável e chama o método que atualiza o valor atual da velocidade inimiga
-  /// </summary>
-  public override float speedMultiplier {
-    get => _speedMultiplier;
-    set {
-      _speedMultiplier = value;
-      updateSpaceshipSpeedStatus();
-    }
-  }
-
-  /// <summary>
-  /// Guarda o valor na variável e chama o método que atualiza o valor atual do dano inimigo
-  /// </summary>
-  public override float weaponMultiplier {
-    get => _weaponMultiplier;
-    set {
-      _weaponMultiplier = value;
-      updateSpaceshipWeaponStatus();
-    }
-  }
-
-  #endregion
-
 }

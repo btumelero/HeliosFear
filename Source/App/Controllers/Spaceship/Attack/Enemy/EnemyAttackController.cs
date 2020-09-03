@@ -1,22 +1,18 @@
-﻿/// <summary>
-/// Controla o comportamento de ataque das naves inimigas
-/// </summary>
-public abstract class EnemyAttackController : AttackController {
-
-  #region Meus Métodos
+﻿namespace Assets.Source.App.Controllers.Spaceship.Attack.Enemy {
 
   /// <summary>
-  /// Dispara um tiro de cada arma, faz ele se mover e rotaciona na direção do movimento
+  /// Controla o comportamento de ataque das naves inimigas
   /// </summary>
-  public override void normalAttack () {
-    if (shootTimer.timeIsUp()) {
-      for (byte i = 0; i < weapons.Length; i++) {
-        instantiateRotateAndMoveBullet(weapons[i]);
-      }
-      shootTimer.restart();
-    }
+  public abstract class EnemyAttackController : AttackController {
+
+    #region Propriedades
+
+    /// <summary>
+    /// O tempo entre disparos. É um valor random dentro de uma margem do valor base
+    /// </summary>
+    public new float shootTimer { get; set; }
+
+    #endregion
+
   }
-
-  #endregion
-
 }

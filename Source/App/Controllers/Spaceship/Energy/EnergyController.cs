@@ -1,86 +1,77 @@
-﻿using UnityEngine;
+﻿using Assets.Source.App.Controllers.Spaceship.Attack;
+using Assets.Source.App.Controllers.Spaceship.Life;
+using Assets.Source.App.Controllers.Spaceship.Movement;
+using Assets.Source.App.Utils.Enums;
 
-/// <summary>
-/// Controla o comportamento da energia da nave
-/// </summary>
-public abstract class EnergyController : MonoBehaviour {
+using UnityEngine;
 
-  #region Variáveis
-
-  /// <summary>
-  /// Valor pelo qual será multiplicado o valor base de escudo
-  /// </summary>
-  public float _shieldMultiplier;
+namespace Assets.Source.App.Controllers.Spaceship.Energy {
 
   /// <summary>
-  /// Valor pelo qual será multiplicado o valor base de velocidade
+  /// Controla o comportamento da energia da nave
   /// </summary>
-  public float _speedMultiplier;
+  public abstract class EnergyController : MonoBehaviour {
 
-  /// <summary>
-  /// Valor pelo qual será multiplicado o valor base de dano
-  /// </summary>
-  public float _weaponMultiplier;
+    #region Campos
 
-  /// <summary>
-  /// Referência do controlador de ataque
-  /// </summary>
-  public AttackController attackController { get; set; }
+    public Multipliers multipliers;
 
-  /// <summary>
-  /// Referência do controlador de vida
-  /// </summary>
-  public LifeController lifeController { get; set; }
+    /// <summary>
+    /// Referência do controlador de ataque
+    /// </summary>
+    [HideInInspector] public AttackController attackController;
 
-  /// <summary>
-  /// Referência do controlador de movimento
-  /// </summary>
-  public MovementController movementController { get; set; }
+    /// <summary>
+    /// Referência do controlador de vida
+    /// </summary>
+    [HideInInspector] public LifeController lifeController;
 
-  #endregion
+    /// <summary>
+    /// Referência do controlador de movimento
+    /// </summary>
+    [HideInInspector] public MovementController movementController;
 
-  #region Getters e Setters
+    #endregion
 
-  /// <summary>
-  /// Valor pelo qual será multiplicado o valor base de escudo
-  /// </summary>
-  public abstract float shieldMultiplier { get; set; }
+    #region Meus Métodos
 
-  /// <summary>
-  /// Valor pelo qual será multiplicado o valor base de velocidade
-  /// </summary>
-  public abstract float speedMultiplier { get; set; }
+    /// <summary>
+    /// Atualiza o valor atual de escudo
+    /// </summary>
+    public void updateSpaceshipShieldStatus () {
+      lifeController.maxShield.Value = 
+        lifeController.baseShield * multipliers[Sliders.Shield, raw: false]
+      ;
+      lifeController.actualRegeneration = 
+        lifeController.baseRegeneration * multipliers[Sliders.Shield, raw: false]
+      ;
+    }
 
-  /// <summary>
-  /// Valor pelo qual será multiplicado o valor base de dano
-  /// </summary>
-  public abstract float weaponMultiplier { get; set; }
+    /// <summary>
+    /// Atualiza o valor atual de velocidade
+    /// </summary>
+    public void updateSpaceshipSpeedStatus () {
+      movementController.actualSpeed = 
+        movementController.baseSpeed * multipliers[Sliders.Speed, raw: false]
+      ;
+    }
 
-  #endregion
+    /// <summary>
+    /// Atualiza o valor atual de dano
+    /// </summary>
+    public void updateSpaceshipWeaponStatus () {
+      attackController.actualShootPower = 
+        attackController.baseShootPower * multipliers[Sliders.Weapon, raw: false]
+      ;
+    }
 
-  #region Meus Métodos
+    public virtual void updateSpaceshipStatus () {
+      updateSpaceshipShieldStatus();
+      updateSpaceshipSpeedStatus();
+      updateSpaceshipWeaponStatus();
+    }
 
-  /// <summary>
-  /// Atualiza o valor atual de escudo
-  /// </summary>
-  protected virtual void updateSpaceshipShieldStatus () {
-    lifeController.maxShield = lifeController.baseShield * (_shieldMultiplier / 50);
-    lifeController.actualRegeneration = lifeController.baseRegeneration * (_shieldMultiplier / 50);
+    #endregion
+
   }
-
-  /// <summary>
-  /// Atualiza o valor atual de velocidade
-  /// </summary>
-  protected void updateSpaceshipSpeedStatus () {
-    movementController._actualSpeed = movementController._baseSpeed * (_speedMultiplier / 50);
-  }
-
-  /// <summary>
-  /// Atualiza o valor atual de dano
-  /// </summary>
-  protected void updateSpaceshipWeaponStatus () {
-    attackController.actualShootPower = attackController.baseShootPower * (_weaponMultiplier / 50);
-  }
-
-  #endregion
 }

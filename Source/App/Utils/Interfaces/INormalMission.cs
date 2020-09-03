@@ -1,46 +1,50 @@
-﻿using UnityEngine;
-
+﻿using System.Collections;
 /// <summary>
-/// Contém as interfaces usadas no projeto
+/// Contém as interfaces usadas em missões no projeto
 /// </summary>
-namespace Interfaces {
+namespace Assets.Source.App.Utils.Interfaces.Missions {
 
   /// <summary>
-  /// Contém as interfaces usadas em missões no projeto
+  /// Interface implementada pelas missões normais
   /// </summary>
-  namespace Missions {
+  public interface INormalMission {
 
     /// <summary>
-    /// Interface implementada pelas missões normais
+    /// Estágio pré-missão
     /// </summary>
-    public interface INormalMission {
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina
+    /// </returns>
+    IEnumerator onNormalMissionStart ();
 
-      /// <summary>
-      /// A nave do jogador
-      /// </summary>
-      GameObject player { get; set; }
+    /// <summary>
+    /// Estágio missão
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina
+    /// </returns>
+    IEnumerator onNormalMission ();
 
-      /// <summary>
-      /// O controlador de movimento do jogador
-      /// </summary>
-      PlayerMovementController playerMovementController { get; }
+    /// <summary>
+    /// Estágio pós-missão
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina
+    /// </returns>
+    IEnumerator onNormalMissionEnd ();
 
-      /// <summary>
-      /// Estágio pré-missão
-      /// </summary>
-      void preNormalMission ();
-
-      /// <summary>
-      /// Estágio missão
-      /// </summary>
-      void normalMission ();
-
-      /// <summary>
-      /// Estágio pós-missão
-      /// </summary>
-      void postNormalMission ();
-
-    }
+    /// <summary>
+    /// Durante todos os estágios
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina
+    /// </returns>
+    IEnumerator onMission (IEnumerator nextStage);
 
   }
+
 }

@@ -1,192 +1,69 @@
-﻿using Delegates;
+﻿using System.Collections;
 
-using Enums;
-
-using Extensions;
+using Assets.Source.App.Builders;
+using Assets.Source.App.Builders.Spaceship;
+using Assets.Source.App.Data.Mission;
 
 using UnityEngine;
+using Assets.Source.App.Utils.Coroutines;
+using Assets.Source.App.Utils.Enums;
+using Assets.Source.App.Data.Utils;
 
-/// <summary>
-/// Controla o respawn durante a missão
-/// </summary>
-public class RespawnController : MonoBehaviour {
+namespace Assets.Source.App.Controllers.Respawn {
 
-  #region Variáveis
+  public class RespawnController : MonoBehaviour {
 
-  /// <summary>
-  /// Os inimigos presentes no jogo
-  /// </summary>
-  public GameObject[] enemies;
+    #region Campos
+    [HideInInspector] public CoroutineController respawnCoroutine;
+    [HideInInspector] public Enemies enemies;
+    [HideInInspector] public RespawnZones respawnZones;
+    public Pooling pooling;
+    public SpaceshipBuilder spaceshipBuilder;
+    public Builder builder;
 
-  /// <summary>
-  /// As quatro zonas de respawn que ficam ao redor da tela
-  /// </summary>
-  public RespawnZones respawnZones { get; set; }
+    private GameObject newEnemy;
 
-  /// <summary>
-  /// Delegate usado para dar mais flexibilidade à forma como os inimigos irão dar respawn
-  /// </summary>
-  public RespawnType respawn { get; set; }
+    #endregion
 
-  /// <summary>
-  /// Técnica de reaproveitamento de objetos para melhorar performance
-  /// </summary>
-  public Pool pool { get; set; }
+    #region Meus Métodos
 
-  /// <summary>
-  /// Timer usado para controlar o tempo entre respawns
-  /// </summary>
-  public Timer respawnTimer { get; set; }
+    private GameObject spawnEnemy (GameObject enemy, Vector3 position) {
+      return Instantiate(enemy, position, Rotation.zero);
+    }
 
-  /// <summary>
-  /// As chances dos inimigos reaparecerem
-  /// </summary>
-  public byte[] spawnChance;
-
-  #endregion
-
-  #region Getters e Setters
-
-  /// <summary>
-  /// Retorna a nave do jogador.
-  /// Usado para checar se o jogador ainda está vivo.
-  /// </summary>
-  public GameObject player {
-    get => Mission.spaceship;
-  }
-
-  /// <summary>
-  /// Retorna o prefab do inimigo passado por parâmetro.
-  /// Usado para instanciar inimigos
-  /// </summary>
-  /// 
-  /// <param name="enemy">
-  /// O inimigo cujo prefab deve ser retornado
-  /// </param>
-  /// 
-  /// <returns>
-  /// O prefab do inimigo
-  /// </returns>
-  public GameObject getPrefabOf (byte enemy) {
-    return enemies[enemy];
-  }
-
-  /// <summary>
-  /// Retorna a chance de respawn do inimigo passado por parâmetro
-  /// </summary>
-  /// 
-  /// <param name="enemy">
-  /// 
-  /// </param>
-  /// <returns></returns>
-  public byte getSpawnChance (Spaceships enemy) {
-    return spawnChance[(byte) enemy];
-  }
-
-  /// <summary>
-  /// Retorna um inimigo aleatório com X% de chance pra cada tipo
-  /// 0-100 divido em três pontos (quatro partes): x, y, z. 0-x, x-y, y-z, z-100;
-  /// </summary>
-  /// 
-  /// <returns>
-  /// Um inimigo aleatório
-  /// </returns>
-  protected byte getRandomEnemy () {
-    int random = Random.Range(0, 100);
-    return
-      random < getSpawnChance(Spaceships.Normal) ? //0-x
-        (byte) Spaceships.Normal
-        :
-      random >= 100 - getSpawnChance(Spaceships.Dodger) ? //z-100
-        (byte) Spaceships.Dodger
-        :
-      random <= getSpawnChance(Spaceships.Normal) + getSpawnChance(Spaceships.Defender) ? //x-y
-        (byte) Spaceships.Defender
-        : //y-z
-        (byte) Spaceships.Attacker
-    ;
-  }
-
-  #endregion
-
-  #region Métodos da Unity
-
-  /// <summary>
-  /// Invocação do Delegate de respawn. 
-  /// Usar o normalRespawn ou specialRespawn aqui.
-  /// </summary>
-  protected virtual void Update () {
-    respawn?.Invoke();
-  }
-
-  #endregion
-
-  #region Meus Métodos
-
-  /// <summary>
-  /// Respawn de inimigo na zona de respawn superior
-  /// </summary>
-  public void normalRespawn () {
-    if (respawnTimer.timeIsUp()) {
-      if (player != null) {
-        respawnEnemy(respawnZones.top, getRandomEnemy());
-        respawnTimer.restart();
+    private void respawnEnemy (BoxCollider respawnZone, GameObject enemy) {
+      Vector3 position = respawnZone.getRandomPointInside();
+      if ((newEnemy = pooling.retrieve(enemy, position)) == null) {
+        newEnemy = spawnEnemy(enemy, position);
       }
     }
-  }
 
-  /// <summary>
-  /// Respawn de inimigo nas quatro zonas ao redor da tela 
-  /// </summary>
-  public void specialRespawn () {
-    if (respawnTimer.timeIsUp()) {
-      if (player != null) {
-        respawnEnemy(respawnZones.getRandomRespawnZone(), 4);
-        respawnTimer.restart();
+    #endregion
+
+    #region Minhas Rotinas
+
+    public IEnumerator normalRespawn () {
+      if (MissionData.missionName != Missions.Tutorial) {
+        while (PlayerData.spaceship != null) {
+          yield return new WaitForSeconds(
+            MissionData.values[MissionData.missionName].enemyData.normalRespawnTimer
+          );
+          respawnEnemy(respawnZones.top, enemies.getRandomEnemy());
+          builder.set(spaceshipBuilder).build(newEnemy);
+        }
       }
     }
+
+    public IEnumerator specialRespawn () {
+      while (PlayerData.spaceship != null) {
+        yield return new WaitForSeconds(
+          MissionData.values[MissionData.missionName].enemyData.specialRespawnTimer
+        );
+        respawnEnemy(respawnZones.getRandomRespawnZone(), enemies.getPrefabOf(4));
+      }
+    }
+
+    #endregion
+
   }
-
-  /// <summary>
-  /// Cria (ou recupera usando pool) um inimigo em um local aleatório dentro da zona de reaparecimento
-  /// </summary>
-  /// 
-  /// <param name="respawnZone">
-  /// A zona de respawn em que o inimigo deve aparecer
-  /// </param>
-  /// 
-  /// <param name="enemy">
-  /// O inimigo que deve aparecer
-  /// </param>
-  protected void respawnEnemy (BoxCollider respawnZone, byte enemy) {
-    GameObject newEnemy =
-      pool.enemyHasPool(enemy) == false ?
-        spawnEnemy(4)
-        :
-      pool.enemyPoolIsEmpty(enemy) == false ?
-        pool.retrieve(enemy)
-        :
-        spawnEnemy(enemy)
-    ;
-    newEnemy.transform.position = respawnZone.bounds.getRandomPointInBounds();
-  }
-
-  /// <summary>
-  /// Instancia um inimigo do tipo passado por parâmetro.
-  /// Usar o enum Spaceships aqui.
-  /// </summary>
-  /// 
-  /// <param name="enemy">
-  /// O inimigo que deve aparecer
-  /// </param>
-  /// 
-  /// <returns>
-  /// O inimigo instanciado
-  /// </returns>
-  public GameObject spawnEnemy (byte enemy) {
-    return Instantiate(getPrefabOf(enemy));
-  }
-
-  #endregion
-
 }

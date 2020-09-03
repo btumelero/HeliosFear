@@ -1,41 +1,33 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+
+using Assets.Source.App.Utils.Coroutines;
+
+using UnityEngine;
 
 /// <summary>
-/// Contém as interfaces usadas no projeto
+/// Contém as interfaces relacionadas ao movimento de objetos no projeto
 /// </summary>
-namespace Interfaces {
+namespace Assets.Source.App.Utils.Interfaces.Movements {
 
   /// <summary>
-  /// Contém as interfaces relacionadas ao movimento de objetos no projeto
+  /// Interface implementada por naves que possuem movimentação especial/complexa
   /// </summary>
-  namespace Movements {
+  public interface ISpecialMovement : IMovement {
 
     /// <summary>
-    /// Interface implementada por naves que possuem movimentação especial/complexa
+    /// A posição especial da nave
     /// </summary>
-    public interface ISpecialMovement : IMovement {
+    Vector3? specialPosition { get; set; }
 
-      /// <summary>
-      /// A posição especial da nave
-      /// </summary>
-      Vector3 specialPosition { get; }
+    /// <summary>
+    /// A movimentação especial da nave
+    /// </summary>
+    IEnumerator specialMovement ();
 
-      /// <summary>
-      /// A movimentação especial da nave
-      /// </summary>
-      void specialMovement ();
-
-      /// <summary>
-      /// Alterna para a movimentação especial
-      /// </summary>
-      void switchToSpecialMovement ();
-
-      /// <summary>
-      /// Alterna para a movimentação normal
-      /// </summary>
-      void switchToNormalMovement ();
-
-    }
+    /// <summary>
+    /// Alterna para a movimentação especial
+    /// </summary>
+    IEnumerator switchMovements (IEnumerator previousCoroutine);
 
   }
 

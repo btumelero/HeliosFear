@@ -1,35 +1,41 @@
-﻿/// <summary>
-/// Classe responsável por gerenciar tiros especiais
-/// </summary>
-public abstract class SpecialBulletController : BulletController {
+﻿using Assets.Source.App.Utils.Timers;
 
-  #region Variáveis
+namespace Assets.Source.App.Controllers.Bullets{
 
   /// <summary>
-  /// Timer para controlar a duração do tiro na tela
+  /// Classe responsável por gerenciar tiros especiais
   /// </summary>
-  public Timer autoDestroyTimer { get; set; }
+  public abstract class SpecialBulletController : BulletController {
 
-  #endregion
+    #region Variáveis
 
-  #region Métodos da Unity
+    /// <summary>
+    /// Timer para controlar a duração do tiro na tela
+    /// </summary>
+    public Timer autoDestroyTimer { get; set; }
 
-  /// <summary>
-  /// Inicializa o Timer
-  /// </summary>
-  protected virtual void Start () {
-    autoDestroyTimer = gameObject.AddComponent<Timer>();
-  }
+    #endregion
 
-  /// <summary>
-  /// Destrói o tiro ao esgotar o tempo do timer
-  /// </summary>
-  protected virtual void Update () {
-    if (autoDestroyTimer.timeIsUp()) {
-      Destroy(gameObject);
+    #region Métodos da Unity
+
+    /// <summary>
+    /// Inicializa o Timer
+    /// </summary>
+    protected virtual void Start () {
+      autoDestroyTimer = gameObject.AddComponent<Timer>();
+      autoDestroyTimer.timerName = "Auto Destroy Timer";
     }
+
+    /// <summary>
+    /// Destrói o tiro ao esgotar o tempo do timer
+    /// </summary>
+    protected virtual void Update () {
+      if (autoDestroyTimer.timeIsUp()) {
+        Destroy(gameObject);
+      }
+    }
+
+    #endregion
+
   }
-
-  #endregion
-
 }

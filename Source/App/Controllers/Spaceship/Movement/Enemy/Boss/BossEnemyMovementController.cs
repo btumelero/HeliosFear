@@ -1,71 +1,66 @@
-﻿using Delegates;
+﻿using System.Collections;
 
-using Interfaces.Movements;
+using Assets.Source.App.Data.Spaceship;
+using Assets.Source.App.Utils.Coroutines;
+using Assets.Source.App.Utils.Interfaces.Movements;
 
 using UnityEngine;
 
-/// <summary>
-/// Classe responsável por gerenciar os movimentos de boss
-/// </summary>
-public abstract class BossEnemyMovementController : EnemyMovementController, IMovement {
-
-  #region Variáveis
+namespace Assets.Source.App.Controllers.Spaceship.Movement.Enemy.Boss {
 
   /// <summary>
-  /// A forma como o boss está se movendo.
-  /// Um delegate é usado para dar mais flexibilidade para a manipulação
+  /// Classe responsável por gerenciar os movimentos de boss
   /// </summary>
-  public MovementType move;
+  public abstract class BossEnemyMovementController : EnemyMovementController, ISpecialMovement {
 
-  /// <summary>
-  /// A posição especial do boss na tela
-  /// </summary>
-  public Vector3 _startingPosition;
+    #region Propriedades
 
+    /// <summary>
+    /// A posição especial do boss na tela
+    /// </summary>
+    public Vector3? specialPosition { get; set; }
 
-  /// <summary>
-  /// Timer que controla o intervalo entre a mudança entre formas de movimentação
-  /// </summary>
-  public Timer movementTypeTimer { get; set; }
+    /// <summary>
+    /// A posição inicial do boss na tela
+    /// </summary>
+    public Vector3 startingPosition =>
+      SpaceshipData.values[gameObject.tag].movementData.startingPosition
+    ;
 
-  #endregion
+    /// <summary>
+    /// O tempo entre as mudanças entre diferentes tipos de movimentações
+    /// </summary>
+    public float movementTypeTimer =>
+      SpaceshipData.values[gameObject.tag].movementData.movementTypeTimer
+    ;
 
-  #region Getters e Settes
+    #endregion
 
-  /// <summary>
-  /// A nave do boss
-  /// </summary>
-  public GameObject spaceship {
-    get => _spaceship;
+    #region Meus Métodos
+
+    /// <summary>
+    /// A forma especial do boss se movimentar
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina
+    /// </returns>
+    public abstract IEnumerator specialMovement ();
+
+    /// <summary>
+    /// Alterna entre os dois tipos de movimentação do boss.
+    /// </summary>
+    /// 
+    /// <param name="previousMovement">
+    /// O movimento que o boss realizou antes dessa coroutine.
+    /// </param>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina.
+    /// </returns>
+    public abstract IEnumerator switchMovements (IEnumerator previousMovement);
+
+    #endregion
+
   }
-
-  /// <summary>
-  /// A posição inicial do boss na tela
-  /// </summary>
-  public Vector3 startingPosition {
-    get => _startingPosition;
-  }
-
-  #endregion
-
-  #region Métodos da Unity
-
-  /// <summary>
-  /// Dependendo do boss, ele poderá ter várias formas diferentes de se movimentar
-  /// </summary>
-  protected override void FixedUpdate () {
-    move?.Invoke();
-  }
-
-  #endregion
-
-  #region Meus Métodos
-
-  /// <summary>
-  /// A forma normal do boss se movimentar
-  /// </summary>
-  public abstract void normalMovement ();
-
-  #endregion
-
 }

@@ -1,72 +1,73 @@
-﻿using Interfaces;
+﻿using System.Collections;
+
+using Assets.Source.App.Controllers.Bullets;
+using Assets.Source.App.Data.Spaceship;
+using Assets.Source.App.Utils.Coroutines;
+using Assets.Source.App.Utils.Interfaces.Attacks;
 
 using UnityEngine;
 
-/// <summary>
-/// Classe responsável por controlar o comportamento de ataque geral de boss
-/// </summary>
-public abstract class BossEnemyAttackController : EnemyAttackController, ISpecialAttack {
-
-  #region Variáveis
+namespace Assets.Source.App.Controllers.Spaceship.Attack.Enemy.Boss {
 
   /// <summary>
-  /// O tiro especial do boss
+  /// Classe responsável por controlar o comportamento de ataque geral de boss
   /// </summary>
-  public GameObject specialBullet;
+  public abstract class BossEnemyAttackController : EnemyAttackController, ISpecialAttack {
 
-  /// <summary>
-  /// Timer que controla o tempo entre disparos especiais
-  /// </summary>
-  public Timer specialShootTimer { get; set; }
+    #region Campos
 
-  #endregion
+    /// <summary>
+    /// O tiro especial do boss
+    /// </summary>
+    public GameObject specialBullet;
 
-  #region Getters e Setters
+    #endregion
 
-  /// <summary>
-  /// Para acessar os métodos de extensão da interface
-  /// </summary>
-  public IAttack iAttack { 
-    get => this as IAttack; 
-  }
+    #region Propriedades
 
-  #endregion
+    public CoroutineController specialAttackCoroutine { get; set; }
 
-  #region Meus Métodos
+    /// <summary>
+    /// Timer que controla o tempo entre disparos especiais
+    /// </summary>
+    public virtual float specialShootTimer => 
+      SpaceshipData.values[gameObject.tag].attackData.specialShootTimer
+    ;
 
-  /// <summary>
-  /// Subclasses devem implementar o método especial de ataque do boss
-  /// </summary>
-  public abstract void specialAttack ();
+    #endregion
 
-  /// <summary>
-  /// Inicializa o tiro especial e, caso setAsChild seja verdadeiro, coloca ele como filho do objeto que tem esse script, 
-  /// para que assim ele se mova junto com a nave.
-  /// </summary>
-  /// 
-  /// <param name="spawner">
-  /// O objeto que disparou o tiro
-  /// </param>
-  /// 
-  /// <param name="setAsChild">
-  /// Se o tiro deve acompanhar o movimento da nave ou não
-  /// </param>
-  protected void instantiateBullet (Transform spawner, bool setAsChild) {
-    if (spawner != null) {
-      GameObject newSpecialBullet = Instantiate(specialBullet);
-      if (setAsChild) {
-        newSpecialBullet.transform.SetParent(gameObject.transform);
+    #region Meus Métodos
+
+    /// <summary>
+    /// Subclasses devem implementar o método especial de ataque do boss
+    /// </summary>
+    public abstract IEnumerator specialAttack ();
+
+    /// <summary>
+    /// Inicializa o tiro especial e, caso setAsChild seja verdadeiro, 
+    /// coloca ele como filho do objeto que tem esse script, 
+    /// para que assim ele se mova junto com a nave.
+    /// </summary>
+    /// 
+    /// <param name="shootingPosition">
+    /// A posição da arma que disparou o tiro
+    /// </param>
+    /// 
+    /// <param name="setAsChild">
+    /// Se o tiro deve acompanhar o movimento da nave ou não
+    /// </param>
+    protected void instantiateBullet (Transform shootingPosition, bool setAsChild) {
+      if (shootingPosition != null) {
+        bulletController = Instantiate(specialBullet).GetComponent<BulletController>();
+        bulletController.initializeBullet(shootingPosition, actualShootPower);
+        if (setAsChild) {
+          bulletController.transform.SetParent(transform);
+        }
+        bulletController.rotateBullet(shootingPosition.up);
       }
-      initializeBullet(newSpecialBullet, spawner);
-      newSpecialBullet.transform.LookAt(newSpecialBullet.transform.position + spawner.up);
     }
+
+    #endregion
+
   }
-
-  #endregion
-
-  #region Métodos da Unity
-
-  
-
-  #endregion
 }

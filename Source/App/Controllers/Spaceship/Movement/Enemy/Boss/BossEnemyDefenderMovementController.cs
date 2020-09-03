@@ -1,64 +1,70 @@
-using System.Collections.Generic;
+using System.Collections;
 
-using Extensions;
+using Assets.Source.App.Utils.Extensions;
 
 using UnityEngine;
 
-/// <summary>
-/// Classe responsável por gerenciar a movimentação do boss focado em defesa
-/// </summary>
-public class BossEnemyDefenderMovementController : BossEnemyMovementController {
-
-  #region Variáveis
+namespace Assets.Source.App.Controllers.Spaceship.Movement.Enemy.Boss {
 
   /// <summary>
-  /// A posição do boss quando ele está fora da tela
+  /// Classe responsável por gerenciar a movimentação do boss focado em defesa
   /// </summary>
-  public Vector3 offscreenPosition;
+  public class BossEnemyDefenderMovementController : BossEnemyMovementController {
 
-  /// <summary>
-  /// A posição especial do boss na tela
-  /// </summary>
-  public Vector3 specialPosition;
+    #region Minhas Rotinas
 
-  /// <summary>
-  /// A lista de movimentos que o boss deve executar para chegar na posição desejada
-  /// </summary>
-  public List<Vector3> movementList { get; set; }
-
-  #endregion
-
-  #region Meus métodos
-
-  /// <summary>
-  /// Vai executando cada movimento da lista até completar todos e depois reinicia o timer de movimento
-  /// </summary>
-  private void moveTowardsDestination () {
-    spaceship.moveTowards(movementList[0], actualSpeed);
-    if (spaceship.isAt(movementList[0])) {
-      movementList.RemoveAt(0);
-    }
-    if (movementList.Count == 0) {
-      movementTypeTimer.restart();
-      move = normalMovement;
-    }
-  }
-
-  /// <summary>
-  /// Alterna entre entrar e sair da tela
-  /// </summary>
-  public override void normalMovement () {
-    if (movementTypeTimer.timeIsUp()) {
-      movementList.Add(offscreenPosition);
-      if (spaceship.isAt(startingPosition)) {
-        movementList.Add(specialPosition);
-      } else if (spaceship.isAt(specialPosition)) {
-        movementList.Add(startingPosition);
+    /// <summary>
+    /// Sai da tela.
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina.
+    /// </returns>
+    public override IEnumerator normalMovement () {
+      while (this.positionIs(startingPosition) == false) {
+        yield return new WaitForFixedUpdate();
+        this.moveTowards(startingPosition, actualSpeed);
       }
-      move = moveTowardsDestination;
+      movementCoroutine.play(switchMovements(movementCoroutine.coroutine));
     }
+
+    /// <summary>
+    /// Entra na tela.
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina.
+    ///</returns>
+    public override IEnumerator specialMovement () {
+      while (this.positionIs(specialPosition.Value) == false) {
+        yield return new WaitForFixedUpdate();
+        this.moveTowards(specialPosition.Value, actualSpeed);
+      }
+      movementCoroutine.play(switchMovements(movementCoroutine.coroutine));
+    }
+
+    /// <summary>
+    /// Alterna entre entrar e sair da tela.
+    /// </summary>
+    /// 
+    /// <param name="previousMovement">
+    /// O movimento anterior do boss (se ele entrou ou saiu da tela).
+    /// </param>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina.
+    /// </returns>
+    public override IEnumerator switchMovements (IEnumerator previousMovement) {
+      yield return new WaitForSeconds(movementTypeTimer);
+      movementCoroutine.play(
+        previousMovement.equals(normalMovement()) == true ?
+          specialMovement()
+          :
+          normalMovement()
+      );
+    }
+
+    #endregion
+
   }
-
-  #endregion
-
 }

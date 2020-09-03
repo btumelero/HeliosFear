@@ -1,73 +1,59 @@
-﻿using Enums;
+﻿using Assets.Source.App.Data.Mission;
+using Assets.Source.App.Utils.Enums;
 
 using UnityEngine;
 
-/// <summary>
-/// Classe responsável por gerenciar a movimentação do inimigo focado em ataque
-/// </summary>
-public class CommonEnemyAttackerMovementController : CommonEnemyMovementController {
-
-  #region Getters e Setters
+namespace Assets.Source.App.Controllers.Spaceship.Movement.Enemy.Common {
 
   /// <summary>
-  /// A nave do jogador
+  /// Classe responsável por gerenciar a movimentação do inimigo focado em ataque
   /// </summary>
-  public GameObject player {
-    get => Mission.spaceship;
-  }
+  public class CommonEnemyAttackerMovementController : CommonEnemyMovementController {
 
-  #endregion
+    #region Propriedades
 
-  #region Métodos da Unity
+    /// <summary>
+    /// A nave do jogador
+    /// </summary>
+    public GameObject player => 
+      PlayerData.spaceship
+    ;
 
-  /// <summary>
-  /// Armazena o inimigo para reutilização quando ele não está mais visível usando a técnica Pooling
-  /// </summary>
-  public override void OnBecameInvisible () {
-    base.OnBecameInvisible();
-    Pool.store((byte) Spaceships.Attacker, gameObject);
-  }
+    #endregion
 
-  #endregion
+    #region Meus métodos
 
-  #region Meus métodos
-
-  /// <summary>
-  /// Esse tipo de nave se move para baixo e na direção horizontal do jogador
-  /// </summary>
-  public override void directionSwitch () {
-    if (player != null) {
-      float posicaoHorizontalDoJogador = player.transform.position.x;
-      moving =
-        posicaoHorizontalDoJogador > transform.position.x ?
-          Movement.Rightward
-          :
-        posicaoHorizontalDoJogador < transform.position.x ?
-          Movement.Leftward
-          :
-          Movement.Downward
-      ;
+    /// <summary>
+    /// Esse tipo de nave se move para baixo e na direção horizontal do jogador
+    /// </summary>
+    public override void switchMovementDirection () {
+      if (player != null) {
+        float playerX = player.transform.position.x;
+        moving.Value =
+          transform.position.x < playerX - 1.5f ?
+            (int) Movements.Rightward
+            :
+          transform.position.x > playerX + 1.5f ?
+            (int) Movements.Leftward
+            :
+            (int) Movements.Downward
+        ;
+      } else {
+        moving.Value = (int) Movements.Downward;
+      }
     }
+
+    /// <summary>
+    /// Atualiza a direção em que a nave está indo
+    /// </summary>
+    public override void onMovingValueChanged () {
+      spaceshipBody.velocity = new Vector3(
+        x: (Time.fixedDeltaTime * 3) * (moving.Value * actualSpeed),
+        y: (Time.fixedDeltaTime * 3) * -actualSpeed
+      );
+    }
+
+    #endregion
+
   }
-
-  /// <summary>
-  /// Atualiza a direção em que a nave está indo
-  /// </summary>
-  protected override void updateMovementDirection () {
-    spaceshipBody.velocity = new Vector3(
-      (moving == Movement.Downward ?
-         0
-         :
-       moving == Movement.Rightward ?
-         _actualSpeed
-         :
-         -_actualSpeed
-      ) * (Time.fixedDeltaTime * 3),
-      -_actualSpeed * (Time.fixedDeltaTime * 3),
-      0
-    );
-  }
-
-  #endregion
-
 }

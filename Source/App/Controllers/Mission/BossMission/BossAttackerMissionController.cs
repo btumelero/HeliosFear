@@ -1,22 +1,22 @@
-﻿public class BossAttackerMissionController : BossMissionController {
+﻿namespace Assets.Source.App.Controllers.Mission.BossMission {
 
-  #region Meus Métodos
+  public class BossAttackerMissionController : BossMissionController {
+
+    #region Meus Métodos
   
-  public override void updateBoss () {
-    
+    public override void updateBoss () {
 
+    }
+
+    public override void updateOthers () {
+
+    }
+
+    public override void updatePlayer () {
+
+    }
+
+    #endregion
   }
-
-  public override void updateOthers () {
-    
-
-  }
-
-  public override void updatePlayer () {
-    
-
-  }
-
-  #endregion
 }
 

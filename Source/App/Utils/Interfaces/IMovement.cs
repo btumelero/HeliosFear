@@ -1,36 +1,49 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+
+using Assets.Source.App.Utils.Coroutines;
+
+using UnityEngine;
 
 /// <summary>
-/// Contém as interfaces usadas no projeto
+/// Contém as interfaces relacionadas ao movimento de objetos no projeto
 /// </summary>
-namespace Interfaces {
+namespace Assets.Source.App.Utils.Interfaces.Movements {
 
   /// <summary>
-  /// Contém as interfaces relacionadas ao movimento de objetos no projeto
+  /// Interface implementada por naves que possuem padrões menos básicos de movimentação
   /// </summary>
-  namespace Movements {
+  public interface IMovement {
+
+    #region Propriedades
 
     /// <summary>
-    /// Interface implementada por naves que possuem padrões menos básicos de movimentação
+    /// A velocidade real da nave
     /// </summary>
-    public interface IMovement : IMove {
+    float actualSpeed { get; }
 
-      /// <summary>
-      /// A posição inicial da nave
-      /// </summary>
-      Vector3 startingPosition { get; }
+    CoroutineController movementCoroutine { get; }
 
-      /// <summary>
-      /// A nave
-      /// </summary>
-      GameObject spaceship { get; }
+    /// <summary>
+    /// A nave
+    /// </summary>
+    GameObject gameObject { get; }
 
-      /// <summary>
-      /// A movimentação normal da nave
-      /// </summary>
-      void normalMovement ();
+    /// <summary>
+    /// A posição inicial da nave
+    /// </summary>
+    Vector3 startingPosition { get; }
 
-    }
+    #endregion
+
+    #region Minhas Rotinas
+
+    /// <summary>
+    /// A movimentação normal da nave
+    /// </summary>
+    IEnumerator normalMovement ();
+
+    #endregion
 
   }
+
 }

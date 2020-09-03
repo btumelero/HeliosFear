@@ -1,85 +1,79 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 
-/// <summary>
-/// Classe responsável por gerenciar os movimentos dos inimigos comuns
-/// </summary>
-public abstract class CommonEnemyMovementController : EnemyMovementController {
+using Assets.Source.App.Controllers.Respawn;
+using Assets.Source.Experimental;
 
-  #region Variáveis
+using UnityEngine;
 
+namespace Assets.Source.App.Controllers.Spaceship.Movement.Enemy.Common {
+
+  [RequireComponent(typeof(Rigidbody))]
+  [RequireComponent(typeof(MeshRenderer))]
   /// <summary>
-  /// Timer que controla o tempo entre mudanças na movimentação
+  /// Classe responsável por gerenciar os movimentos dos inimigos comuns
   /// </summary>
-  public FixedTimer switchTimer { get; set; }
+  public abstract class CommonEnemyMovementController : EnemyMovementController {
 
-  /// <summary>
-  /// O corpo da nave
-  /// </summary>
-  public Rigidbody _spaceshipBody { get; set; }
+    #region Campos
 
-  /// <summary>
-  /// A direção em que a nave está se movendo
-  /// </summary>
-  protected Enums.Movement _moving;
+    /// <summary>
+    /// O corpo da nave
+    /// </summary>
+    [HideInInspector] public Rigidbody spaceshipBody;
 
-  #endregion
+    /// <summary>
+    /// A direção em que a nave está se movendo
+    /// </summary>
+    public FieldWithAction<int> moving;
 
-  #region Getters e Setters
+    #endregion
 
-  /// <summary>
-  /// Atualiza a direção em que a nave está se movendo ao mudar o valor
-  /// </summary>
-  public Enums.Movement moving {
-    get => _moving;
-    set {
-      _moving = value;
-      updateMovementDirection();
+    #region Métodos da Unity
+
+    /// <summary>
+    /// Desativa a nave quando ela não está visível na tela
+    /// </summary>
+    protected virtual void OnBecameInvisible () {
+      gameObject.SetActive(false);
     }
-  }
 
-  /// <summary>
-  /// O corpo da nave
-  /// </summary>
-  public Rigidbody spaceshipBody {
-    get => _spaceshipBody;
-    set => _spaceshipBody = value;
-  }
-
-  #endregion
-
-  #region Métodos da Unity
-
-  /// <summary>
-  /// Muda a direção em que a nave está indo quando o timer esgota e reinicia o timer
-  /// </summary>
-  protected override void FixedUpdate () {
-    if (switchTimer.timeIsUp()) {
-      directionSwitch();
-      switchTimer.restart();
+    /// <summary>
+    /// Armazena o inimigo para reutilização usando a técnica Pooling
+    /// </summary>
+    private void OnDisable () {
+      Pooling.store(gameObject);
     }
+
+    #endregion
+
+    #region Minhas Rotinas
+
+    /// <summary>
+    /// Muda a direção em que a nave está indo quando o timer esgota e reinicia o timer
+    /// </summary>
+    public override IEnumerator normalMovement () {
+      while (true) {
+        yield return new WaitForSeconds(movementTimer);
+        switchMovementDirection();
+      }
+    }
+
+    #endregion
+
+    #region Meus métodos
+
+    /// <summary>
+    /// Deve mudar a direção da nave
+    /// </summary>
+    public abstract void switchMovementDirection ();
+
+    /// <summary>
+    /// Deve atualizar a direção em que a nave está indo
+    /// </summary>
+    public abstract void onMovingValueChanged ();
+
+    #endregion
+
   }
 
-  /// <summary>
-  /// Desativa a nave quando ela não está visível na tela
-  /// </summary>
-  public virtual void OnBecameInvisible () {
-    gameObject.SetActive(false);
-  }
-
-  #endregion
-
-
-  #region Meus métodos
-
-  /// <summary>
-  /// Deve mudar a direção da nave
-  /// </summary>
-  public abstract void directionSwitch ();
-
-  /// <summary>
-  /// Deve atualizar a direção em que a nave está indo
-  /// </summary>
-  protected abstract void updateMovementDirection ();
-
-  #endregion
 }

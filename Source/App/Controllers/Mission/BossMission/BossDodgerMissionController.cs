@@ -1,69 +1,47 @@
-﻿using UnityEngine;
-
-/// <summary>
-/// Classe responsável por gerenciar a missão contra o boss focado em velocidade
-/// </summary>
-public class BossDodgerMissionController : BossMissionController {
-
-  #region Variáveis
+﻿namespace Assets.Source.App.Controllers.Mission.BossMission {
 
   /// <summary>
-  /// O renderizador da nave do boss
+  /// Classe responsável por gerenciar a missão contra o boss focado em velocidade
   /// </summary>
-  public Renderer spaceship { get; set; }
+  public class BossDodgerMissionController : BossMissionController {
 
-  #endregion
+    #region Meus Métodos
 
-  #region Getters e Setters
-
-  /// <summary>
-  /// Controlador de movimentos do Boss
-  /// </summary>
-  public new BossEnemyDodgerMovementController bossMovementController {
-    get => (BossEnemyDodgerMovementController) _bossEnemyMovementController;
-  }
-
-  #endregion
-
-  #region Meus Métodos
-
-  /// <summary>
-  /// Causa uma transição de transparência gradual
-  /// </summary>
-  /// 
-  /// <param name="value">
-  /// True para FadeIn, False para FadeOut
-  /// </param>
-  public void fade (bool value) {
-    Color color = spaceship.material.color;
-    color.a = Mathf.Clamp(color.a + (Time.deltaTime * (value ? -1 : 1)), 0, 1);
-    spaceship.material.color = color;
-  }
-
-  /// <summary>
-  /// Atira normalmente quando está se movendo normalmente e atira de forma especial ao se mover de forma especial.
-  /// Forma de atirar especial tem tempo randômico entre disparos para tornar imprevisível.
-  /// </summary>
-  public override void updateBoss () {
-    if (bossMovementController.move == bossMovementController.switchToNormalMovement) {
-      fade(false);
-    } else if (bossMovementController.move == bossMovementController.switchToSpecialMovement) {
-      fade(true);
-    } else if (bossMovementController.move == bossMovementController.specialMovement) {
-      bossAttackController.attack = bossAttackController.specialAttack;
-    } else if (bossMovementController.move == bossMovementController.normalMovement) {
-      bossAttackController.attack = bossAttackController.normalAttack;
+    /// <summary>
+    /// Atira um tiro para baixo quando está se movendo em arcos pela tela e
+    /// e atira dois tiros em direções opostas enquanto esta girando em torno do centro da tela.
+    /// Os dois tiros têm tempo randômico entre disparos para tornar imprevisível.
+    /// Além disso, não atira enquanto está alternando entre as formas de movimentação e
+    /// fica invulnerável sempre que não estiver se movendo em arcos pela tela.
+    /// </summary>
+    public override void updateBoss () {
+      if (
+        bossMovement.movementCoroutine.isPlaying(bossMovement.normalMovement()) &&
+        bossAttack.normalAttackCoroutine.isPlaying(bossAttack.normalAttack()) == false
+      ) {
+        bossAttack.specialAttackCoroutine.stop();
+        bossAttack.normalAttackCoroutine.play(bossAttack.normalAttack());
+      } else {
+        if (
+          bossMovement.movementCoroutine.isPlaying(bossMovement.specialMovement()) &&
+          bossAttack.specialAttackCoroutine.isPlaying(bossAttack.specialAttack()) == false
+        ) {
+          bossAttack.normalAttackCoroutine.stop();
+          bossAttack.specialAttackCoroutine.play(bossAttack.specialAttack());
+        }
+      }
+      bossLife.vulnerable.Value = bossMovement.movementCoroutine.isPlaying(bossMovement.normalMovement());
     }
+
+    public override void updatePlayer () {
+
+    }
+
+    public override void updateOthers () {
+
+    }
+
+    #endregion
+
   }
-
-  public override void updatePlayer () {
-
-  }
-
-  public override void updateOthers () {
-
-  }
-
-  #endregion
-
 }

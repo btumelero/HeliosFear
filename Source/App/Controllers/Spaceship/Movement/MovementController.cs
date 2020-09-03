@@ -1,51 +1,46 @@
-﻿using Interfaces.Movements;
+﻿using Assets.Source.App.Data.Spaceship;
 
 using UnityEngine;
+using System.Collections;
+using Assets.Source.App.Utils.Coroutines;
 
 /// <summary>
-/// Classe responsável por gerenciar o movimento
+/// Contém todas as classes responsáveis pela movimentação de naves do jogo
 /// </summary>
-public abstract class MovementController : MonoBehaviour, IMove {
-
-  #region Variáveis
+namespace Assets.Source.App.Controllers.Spaceship.Movement {
 
   /// <summary>
-  /// A velocidade base do objeto
+  /// Classe responsável por gerenciar o movimento
   /// </summary>
-  public float _baseSpeed;
+  public abstract class MovementController : MonoBehaviour {
 
-  /// <summary>
-  /// A velocidade real/atual do objeto
-  /// </summary>
-  public float _actualSpeed;
+    #region Propriedades
 
-  #endregion
+    public CoroutineController movementCoroutine { get; set; }
 
-  #region Getters e Setters
-  
-  /// <summary>
-  /// A velocidade base do objeto
-  /// </summary>
-  public float baseSpeed {
-    get => _baseSpeed;
+    /// <summary>
+    /// A velocidade real/atual do objeto
+    /// </summary>
+    public float actualSpeed { get; set; }
+
+    /// <summary>
+    /// A velocidade base do objeto
+    /// </summary>
+    public virtual float baseSpeed =>
+      SpaceshipData.values[gameObject.tag].movementData.baseSpeed
+    ;
+
+
+    #endregion
+
+    #region Meus Métodos
+
+    /// <summary>
+    /// A forma de movimentação normal da nave
+    /// </summary>
+    public abstract IEnumerator normalMovement ();
+
+    #endregion
+
   }
-
-  /// <summary>
-  /// A velocidade real/atual do objeto
-  /// </summary>
-  public float actualSpeed {
-    get => _actualSpeed;
-  }
-
-  #endregion
-
-  #region Métodos da Unity
-
-  /// <summary>
-  /// Subclasses devem implementar a lógica de movimentação do objeto
-  /// </summary>
-  protected abstract void FixedUpdate ();
-
-  #endregion
-
 }

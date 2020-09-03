@@ -1,150 +1,100 @@
-﻿using System;
+﻿using System.Collections;
 
-using Delegates;
-
-using Extensions;
-
-using Interfaces;
+using Assets.Source.App.Controllers.Bullets;
+using Assets.Source.App.Data.Spaceship;
+using Assets.Source.App.Utils.Coroutines;
+using Assets.Source.App.Utils.Interfaces.Attacks;
 
 using UnityEngine;
 
-/// <summary>
-/// Controla o comportamento de ataque das naves
-/// </summary>
-public abstract class AttackController : MonoBehaviour, IAttack {
-
-  #region Variáveis
+namespace Assets.Source.App.Controllers.Spaceship.Attack {
 
   /// <summary>
-  /// A forma como o objeto está atacando.
-  /// Um delegate é usado para dar mais flexibilidade para a manipulação
+  /// Controla o comportament de ataque da nave
   /// </summary>
-  public AttackType attack;
+  public abstract class AttackController : MonoBehaviour, IAttack {
 
-  /// <summary>
-  /// A bala que será atirada pela nave.
-  /// Deve estar marcada com tag FriendlyBullet ou EnemyBullet para detecção de colisões
-  /// Inicializado pela interface da Unity
-  /// </summary>
-  public GameObject bulletPrefab;
+    #region Campos
 
-  /// <summary>
-  /// As armas da nave (objeto invisível na frente das armas, na verdade). 
-  /// Devem estar voltadas na direção em que o tiro deve ser disparado.
-  /// Inicializado pela interface da Unity
-  /// </summary>
-  public Transform[] weapons;
+    /// <summary>
+    /// O prefab do tiro da nave
+    /// </summary>
+    public GameObject bulletPrefab;
 
-  /// <summary>
-  /// Timer para controlar o tempo entre um disparo e outro
-  /// O '{ get; set; }' é para evitar que esta variável apareça na interface da Unity, 
-  /// já que ele é adicionado por código ao invés de 'arrastar e soltar' pela interface da Unity.
-  /// </summary>
-  public Timer shootTimer { get; set; }
+    /// <summary>
+    /// A posição das armas da nave
+    /// </summary>
+    public Transform[] weapons;
 
-  /// <summary>
-  /// Potência atual/verdadeira das armas.
-  /// É a potência base vezes o multiplicador de potência do slider da tela (controlado pelo jogador)
-  /// </summary>
-  public float actualShootPower;
+    /// <summary>
+    /// O dano real da nave
+    /// </summary>
+    public float actualShootPower;
 
-  /// <summary>
-  /// Potência base das armas.
-  /// </summary>
-  public float baseShootPower;
+    
+    /// <summary>
+    /// Controla os tiros da nave
+    /// </summary>
+    protected BulletController bulletController;
 
-  /// <summary>
-  /// A velocidade do tiro na tela
-  /// </summary>
-  public float shootVelocity;
+    #endregion
 
-  #endregion
+    #region Propriedades
+    
+    public CoroutineController normalAttackCoroutine { get; set; }
 
-  #region Métodos da Unity
+    /// <summary>
+    /// O dano base da nave
+    /// </summary>
+    public float baseShootPower => 
+      SpaceshipData.values[gameObject.tag].attackData.baseShootPower
+    ;
+    
+    /// <summary>
+    /// A velocidade dos tiros da nave
+    /// </summary>
+    public float bulletVelocity => 
+      SpaceshipData.values[gameObject.tag].attackData.shootVelocity
+    ;
 
-  /// <summary>
-  /// Dependendo da nave, ela poderá ter várias formas diferentes de atacar
-  /// </summary>
-  protected void Update () {
-    attack?.Invoke();
-  }
+    /// <summary>
+    /// O tempo entre disparos
+    /// </summary>
+    public virtual float shootTimer =>
+      SpaceshipData.values[gameObject.tag].attackData.shootTimer
+    ;
 
-  #endregion
+    #endregion
 
-  #region Meus Métodos
+    #region Meus Métodos
 
-  /// <summary>
-  /// Instancia, move, rotaciona, dá velocidade e potência ao tiro.
-  /// </summary>
-  /// 
-  /// <param name="spawner">
-  /// O objeto que disparou o tiro
-  /// </param>
-  /// 
-  /// <param name="direction">
-  /// A direção em que o tiro deve ser disparado. Pode ser ignorado se deve se disparado para frente.
-  /// </param>
-  protected void instantiateRotateAndMoveBullet (Transform spawner, Nullable<Vector3> direction = null) {
-    if (spawner != null) {
-      GameObject newBullet = Instantiate(bulletPrefab);
-      Rigidbody bulletBody = newBullet.GetComponent<Rigidbody>();
-      initializeBullet(newBullet, spawner);
-      moveBullet(bulletBody, spawner, direction);
-      rotateBullet(bulletBody);
+    /// <summary>
+    /// Instancia, inicializa e move o tiro.
+    /// </summary>
+    /// 
+    /// <param name="shooter">
+    /// O objeto que está disparando o tiro.
+    /// </param>
+    /// 
+    /// <param name="direction">
+    /// A direção em que o tiro deve ser disparado.
+    /// Pode ser ignorado se deve ser disparado para frente.
+    /// </param>
+    protected void shoot (Transform shooter, Vector3? direction = null) {
+      if (shooter != null) {
+        bulletController = Instantiate(bulletPrefab).GetComponent<BulletController>();
+        bulletController.initializeBullet(shooter, actualShootPower);
+        bulletController.rotateBullet(direction ?? shooter.up);
+        ((NormalBulletController) bulletController).moveBullet(bulletVelocity, direction ?? shooter.up);
+      }
     }
+
+    /// <summary>
+    /// O método normal de ataque da nave
+    /// </summary>
+    public abstract IEnumerator normalAttack ();
+
+    #endregion
+
   }
-
-  /// <summary>
-  /// Inicializa o tiro, colocando-o na posição do spawner e dando a potência adequada
-  /// </summary>
-  /// 
-  /// <param name="newBullet">
-  /// O tiro a ser disparado
-  /// </param>
-  /// 
-  /// <param name="spawner">
-  /// O objeto que disparou o tiro
-  /// </param>
-  protected void initializeBullet (GameObject newBullet, Transform spawner) {
-    newBullet.transform.position = spawner.position;
-    newBullet.GetComponent<BulletController>().shootPower = baseShootPower;
-  }
-
-  /// <summary>
-  /// Faz a bala se mover. Se direction foi ignorado, então dispara para frente.
-  /// </summary>
-  /// 
-  /// <param name="spawner">
-  /// O objeto que disparou o tiro
-  /// </param>
-  /// 
-  /// <param name="bulletBody">
-  /// O corpo do tiro
-  /// </param>
-  /// 
-  /// <param name="direction">
-  /// A direção em que o tiro deve ser disparado. Pode ser ignorado se deve se disparado para frente.
-  /// </param>
-  private void moveBullet (Rigidbody bulletBody, Transform spawner, Nullable<Vector3> direction = null) {
-    bulletBody.setVelocity(direction ?? spawner.up, shootVelocity);
-  }
-
-  /// <summary>
-  /// Rotaciona o tiro na direção do movimento dele.
-  /// </summary>
-  /// 
-  /// <param name="bulletBody">
-  /// O corpo do tiro
-  /// </param>
-  private void rotateBullet (Rigidbody bulletBody) {
-    bulletBody.fixRotation();
-  }
-
-  /// <summary>
-  /// Subclasses devem implementar o método normal de ataque
-  /// </summary>
-  public abstract void normalAttack ();
-
-  #endregion
-
 }

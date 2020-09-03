@@ -1,35 +1,52 @@
-using Extensions;
+using System.Collections;
+
+using Assets.Source.App.Utils.Extensions;
 
 using UnityEngine;
 
-/// <summary>
-/// Controla o comportamento de ataque do boss focado em defesa
-/// </summary>
-public class BossEnemyDefenderAttackController : BossEnemyAttackController {
-
-  #region Meus Métodos
+namespace Assets.Source.App.Controllers.Spaceship.Attack.Enemy.Boss {
 
   /// <summary>
-  /// Dispara dois tiros na direção do jogador
+  /// Controla o comportamento de ataque do boss focado em defesa
   /// </summary>
-  public override void normalAttack () {
-    if (shootTimer.timeIsUp()) {
-      for (byte i = 0; i < 2; i++) {
-        instantiateRotateAndMoveBullet(weapons[i], iAttack.getPlayerDirection(weapons[i]));
+  public class BossEnemyDefenderAttackController : BossEnemyAttackController {
+
+    #region Propriedades
+
+    public override float specialShootTimer => 
+      base.specialShootTimer.randomInRange(1.5f)
+    ;
+
+    #endregion
+
+    #region Meus Métodos
+
+    /// <summary>
+    /// Dispara dois tiros na direção do jogador.
+    /// </summary>
+    public override IEnumerator normalAttack () {
+      while (true) {
+        yield return new WaitForSeconds(shootTimer);
+        for (byte i = 0; i < 2; i++) {
+          shoot(weapons[i], this.getPlayerDirection(weapons[i]));
+        }
       }
-      shootTimer.restart();
     }
-  }
 
-  /// <summary>
-  /// Instancia e coloca os tiros como filhos do objeto que tem esse script para que eles se movam junto com a nave
-  /// </summary>
-  public override void specialAttack () {
-    for (byte i = 2; i < 4; i++) {
-      instantiateBullet(weapons[i], true);
+    /// <summary>
+    /// Instancia e coloca os tiros como filhos do objeto que tem esse script
+    /// para que eles se movam junto com a nave.
+    /// </summary>
+    public override IEnumerator specialAttack () {
+      while (true) {
+        yield return new WaitForSeconds(specialShootTimer);
+        for (byte i = 2; i < 4; i++) {
+          instantiateBullet(weapons[i], setAsChild: true);
+        }
+      }
     }
+
+    #endregion
+
   }
-
-  #endregion
-
 }

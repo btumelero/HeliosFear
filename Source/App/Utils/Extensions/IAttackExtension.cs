@@ -1,11 +1,13 @@
-﻿using Interfaces;
+﻿using Assets.Source.App.Data.Mission;
+using Assets.Source.App.Utils.Interfaces.Attacks;
 
 using UnityEngine;
+
 
 /// <summary>
 /// Contém os métodos de extensão do projeto
 /// </summary>
-namespace Extensions {
+namespace Assets.Source.App.Utils.Extensions {
 
   /// <summary>
   /// Extensões da interface ISpecialAttack
@@ -28,8 +30,8 @@ namespace Extensions {
     /// Retorna um vetor com o ângulo entre esse objeto e o jogador
     /// </returns>
     public static Vector3 getPlayerDirection (this IAttack attack, Transform shooter) {
-      return Mission.spaceship != null ?
-        (Mission.spaceship.transform.position - shooter.position).normalized
+      return PlayerData.spaceship != null ?
+        (PlayerData.spaceship.transform.position - shooter.position).normalized
         :
         shooter.up
       ;

@@ -1,79 +1,84 @@
-﻿using UnityEngine;
+﻿using Assets.Source.App.Data.Mission;
+
+using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Classe responsável pelo controle da vida do jogador
-/// </summary>
-public class PlayerLifeController : LifeController {
-
-  #region Variáveis
+namespace Assets.Source.App.Controllers.Spaceship.Life {
 
   /// <summary>
-  /// O slider do hp que aparece na tela
+  /// Classe responsável pelo controle da vida do jogador
   /// </summary>
-  public Slider hpSlider { get; set; }
+  public class PlayerLifeController : LifeController {
 
-  /// <summary>
-  /// O slide do escudo que aparece na tela
-  /// </summary>
-  public Slider shieldSlider { get; set; }
+    #region Campos
 
-  #endregion
+    /// <summary>
+    /// O slider do hp que aparece na tela
+    /// </summary>
+    [HideInInspector] public Slider hpSlider;
 
-  #region Getters e Setters
+    /// <summary>
+    /// O slide do escudo que aparece na tela
+    /// </summary>
+    [HideInInspector] public Slider shieldSlider;
 
-  /// <summary>
-  /// Garante que o escudo máximo não fique menor que zero e que a nave não tenha mais escudo que o máximo permitido.
-  /// Além disso, atualiza os slider da tela.
-  /// </summary>
-  public override float maxShield {
-    get => _maxShield;
-    set {
-      _maxShield = value;
-      _maxShield = _maxShield >= 0 ? _maxShield : 0;
-      shield = Mathf.Clamp(shield, 0, maxShield);
-      shieldSlider.maxValue = maxShield;
-      shieldSlider.value = shield;
-    }
-  }
+    #endregion
 
-  #endregion
+    #region Propriedades
 
-  #region Métodos da Unity
+    public override float baseShield =>
+      base.baseShield * (0.5f + PlayerData.shieldStrength / 2)
+    ;
 
-  /// <summary>
-  /// Destrói a nave caso ela esteja morta.
-  /// Isso é feito aqui para evitar que a nave seja destruída antes que outra parte do código tente modificar alguma coisa
-  /// </summary>
-  protected override void Update () {
-    base.Update();
-    if (dead) {
+    public override float baseRegeneration =>
+      base.baseRegeneration * (0.5f + PlayerData.shieldStrength / 2)
+    ;
+
+    #endregion
+
+    #region Meus Métodos
+
+    /// <summary>
+    /// Destrói a nave caso ela esteja morta.
+    /// Isso é feito aqui para evitar que a nave seja destruída antes que outra parte do código tente modificar alguma coisa
+    /// </summary>
+    protected override void onDeath () {
       Destroy(gameObject);
     }
-  }
 
-  #endregion
-
-  #region Meus Métodos
-
-  /// <summary>
-  /// Atualiza os sliders da tela quando o hp for modificado
-  /// </summary>
-  protected override void onHpValueChange () {
-    hpSlider.value = hp;
-    base.onHpValueChange();
-  }
-
-  /// <summary>
-  /// Atualiza os sliders da tela quando o escudo for modificado
-  /// </summary>
-  protected override void onShieldValueChange () {
-    base.onShieldValueChange();
-    if (shieldSlider != null) {
-      shieldSlider.value = shield;
+    /// <summary>
+    /// Atualiza os sliders da tela quando o hp for modificado
+    /// </summary>
+    public override void onHpValueChange () {
+      if (hpSlider != null) {
+        hpSlider.value = hp.Value;
+      }
+      base.onHpValueChange();
     }
+
+    /// <summary>
+    /// Atualiza os sliders da tela quando o escudo for modificado
+    /// </summary>
+    public override void onShieldValueChange () {
+      base.onShieldValueChange();
+      if (shieldSlider != null && dead == false) {
+        shieldSlider.value = shield.Value;
+      }
+    }
+
+    /// <summary>
+    /// Garante que o escudo máximo não fique menor que zero e 
+    /// que a nave não tenha mais escudo que o máximo permitido.
+    /// Além disso, atualiza os slider da tela.
+    /// </summary>
+    public void onMaxShieldValueChange () {
+      maxShield._Value = maxShield.Value >= 0f ? maxShield.Value : 0;
+      shield.Value = Mathf.Clamp(shield.Value, 0, maxShield.Value);
+      shieldSlider.value = shield.Value;
+      shieldSlider.maxValue = maxShield.Value;
+    }
+
+    #endregion
+
   }
-
-  #endregion
-
 }

@@ -1,112 +1,128 @@
-﻿using Delegates;
+﻿using System.Collections;
 
-using Extensions;
-
-using Interfaces.Missions;
+using Assets.Source.App.Data.Mission;
+using Assets.Source.App.Utils.Coroutines;
+using Assets.Source.App.Utils.Enums;
+using Assets.Source.App.Utils.Extensions;
+using Assets.Source.App.Utils.Interfaces.Attacks;
+using Assets.Source.App.Utils.Interfaces.Missions;
+using Assets.Source.App.Utils.Interfaces.Movements;
 
 using UnityEngine;
 
-/// <summary>
-/// Classe responsável por gerenciar as missões
-/// </summary>
-public abstract class MissionController : MonoBehaviour, INormalMission {
-
-  #region Variáveis
+namespace Assets.Source.App.Controllers.Mission {
 
   /// <summary>
-  /// Controlador de movimento do jogador
+  /// Classe responsável por gerenciar as missões
   /// </summary>
-  public PlayerMovementController _playerMovementController { protected get; set; }
+  public class MissionController : MonoBehaviour, INormalMission {
 
-  /// <summary>
-  /// Controlador de ataque do jogador
-  /// </summary>
-  public PlayerAttackController _playerAttackController { protected get; set; }
+    #region Campos
 
-  /// <summary>
-  /// O estágio atual da missão
-  /// </summary>
-  public MissionStage missionStage { get; set; }
+    /// <summary>
+    /// Controlador de ataque do jogador
+    /// </summary>
+    [HideInInspector] public IAttack playerAttack;
 
-  #endregion
+    /// <summary>
+    /// Controlador de movimento do jogador
+    /// </summary>
+    [HideInInspector] public IMovement playerMovement;
 
-  #region Getters e Setters
+    [HideInInspector] public CoroutineController missionCoroutine;
 
-  /// <summary>
-  /// Controlador de movimento do jogador
-  /// </summary>
-  public PlayerMovementController playerMovementController {
-    get => _playerMovementController;
-  }
+    //[HideInInspector] public InputSystem.Input inputs;
 
-  /// <summary>
-  /// Controlador de ataque do jogador
-  /// </summary>
-  public PlayerAttackController playerAttackController {
-    get => _playerAttackController;
-  }
+    #endregion
 
-  /// <summary>
-  /// Nave do jogador
-  /// </summary>
-  public GameObject player {
-    get => Mission.spaceship;
-    set => Mission.spaceship = value;
-  }
+    #region Propriedades
 
-  #endregion
+    /// <summary>
+    /// Nave do jogador
+    /// </summary>
+    public GameObject player => 
+      PlayerData.spaceship
+    ;
 
-  #region Métodos da Unity
+    #endregion
 
-  /// <summary>
-  /// Desconta do timer e faz um novo inimigo aparecer caso ele tenha esgotado, reiniciando o timer depois
-  /// </summary>
-  protected virtual void Update () {
-    missionStage?.Invoke();
-  }
+    #region Minhas Rotinas
 
-  #endregion
-
-  #region Meus Métodos
-
-  /// <summary>
-  /// Move o jogador para a posição inicial e depois permite livre movimento
-  /// </summary>
-  public virtual void preNormalMission () {
-    if (player.isAt(playerMovementController._startingPosition)) {
-      playerMovementController.move = playerMovementController.normalMovement;
-      missionStage = normalMission;
-    } else {
-      playerMovementController.move = null;
-      player.moveTowards(playerMovementController._startingPosition, playerMovementController._actualSpeed);
+    /// <summary>
+    /// Move o jogador para a posição inicial e depois permite livre movimento
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina
+    /// </returns>
+    public virtual IEnumerator onNormalMissionStart () {
+      yield return new WaitUntil(() => playerMovement != null);
+      playerMovement.movementCoroutine.stop();
+      while (playerMovement.positionIs(playerMovement.startingPosition) == false) {
+        yield return new WaitForFixedUpdate();
+        playerMovement.moveTowards(
+          playerMovement.startingPosition,
+          playerMovement.actualSpeed
+        );
+      }
+      playerMovement.movementCoroutine.play(playerMovement.normalMovement());
+      missionCoroutine.play(onNormalMission());
     }
-  }
 
-  /// <summary>
-  /// Acaba o jogo quando o jogador morre
-  /// </summary>
-  public virtual void normalMission () {
-    if (gameOver()) {
-      missionStage = postNormalMission;
+    public virtual IEnumerator onNormalMission () {
+      missionCoroutine.play(onMission(onNormalMissionEnd()));
+      yield return null;
     }
+
+    public virtual IEnumerator onNormalMissionEnd () {
+      yield return new WaitUntil(() => true);//-----------------------------------------------
+      Game.loadScene(Scenes.Menu);
+    }
+
+    /// <summary>
+    /// Passa para nextStage quando o jogador morre ou aperta esc
+    /// </summary>
+    /// 
+    /// <param name="nextStage">
+    /// O estágio da missão que deve ser iniciado
+    /// </param>
+    /// 
+    /// <returns>
+    /// Um IEnumerator que permite iniciar essa rotina
+    /// </returns>
+    public IEnumerator onMission (IEnumerator nextStage) {
+      yield return new WaitUntil(() => gameOver() || Input.GetKeyDown(KeyCode.Escape));
+      missionCoroutine.play(nextStage);
+    }
+
+    #endregion
+
+    #region Meus Métodos
+
+    /// <summary>
+    /// Retorna verdadeiro se o jogador morreu
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Verdadeiro se o jogador morreu
+    /// </returns>
+    protected virtual bool gameOver () {
+      return player == null;
+    }
+
+    #endregion
+
+    #region Métodos da Unity
+
+    private void OnEnable () {
+      //inputs?.Enable();
+    }
+
+    private void OnDisable () {
+      //inputs?.Disable();
+    }
+
+    #endregion
+
   }
-
-  /// <summary>
-  /// Estágio pós-missão
-  /// </summary>
-  public abstract void postNormalMission ();
-
-  /// <summary>
-  /// Retorna verdadeiro se o jogador morreu
-  /// </summary>
-  /// 
-  /// <returns>
-  /// Verdadeiro se o jogador morreu
-  /// </returns>
-  public virtual bool gameOver () {
-    return player == null;
-  }
-
-  #endregion
-
 }

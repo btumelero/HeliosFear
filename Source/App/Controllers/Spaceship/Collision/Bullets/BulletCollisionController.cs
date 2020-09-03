@@ -1,57 +1,50 @@
-﻿/// <summary>
-/// Classe responsável pelo comportamento de colisões com tiros
-/// </summary>
-public class BulletCollisionController : CollisionController {
+﻿using Assets.Source.App.Controllers.Bullets;
 
-  #region Variáveis
+using UnityEngine;
 
-  /// <summary>
-  /// O controlador do tiro
-  /// </summary>
-  public BulletController bulletController { get; set; }
-
-  #endregion
-
-  #region Métodos da Unity
+namespace Assets.Source.App.Controllers.Spaceship.Collision.Bullets {
 
   /// <summary>
-  /// Inicialização apenas
+  /// Classe responsável pelo comportamento de colisões com tiros
   /// </summary>
-  protected override void Start () {
-    base.Start();
-    bulletController = gameObject.GetComponentInParent<BulletController>();
-  }
+  public class BulletCollisionController : CollisionController {
 
-  #endregion
+    #region Variáveis
 
-  #region Meus Métodos
+    /// <summary>
+    /// O controlador do tiro
+    /// </summary>
+    protected BulletController bulletController { get; set; }
 
-  /// <summary>
-  /// Retorna verdadeiro se houve uma colisão entre um tiro e uma nave da facção inimiga
-  /// </summary>
-  /// 
-  /// <returns>
-  /// Verdadeiro se for uma colisão tiro-nave inimiga ou tiro-escudo inimigo
-  /// </returns>
-  protected override bool isCollision () {
-    return compareCollidersTags(Enums.Tags.FriendlyBullet, Enums.Tags.EnemyBullet);
-  }
+    #endregion
 
-  /// <summary>
-  /// Diminui vida/escudo da nave sempre que houver uma colisão
-  /// </summary>
-  protected override void onCollision () {
-    if (tagList[0].Contains("Shield")) {
-      bulletController.hitShield(colliderLifeController);
-    } else {
+    #region Métodos da Unity
+
+    /// <summary>
+    /// Inicialização apenas
+    /// </summary>
+    protected virtual void Start () {
+      bulletController = gameObject.GetComponentInParent<BulletController>();
+    }
+
+    #endregion
+
+    #region Meus Métodos
+
+    /// <summary>
+    /// Dá dano ao colidir com um alvo
+    /// </summary>
+    /// 
+    /// <param name="collider">
+    /// O objeto que colidiu com o objeto que tem esse script
+    /// </param>
+    protected override void onCollision (Collider collider) {
       if (colliderLifeController != null) {
-        if (colliderLifeController.shield <= 0) {
-          bulletController.hitSpaceship(colliderLifeController);
-        }
+        bulletController.hit(colliderLifeController);
       }
     }
+
+    #endregion
+
   }
-
-  #endregion
-
 }

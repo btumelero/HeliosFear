@@ -1,17 +1,15 @@
-﻿using UnityEngine;
-
-/// <summary>
-/// Classe responsável por gerenciar os movimentos dos inimigos
-/// </summary>
-public abstract class EnemyMovementController : MovementController {
-
-  #region Variáveis
+﻿namespace Assets.Source.App.Controllers.Spaceship.Movement.Enemy {
 
   /// <summary>
-  /// A nave inimiga
+  /// Classe responsável por gerenciar os movimentos dos inimigos
   /// </summary>
-  public GameObject _spaceship { get; set; }
+  public abstract class EnemyMovementController : MovementController {
 
-  #endregion
+    #region Propriedades
 
+    public float movementTimer;
+
+    #endregion
+
+  }
 }

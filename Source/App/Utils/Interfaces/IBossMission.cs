@@ -1,61 +1,49 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+
+using Assets.Source.App.Controllers.Spaceship.Movement.Enemy.Boss;
+
+using UnityEngine;
 
 /// <summary>
-/// Contém as interfaces usadas no projeto
+/// Contém as interfaces usadas em missões no projeto
 /// </summary>
-namespace Interfaces {
+namespace Assets.Source.App.Utils.Interfaces.Missions {
 
   /// <summary>
-  /// Contém as interfaces usadas em missões no projeto
+  /// Interface implementada pelas missões de boss
   /// </summary>
-  namespace Missions {
+  public interface IBossMission {
 
     /// <summary>
-    /// Interface implementada pelas missões de boss
+    /// Estágio pré-boss da missão
     /// </summary>
-    public interface IBossMission {
+    IEnumerator onBossMissionStart ();
 
-      /// <summary>
-      /// O boss da missão
-      /// </summary>
-      GameObject boss { get; }
+    /// <summary>
+    /// Estágio boss da missão
+    /// </summary>
+    IEnumerator onBossMission ();
 
-      /// <summary>
-      /// O controlador do movimento do boss
-      /// </summary>
-      BossEnemyMovementController bossMovementController { get; }
+    /// <summary>
+    /// Estágio pós-boss da missão
+    /// </summary>
+    IEnumerator onBossMissionEnd ();
 
-      /// <summary>
-      /// Estágio pré-boss da missão
-      /// </summary>
-      void postNormalMission ();
+    /// <summary>
+    /// Atualizações no player durante o estágio boss da missão
+    /// </summary>
+    void updatePlayer ();
 
-      /// <summary>
-      /// Estágio boss da missão
-      /// </summary>
-      void bossMission ();
+    /// <summary>
+    /// Atualizações no boss durante o estágio boss da missão
+    /// </summary>
+    void updateBoss ();
 
-      /// <summary>
-      /// Atualizações no player durante o estágio boss da missão
-      /// </summary>
-      void updatePlayer ();
-
-      /// <summary>
-      /// Atualizações no boss durante o estágio boss da missão
-      /// </summary>
-      void updateBoss ();
-
-      /// <summary>
-      /// Atualizações em outras coisas durante o estágio boss da missão
-      /// </summary>
-      void updateOthers ();
-
-      /// <summary>
-      /// Estágio pós-boss da missão
-      /// </summary>
-      void postBossMission ();
-
-    }
+    /// <summary>
+    /// Atualizações em outras coisas durante o estágio boss da missão
+    /// </summary>
+    void updateOthers ();
 
   }
+
 }

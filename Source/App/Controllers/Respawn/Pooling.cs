@@ -1,120 +1,69 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-using Enums;
+using Assets.Source.App.Data.Utils;
 
 using UnityEngine;
 
-/// <summary>
-/// Classe responsável pela técnica de reaproveitamento de objetos usada para aumentar a performance.
-/// </summary>
-public class Pooling : MonoBehaviour {
+namespace Assets.Source.App.Controllers.Respawn {
 
-  #region Variáveis
+  public class Pooling {
 
-  /// <summary>
-  /// A posição para a qual os inimigos derrotados serão movidos.
-  /// </summary>
-  private static readonly Vector3 offscreenPosition = new Vector3(60, 60, 60);
+    #region Campos
 
-  /// <summary>
-  /// Dicionário contendo os tipos de inimigos como chave e as listas de inimigos armazenados como valor.
-  /// Usar o enum Spaceships aqui
-  /// </summary>
-  private static readonly Dictionary<byte, Queue<GameObject>> pool =
-    new Dictionary<byte, Queue<GameObject>>();
+    private static readonly Dictionary<string, Queue<GameObject>> pool =
+      new Dictionary<string, Queue<GameObject>>() {
+        {
+          "Enemy Attacker",
+          new Queue<GameObject>()
+        },
+        {
+          "Enemy Defender",
+          new Queue<GameObject>()
+        },
+        {
+          "Enemy Dodger",
+          new Queue<GameObject>()
+        },
+        {
+          "Enemy Normal",
+          new Queue<GameObject>()
+        },
+      };
 
-  #endregion
+    private GameObject newEnemy;
 
-  #region Métodos da Unity
+    #endregion
 
-  /// <summary>
-  /// Inicialização do dicionário.
-  /// </summary>
-  private void Start () {
-    byte[] enemyTypes = (byte[]) Enum.GetValues(typeof(Spaceships));
-    for (int i = 0; i < enemyTypes.Length; i++) {
-      if (enemyHasPool(enemyTypes[i]) == false) {
-        pool.Add(enemyTypes[i], new Queue<GameObject>());
+    #region Getters e Setters
+
+    private GameObject get (GameObject spaceship) {
+      pool.TryGetValue(spaceship.tag, out var enemies);
+      return enemies?.Count > 0 ? pool[spaceship.tag].Dequeue() : null;
+    }
+
+    private static void put (GameObject spaceship) {
+      pool[spaceship.tag].Enqueue(spaceship);
+    }
+
+    #endregion
+
+    #region Meus Métodos
+
+    public GameObject retrieve (GameObject enemy, Vector3 position) {
+      if (newEnemy = get(enemy)) {
+        newEnemy.SetActive(true);
+        newEnemy.transform.position = position;
       }
+      return newEnemy;
     }
-  }
 
-  #endregion
-
-  #region Meus Métodos
-
-  /// <summary>
-  /// Retorna um inimigo ativo do tipo passado por parâmetro se existir um ou nulo se não existir.
-  /// Usar o enum Spaceships aqui.
-  /// </summary>
-  /// 
-  /// <param name="enemy">
-  /// O inimigo a ser recuperado
-  /// </param>
-  /// 
-  /// <returns>
-  /// Um inimigo se existir um ou nulo se não existir
-  /// </returns>
-  public GameObject retrieve (byte enemy) {
-    if (enemyPoolIsEmpty(enemy) == false) {
-      pool[enemy].Peek().SetActive(true);
-      return pool[enemy].Dequeue();
+    public static void store (GameObject enemy) {
+      enemy.SetActive(false);
+      enemy.transform.position = Position.poolingPosition;
+      put(enemy);
     }
-    return null;
+
+    #endregion
+
   }
-
-  /// <summary>
-  /// Armazena, desativa e move o inimigo passado por parâmetro para fora da tela.
-  /// Usar o enum Spaceships aqui.
-  /// </summary>
-  /// 
-  /// <param name="enemy">
-  /// O tipo de inimigo a ser armazenado
-  /// </param>
-  /// 
-  /// <param name="spaceship">
-  /// A nave do inimigo a ser armazenada
-  /// </param>
-  public static void store (byte enemy, GameObject spaceship) {
-    spaceship.SetActive(false);
-    spaceship.GetComponent<CommonEnemyConstructor>().reconstruct();
-    spaceship.transform.position = offscreenPosition;
-    pool[enemy].Enqueue(spaceship);
-  }
-
-  /// <summary>
-  /// Retorna verdadeiro se não há inimigos do tipo passado por parâmetro armazenados.
-  /// Usar o enum Spaceships aqui.
-  /// </summary>
-  /// 
-  /// <param name="enemy">
-  /// O tipo de inimigo a checar se há armazenado
-  /// </param>
-  /// 
-  /// <returns>
-  /// Verdadeiro se não há inimigos armazenados
-  /// </returns>
-  public bool enemyPoolIsEmpty (byte enemy) {
-    return pool[enemy].Count == 0;
-  }
-
-  /// <summary>
-  /// Retorna verdadeiro se o inimigo passado por parâmetro já têm a sua lista para armazenamento.
-  /// Usar o enum Spaceships aqui.
-  /// </summary>
-  /// 
-  /// <param name="enemy">
-  /// O tipo de inimigo a checar se tem pool
-  /// </param>
-  /// 
-  /// <returns>
-  /// Verdadeiro se o inimigo possui pool
-  /// </returns>
-  public bool enemyHasPool (byte enemy) {
-    return pool.ContainsKey(enemy);
-  }
-
-  #endregion
-
 }

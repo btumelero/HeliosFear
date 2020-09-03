@@ -1,90 +1,54 @@
-﻿using Delegates;
-
-using Interfaces.Movements;
+﻿using Assets.Source.App.Data.Mission;
+using Assets.Source.App.Data.Spaceship;
+using Assets.Source.App.Utils.ScreenLimits;
 
 using UnityEngine;
 
-/// <summary>
-/// Classe responsável por gerenciar os movimentos da nave do jogador
-/// </summary>
-public class PlayerMovementController : MovementController, IMovement {
+namespace Assets.Source.App.Controllers.Spaceship.Movement.Player {
 
-  #region Variáveis
+  public abstract class PlayerMovementController : MovementController {
 
-  /// <summary>
-  /// A área da tela em que o jogador pode se mover
-  /// </summary>
-  public ScreenLimits screenLimits;
+    #region Campos
 
-  /// <summary>
-  /// A forma como o jogador pode se mover no momento.
-  /// Um Delegate é usado para dar mais flexibilidade para a manipulação
-  /// </summary>
-  public MovementType move;
+    /// <summary>
+    /// A área da tela em que o jogador pode se mover
+    /// </summary>
+    public ScreenLimits screenLimits;
 
-  /// <summary>
-  /// A posição inicial do jogador na tela
-  /// </summary>
-  public Vector3 _startingPosition;
+    #endregion
 
-  #endregion
+    #region Propriedades
 
-  #region Getters e Setters
+    /// <summary>
+    /// A posição inicial do jogador na tela
+    /// </summary>
+    public Vector3 startingPosition =>
+      SpaceshipData.values[gameObject.tag].movementData.startingPosition
+    ;
 
-  /// <summary>
-  /// A posição inicial do jogador na tela
-  /// </summary>
-  public Vector3 startingPosition { 
-    get => _startingPosition;
-  }
+    /// <summary>
+    /// A velocidade base do objeto
+    /// </summary>
+    public override float baseSpeed => 
+      base.baseSpeed * (0.75f + (PlayerData.engineStrength / 4))
+    ;
 
-  /// <summary>
-  /// A nave do jogador
-  /// </summary>
-  public GameObject spaceship {
-    get => gameObject;
-  }
+    #endregion
 
-  #endregion
+    #region Meus Métodos
 
-  #region Métodos da Unity
-
-  /// <summary>
-  /// Dependendo do tipó e estágio da missão, pode permitir que o jogador controle sua nave de diferentes formas.
-  /// </summary>
-  protected override void FixedUpdate () {
-    move?.Invoke();
-  }
-
-  #endregion
-
-  #region Meus métodos
-
-  /// <summary>
-  /// Move a nave do jogador conforme os botões que ele está apertando e impede que ele saia da tela
-  /// </summary>
-  public void normalMovement () {
-    transform.Translate(
-      Input.GetAxis(Enums.Input.Horizontal.ToString()) * _actualSpeed * (Time.fixedDeltaTime),
-      Input.GetAxis(Enums.Input.Vertical.ToString()) * _actualSpeed * (Time.fixedDeltaTime),
-      0
-    );
-    if (screenLimits.yEdgeReached(transform.position.y) || screenLimits.xEdgeReached(transform.position.x)) {
-      limitMovement();
+    /// <summary>
+    /// Impede que o jogador saia da tela
+    /// </summary>
+    protected void limitMovement () {
+      transform.position = new Vector3(
+        Mathf.Clamp(transform.position.x, screenLimits.minimumX, screenLimits.maximumX),
+        Mathf.Clamp(transform.position.y, screenLimits.minimumY, screenLimits.maximumY),
+        0f
+      );
     }
+
+    #endregion
+
   }
-
-  /// <summary>
-  /// Impede que o jogador saia da tela
-  /// </summary>
-  private void limitMovement () {
-    transform.position = new Vector3(
-      Mathf.Clamp(transform.position.x, screenLimits.minimumX, screenLimits.maximumX),
-      Mathf.Clamp(transform.position.y, screenLimits.minimumY, screenLimits.maximumY),
-      0f
-    );
-  }
-
-  #endregion
-
 }

@@ -1,27 +1,23 @@
-﻿/// <summary>
-/// Classe responsável pelo controle da vida dos inimigos
-/// </summary>
-public abstract class EnemyLifeController : LifeController {
+﻿using Assets.Source.App.Data.Spaceship;
 
-  #region Variáveis
+namespace Assets.Source.App.Controllers.Spaceship.Life.Enemy {
 
   /// <summary>
-  /// O score que será dado ao jogador quando ele destruir essa nave
+  /// Classe responsável pelo controle da vida dos inimigos
   /// </summary>
-  public int scoreReward;
+  public abstract class EnemyLifeController : LifeController {
 
-  #endregion
+    #region Propriedades
 
-  #region Getters e Setters
+    /// <summary>
+    /// O score que será dado ao jogador quando ele destruir essa nave
+    /// </summary>
+    public int scoreReward {
+      get => SpaceshipData.values[gameObject.tag].lifeData.scoreReward;
+    }
 
-  /// <summary>
-  /// Escudo máximo da nave
-  /// </summary>
-  public override float maxShield { 
-    get => _maxShield;
-    set => _maxShield = value;
+    #endregion
+
   }
-
-  #endregion
 
 }
